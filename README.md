@@ -7,7 +7,6 @@
 * 66070287 นางสาวปภาวดี จันทร์สอน
 
 -run file => npm run dev
--port 5555
 
 customer
 -email: 66070287@kmitl.ac.th
