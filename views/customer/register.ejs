@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <form action="/api/process_register" method="POST" onsubmit="return check()">
+        <label>First Name: </label>
+        <input type="text" name="fname" id="fname">
+        <label>Last Name: </label>
+        <input type="text" name="lname" id="lname">
+        <label>Phone: </label>
+        <input type="text" name="phone" id="phone">
+        <label>Adress: </label>
+        <textarea name="address" id="address"></textarea>
+        <label>Email: </label>
+        <input type="email" name="email" id="email">
+        <label>Password: </label>
+        <input type="password" name="password" id="password">
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        function check() {
+            const fname = document.getElementById('fname').value;
+            const lname = document.getElementById('lname').value;
+            const phone = document.getElementById('phone').value;
+            const address = document.getElementById('address').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (!fname || !lname || !phone || !address || !email || !password) {
+                alert('กรุณากรอกข้อมูลให้ครบ');
+                return false;
+            }
+
+
+            return true;
+        }
+    </script>
+</body>
+
+</html>

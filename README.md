@@ -6,3 +6,13 @@
 * 66070267 นายธนภัทร แสงวัฒนสิริ
 * 66070287 นางสาวปภาวดี จันทร์สอน
 
+run file => npm run dev
+port 5555
+
+customer
+-email: john.doe@example.com
+-password: hashedpassword123
+
+admin
+-email: john.doe@example.com
+-password: hashedpassword123

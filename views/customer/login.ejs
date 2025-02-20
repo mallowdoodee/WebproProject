@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+ 
+
+<body>
+    <form action="/api/process_login" method="POST" onsubmit="return check()">
+        <label>Email: </label>
+        <input type="email" name="email" id="email">
+        <label>Password: </label>
+        <input type="password" name="password" id="password">
+
+        <button>Submit</button>
+        <a href="">forgot password</a>
+    </form>
+
+    <script>
+        function check() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (!email && !password) {
+                alert('Please enter both email and password.');
+                return false;
+            }
+            if (!email) {
+                alert('Please enter email.');
+                return false;
+            }
+            if (!password) {
+                alert('Please enter password.');
+                return false;
+            }
+
+            return true;
+        }
+    </script>
+</body>
+
+</html>

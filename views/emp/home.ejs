@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+            flex-direction: column;
+        }
+
+        .nav-container {
+            background-color: #F2E9E4;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            width: 100%;
+            height: 60px;
+        }
+
+        .side-bar {
+            background-color: #BF8579;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 300px;
+            height: calc(100vh - 60px);
+            position: fixed;
+            top: 60px;
+            left: 0;
+        }
+
+        .btn {
+            width: 100%;
+        }
+
+
+        a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 30px;
+            text-align: center;
+            width: 100%;
+            transition: background 0.3s;
+        }
+
+        a:hover {
+            background-color: #A56037;
+        }
+
+        a.active {
+            background-color: #A56037 !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="nav-container">
+            <div class="brand">
+                <p>Celestara</p>
+            </div>
+
+            <div class="shopName">
+                <p>shop name</p>
+            </div>
+
+            <div class="account">
+                <p>
+                    <%=user.email%>
+                </p>
+            </div>
+        </div>
+
+        <div class="side-bar">
+            <div class="btn">
+                <a href="#">Home</a>
+            </div>
+
+            <div class="btn">
+                <a href="#">Orders</a>
+            </div>
+
+            <div class="btn">
+                <a href="#">Products</a>
+            </div>
+
+            <% if (user.role==='admin' ) { %>
+                <div class="btn">
+                    <a href="#">Manages</a>
+                </div>
+                <% } %>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let buttons = document.querySelectorAll(".side-bar a");
+    
+            buttons.forEach(button => {
+                button.addEventListener("click", function () {
+                    buttons.forEach(btn => btn.classList.remove("active"));
+                    this.classList.add("active");
+                });
+            });
+        });
+    </script>
+
+
+</body>
+
+</html>
