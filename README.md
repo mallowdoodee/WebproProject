@@ -10,8 +10,8 @@ run file => npm run dev
 port 5555
 
 customer
--email: john.doe@example.com
--password: hashedpassword123
+-email: 66070287@kmitl.ac.th
+-password: 66070287
 
 admin
 -email: john.doe@example.com
