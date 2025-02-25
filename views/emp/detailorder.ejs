@@ -1,0 +1,202 @@
+<style>
+    .container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    #accept,
+    #decline {
+        padding: 8px 16px;
+        color: white;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: opacity 0.3s ease;
+    }
+
+    #accept {
+        background-color: #67C14B;
+    }
+
+    #decline {
+        background-color: #BF3F3F;
+        border: 1.5px solid #BF3F3F;
+    }
+
+    #accept:hover,
+    #decline:hover {
+        opacity: 0.8;
+    }
+
+    .modal-container {
+        display: none;
+        width: 100%;
+        max-width: 50%;
+        height: 270px;
+        background-color: #ffffff;
+        padding: 30px;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        border-radius: 10px;
+        z-index: 10000;
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+    }
+
+    .btn {
+        /* position: absolute; */
+        /* top: 10px;
+        right: 15px; */
+        background-color: #ff4d4d;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        font-size: 16px;
+        border-radius: 5px;
+    }
+
+    .send {
+        background-color: #67C14B;
+    }
+
+    /* .modal-container form {
+        margin-top: 30px;
+    } */
+
+    textarea {
+        width: 100%;
+        height: 200px;
+        border: 1px solid gray;
+        resize: none;
+        margin-bottom: 15px;
+    }
+
+</style>
+
+<div class="container">
+    <!-- list order -->
+    <div class="list-order">
+        <h2>List</h2>
+        <!-- <div class="list"> -->
+        <ul id="productList">
+            <li>product1</li>
+            <li>product1</li>
+            <li>product1</li>
+        </ul>
+        <!-- </div> -->
+
+    </div>
+    <!-- image -->
+    <!-- description -->
+    <!-- ชื่อสินค้า-ราคา-ok -->
+    <div class="form-container">
+        <form action="">
+            <label>ชื่อสินค้า: </label><input type="text" id="productName">
+            <label>ราคา: </label><input type="number" min="0" id="price">
+            <label>จำนวน: </label><input type="number" min="1" id="quantity">
+            <button type="button" onclick="add()">Add to List</button>
+        </form>
+        <!-- <div id="total-container">
+            <h2 id="total">Total: 0 Baht</h2>
+        </div> -->
+    </div>
+
+    <!-- total price -->
+    <div id="total-container">
+        <h2 id="total">Total: 0 Baht</h2>
+    </div>
+
+    <!-- ปุ่ม access/decline -->
+    <div class="butt">
+        <a href="#" id="accept">Accept</a>
+        <button id="decline" onclick="openModal()">Decline</button>
+    </div>
+
+</div>
+<!-- decline => description -->
+
+<div class="modal">
+    <div class="modal-container">
+        <form>
+            <label>เหตุผลที่ยกเลิก</label>
+            <textarea id="description" placeholder="Enter something..."></textarea>
+
+            <a class="btn send" onclick="sendModal()">submit</a>
+            <button class="btn cancel" onclick="closeModal()">cancel</button>
+        </form>
+    </div>
+</div>
+
+
+
+
+<script>
+    function add() {
+        let name = document.getElementById("productName").value;
+        let price = parseInt(document.getElementById('price').value);
+        let quantity = parseInt(document.getElementById('quantity').value);
+
+        if (!name || isNaN(price) || isNaN(quantity)) {
+            alert("กรุณากรอกข้อมูลให้ครบถ้วน");
+            return false;
+        }
+
+        let ul = document.getElementById('productList');
+        let li = document.createElement('li');
+        li.innerHTML = `${name} - ${price} บาท - ${quantity} ชิ้น <button onclick="removeItem(this)">ลบ</button>`;
+
+        ul.appendChild(li);
+
+        let total = document.getElementById('total');
+        let totalInt = parseInt(total.textContent.match(/\d+/)[0])
+
+        total.innerHTML = `Total: ${totalInt + (price * quantity)} Baht`;
+
+        document.getElementById("productName").value = "";
+        document.getElementById("price").value = "";
+        document.getElementById("quantity").value = "";
+
+    }
+
+    function removeItem(button) {
+        let list = button.parentElement.textContent;
+        let numbers = list.match(/\d+/g);
+
+        let price = numbers[0];
+        let quantity = numbers[1];
+
+        let total = document.getElementById('total');
+        let totalInt = parseInt(total.textContent.match(/\d+/)[0])
+
+        total.innerHTML = `Total: ${totalInt - (price * quantity)} Baht`;
+
+        button.parentElement.remove();
+    }
+
+    function openModal() {
+        document.querySelector(".modal-container").style.display = "block";
+        document.querySelector(".modal").style.display = "block";
+    }
+
+    function closeModal() {
+        document.querySelector(".modal-container").style.display = "none";
+        document.querySelector(".modal").style.display = "none";
+    }
+
+</script>

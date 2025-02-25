@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop Management</title>
+    <style>
+        body {
+            height: 100vh;
+            /* background-color: #F0E9E9; */
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .top-container {
+            position: fixed;
+            width: 100%;
+            font-size: 16px;
+            z-index: 1;
+        }
+
+        .sidebar {
+            display: flex;
+            height: 100vh;
+            width: 250px;
+            background-color: #d8bfbf;
+            position: fixed;
+            top: 60px;
+            left: 0;
+            justify-content: center;
+        }
+
+        .content {
+            margin-top: 60px;
+            margin-left: 250px;
+            width: calc(100% - 250px);
+            /* background-color: #F0E9E9; */
+            min-height: calc(100vh - 60px);
+            position: relative;
+            
+        }
+
+
+    </style>
+
+</head>
+
+<body>
+    <div class="top-container">
+        <%- include('topbar') %>
+    </div>
+    <div class="container">
+        <div class="sidebar">
+            <%- include('sidebar') %>
+        </div>
+        <div class="content">
+            <%- include(body) %>
+        </div>
+    </div>
+</body>
+
+</html>

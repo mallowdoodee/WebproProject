@@ -1,0 +1,147 @@
+<style>
+    .container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    .table-container {
+        width: 100%;
+        margin: 20px auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+    }
+
+    td {
+        background-color: #fff;
+    }
+    #myorder, #details {
+        padding: 8px 16px;
+        color: white;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: opacity 0.3s ease;
+    }
+
+    #details {
+        background-color: #D8A273;
+    }
+
+    #myorder {
+        padding: 8px 16px;
+        color: white;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: opacity 0.3s ease;
+    }
+
+    /* #accept {
+        background-color: #67C14B;
+    }
+
+    #decline {
+        background-color: #BF3F3F;
+    } */
+
+    #myorder {
+        background-color: #D8A273;
+    }
+
+    /* #accept:hover, #decline:hover, #myorder:hover {
+        opacity: 0.8;
+    } */
+
+    #myorder:hover, #details:hover {
+        opacity: 0.8;
+    }
+
+    .option {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    form {
+        display: flex;
+    }
+
+
+</style>
+
+<div class="container">
+    <!-- <p>Hello Welcome to orders page</p> -->
+    <div class="head">
+        <h1>All Orders</h1>
+    </div>
+
+    <div class="option">
+        <div class="sort">
+            <form>
+                <div class="form-group">
+                    <input type="checkbox" id="ring" name="ring" value="ring">
+                    <label>Ring</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="necklace" name="necklace" value="necklace">
+                    <label>Necklace</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="earring" name="earring" value="earring">
+                    <label>Earring</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="bracelet" name="bracelet" value="bracelet">
+                    <label>Bracelet</label>
+                </div>
+            </form>
+        </div>
+
+        <!-- <a href="/emp/myorders" id="myorder">My Orders</a> -->
+
+
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Product</th>
+                    <th>Description</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <!-- <a href="#" id="accept">Accept</a>
+                        <a href="#" id="decline">Decline</a> -->
+                        <a href="/emp/detail_order" id="details">Details</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <a href="/emp/myorders"> back to my orders</a>
+
+</div>

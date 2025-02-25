@@ -1,111 +1,133 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Styled Form</title>
-    <style>
-        .form-container {
-            padding: 20px;
-            border-radius: 8px;
-            width: 350px;
-        }
+<style>
+    .container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 20px;
+        box-sizing: border-box;
+    }
 
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 10px;
-        }
+    .form-container {
+        padding: 20px;
+        border-radius: 8px;
+        width: 350px;
+    }
 
-        label {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 10px;
+    }
 
-        input, textarea {
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
+    label {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
 
-        textarea {
-            resize: none;
-            height: 60px;
-        }
+    input,
+    textarea,
+    select {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
 
-        .error-message {
-            font-size: 12px;
-            margin-top: 5px;
-        }
+    textarea {
+        resize: none;
+        height: 60px;
+    }
 
-        a {
-            text-decoration: none;
-        }
+    .error-message {
+        font-size: 12px;
+        margin-top: 5px;
+    }
 
-        .btn {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 10px;
-            width: 100%;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 10px;
-        }
+    a {
+        text-decoration: none;
+    }
 
-        .btn:hover {
-            background-color: #0056b3;
-        }
+    .btn {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 10px;
+    }
 
-        .cancel {
-            background-color: white;
-            color: #0056b3;
-            border: 1px solid #0056b3;
-        }
+    .btn:hover {
+        background-color: #0056b3;
+    }
 
-        .cancel:hover {
-            color: white;
-        }
-    </style>
+    .cancel {
+        background-color: white;
+        color: #0056b3;
+        border: 1px solid #0056b3;
+    }
+
+    .cancel:hover {
+        color: white;
+    }
+</style>
 </head>
-<body>
 
-    <div class="form-container">
-        <form>
+<body>
+    <div class="container">
+
+        <form action="<%= isEditing ? '/api/emp_edituser' : '/api/emp_createuser' %>" method="POST"
+            onsubmit="return checkInfo()">
             <% data.forEach((item)=>{ %>
-                <div class="form-group">
-                    <label>First Name:</label>
-                    <input type="text" value="<%=item.fname%>" id="fname" name="fname">
+                <input type="hidden" name="id" value="<%= item.id %>">
+                <div class="form-container">
+                    <div class="form-group">
+                        <label>First Name:</label>
+                        <input type="text" value="<%= isEditing ? item.fname : '' %>" id="fname" name="fname">
+                    </div>
+                    <div class="form-group">
+                        <label>Last Name:</label>
+                        <input type="text" value="<%= isEditing ? item.lname : '' %>" id="lname" name="lname">
+                    </div>
+                    <div class="form-group">
+                        <label>Phone:</label>
+                        <input type="tel" value="<%= isEditing ? item.phone : '' %>" id="phone" name="phone">
+                    </div>
+                    <div class="form-group">
+                        <label>Address:</label>
+                        <textarea id="address" name="address"><%= isEditing ? item.address : '' %></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Email:</label>
+                        <input type="email" value="<%= isEditing ? item.email : '' %>" id="email" name="email">
+                    </div>
+                    <% }); %>
+
+                        <% if(isEditing) { %>
+                            <input type="submit" value="Update User" class="btn submit">
+                            <a class="btn cancel" href="/emp/manages">Cancel</a>
+                            <% } else { %>
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <label>Role:</label>
+                                        <select name="role" id="role">
+                                            <option value="jeweler">Jeweler</option>
+                                            <option value="admin">Admin</option>
+                                        </select>
+                                    </div>
+                                    <label>Password:</label>
+                                    <input type="password" id="password" name="password" onkeyup="checkPass()">
+                                </div>
+                                <div class="form-group">
+                                    <label>Confirm Password:</label>
+                                    <input type="password" id="confirmPass" onkeyup="checkPass()">
+                                    <p id="error_msg" class="error-message" style="color: red;"></p>
+                                </div>
+                                <input type="submit" value="Create User" class="btn submit">
+                                <a class="btn cancel" href="/emp/manages">Cancel</a>
+                                <% } %>
                 </div>
-                <div class="form-group">
-                    <label>Last Name:</label>
-                    <input type="text" value="<%=item.lname%>" id="lname" name="lname">
-                </div>
-                <div class="form-group">
-                    <label>Phone:</label>
-                    <input type="text" value="<%=item.phone%>" id="phone" name="phone">
-                </div>
-                <div class="form-group">
-                    <label>Address:</label>
-                    <textarea id="address" name="address"><%=item.address%></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Email:</label>
-                    <input type="email" value="<%=item.email%>" id="email" name="email">
-                </div>
-            <% }); %> 
-            <div class="form-group">
-                <label>Password:</label>
-                <input type="password" id="password" name="password" onkeyup="checkPass()">
-            </div>
-            <div class="form-group">
-                <label>Confirm Password:</label>
-                <input type="password" id="confirmPass" onkeyup="checkPass()">
-                <p id="error_msg" class="error-message" style="color: red;"></p>
-            </div>
-            <a class="btn" href="">Submit</a>
-            <a class="btn cancel" href="/emp_route">Cancel</a>
         </form>
     </div>
 
@@ -125,7 +147,31 @@
                 err_msg.style.color = "green";
             }
         }
+
+        function checkInfo() {
+            const fname = document.getElementById('fname').value;
+            const lname = document.getElementById('lname').value;
+            const phone = document.getElementById('phone').value;
+            const address = document.getElementById('address').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPass = document.getElementById('confirmPass').value;
+
+            if (!fname || !lname || !phone || !address || !email || !password) {
+                alert('กรุณากรอกข้อมูลให้ครบ');
+                return false;
+            }
+
+            if (password !== confirmPass) {
+                document.getElementById('error_msg').innerText = "Passwords do not match!";
+                alert('Passwords do not match!');
+                return false;
+            }
+
+            return true;
+        }
     </script>
 
 </body>
+
 </html>

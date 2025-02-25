@@ -1,0 +1,77 @@
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+    }
+    .nav-container {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        height: 60px;
+        background-color: #F2E9E4;
+    }
+
+    .account {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .dropdown-menu {
+        position: absolute;
+        font-size: 15px;
+        top: 100%;
+        right: 0;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+        display: none;
+    }
+
+    #edit, #logout {
+        color: black;
+        padding: 12px 16px;
+        border: none;
+        display: block;
+        cursor: pointer;
+        box-sizing: border-box;
+        width: 100%;
+        text-align: center;
+    }
+
+    .account:hover .dropdown-menu {
+        display: block;
+    }
+
+    #edit:hover, #logout:hover {
+        background-color: #A56037;
+        color: white;
+    }
+    a {
+        text-decoration: none;
+    }
+</style>
+
+<div class="nav-container">
+    <div class="brand">
+        <p>Celestara</p>
+    </div>
+
+    <div class="shopName">
+        <p>shop name</p>
+    </div>
+
+    <div class="account">
+        <p><%= user.email %></p>
+        <div class="dropdown-menu">
+            <a href="/emp/profile?id=<%= user.id %>" id="edit">My Profile</a>
+
+            <form action="/logout" method="POST">
+                <input id="logout" type="submit" value="Logout">
+            </form>
+        </div>
+    </div>
+</div>

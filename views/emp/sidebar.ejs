@@ -1,0 +1,30 @@
+<style>
+    .menu {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        background-color: #BF8579;
+        text-align: left;
+        width: 100%;
+    }
+
+    .menu a {
+        font-size: 18px;
+        text-decoration: none;
+        color: white;
+        padding: 20px 30px;
+    }
+
+    .menu a:hover {
+        background-color: #A56037;
+    }
+</style>
+
+<div class="menu">
+        <a href="/emp/home">Home</a>
+        <a href="/emp/myorders">Orders</a>
+        <a href="/emp/products">Products</a>
+        <% if (user.role==='admin' ) { %>
+            <a href="/emp/manages">Manages</a>
+        <% } %>   
+</div>

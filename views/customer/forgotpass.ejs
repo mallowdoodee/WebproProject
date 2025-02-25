@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <form action="/api/cus_forgot" method="POST" onsubmit="return check()">
+        <div class="form-group">
+            <label>Email: </label>
+            <input type="email" name="email" id="email">
+        </div>
+
+        <div class="form-group">
+            <label>Password:</label>
+            <input type="password" id="password" name="password" onkeyup="checkPass()">
+        </div>
+
+        <div class="form-group">
+            <label>Confirm Password:</label>
+            <input type="password" id="confirmPass" onkeyup="checkPass()">
+            <p id="error_msg" class="error-message" style="color: red;"></p>
+        </div>
+
+        <input type="submit" name="Submit">
+
+    </form>
+
+    <script>
+        function checkPass() {
+            let pass = document.getElementById('password').value;
+            let confirm = document.getElementById('confirmPass').value;
+            let err_msg = document.getElementById('error_msg');
+
+            if (confirm === "") {
+                err_msg.textContent = "";
+            } else if (confirm !== pass) {
+                err_msg.textContent = "Password do not match!";
+                err_msg.style.color = "red";
+            } else {
+                err_msg.textContent = "Password match";
+                err_msg.style.color = "green";
+            }
+        }
+        function check() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPass = document.getElementById('confirmPass').value;
+
+            if (!email && !password) {
+                alert('Please enter both email and password.');
+                return false;
+            }
+            if (!email) {
+                alert('Please enter email.');
+                return false;
+            }
+            if (!password) {
+                alert('Please enter password.');
+                return false;
+            }
+
+            if (password !== confirmPass) {
+                document.getElementById('error_msg').innerText = "Passwords do not match!";
+                alert('Passwords do not match!');
+                return false;
+            }
+
+            return true;
+        }
+    </script>
+</body>
+
+</html>

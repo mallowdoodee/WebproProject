@@ -113,6 +113,37 @@ const cus_login = async (req, res) => {
     }
 };
 
+const cus_forgot = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        // console.log(email);
+        const sql = 'SELECT * FROM customers WHERE email = ?';
+        db.all(sql, email, async function (err, results) {
+            // console.log(results);
+            if (err) {
+                console.error("Error processing request", err);
+                return res.status(500).send({ message: "Error processing request" });
+            }
+            if (results.length === 0) {
+                res.status(401).send('Authentication failed: user not found.');
+                return;
+            }
+            const hashedPassword = await bcrypt.hash(password, 10);
+            const update = 'UPDATE customers SET password = ? WHERE email = ?';
+            db.run(update, [hashedPassword, email], function (err) {
+                if (err) {
+                    return res.status(500).json({ error: err.message });
+                }
+                res.redirect('/login');
+            })
+
+        })
+
+    }catch (error) {
+        console.log('error', error);
+    }
+}
+
 const emp_login = async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -138,6 +169,7 @@ const emp_login = async (req, res) => {
             }
             var payload = {
                 users: {
+                    id: userData.id,
                     email: email,
                     role: userData.role
                 }
@@ -147,7 +179,7 @@ const emp_login = async (req, res) => {
             jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
                 if (err) throw err;
                 res.cookie('authToken', token, { httpOnly: true, secure: true });
-                return res.redirect('/emp_route');
+                return res.redirect('/emp/home');
                 // res.json({
                 //     message: "Login successful!",
                 //     token, payload,
@@ -162,4 +194,35 @@ const emp_login = async (req, res) => {
 
 }
 
-module.exports = { cus_register, cus_login, emp_login };
+const emp_forgot = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        // console.log(email);
+        const sql = 'SELECT * FROM employees WHERE email = ?';
+        db.all(sql, email, async function (err, results) {
+            // console.log(results);
+            if (err) {
+                console.error("Error processing request", err);
+                return res.status(500).send({ message: "Error processing request" });
+            }
+            if (results.length === 0) {
+                res.status(401).send('Authentication failed: user not found.');
+                return;
+            }
+            const hashedPassword = await bcrypt.hash(password, 10);
+            const update = 'UPDATE employees SET password = ? WHERE email = ?';
+            db.run(update, [hashedPassword, email], function (err) {
+                if (err) {
+                    return res.status(500).json({ error: err.message });
+                }
+                res.redirect('/emp/login');
+            })
+
+        })
+
+    }catch (error) {
+        console.log('error', error);
+    }
+}
+
+module.exports = { cus_register, cus_login, cus_forgot, emp_login, emp_forgot };
