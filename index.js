@@ -56,7 +56,7 @@ app.get('/emp/home', emp_auth, (req, res) => {
             res.render('emp/layout', { body: 'home', data: rows, user: userData });
         });
     } else {
-        return res.send('not access');
+        return res.sendFile(path.join(__dirname, '/public/error404.html'));
     }
 });
 
@@ -74,7 +74,7 @@ app.get('/emp/orders', emp_auth, (req, res) => {
             res.render('emp/layout', { body: 'orders', data: rows, user: userData });
         });
     } else {
-        return res.send('not access');
+        return res.sendFile(path.join(__dirname, '/public/error404.html'));
     }
 });
 
@@ -92,7 +92,7 @@ app.get('/emp/myorders', emp_auth, (req, res) => {
             res.render('emp/layout', { body: 'myorders', data: rows, user: userData });
         });
     } else {
-        return res.send('not access');
+        return res.sendFile(path.join(__dirname, '/public/error404.html'));
     }
 });
 
@@ -110,7 +110,7 @@ app.get('/emp/products', emp_auth, (req, res) => {
             res.render('emp/layout', { body: 'products', data: rows, user: userData });
         });
     } else {
-        return res.send('not access');
+        return res.sendFile(path.join(__dirname, '/public/error404.html'));
     }
 });
 
@@ -141,7 +141,7 @@ app.get('/emp/manages', emp_auth, (req, res) => {
             });
         }
     }else {
-        return res.send('not access');
+        return res.sendFile(path.join(__dirname, '/public/error404.html'));
     }
 });
 
@@ -160,7 +160,7 @@ app.get('/emp/edit', emp_auth, function (req, res) {
             res.render('emp/layout', { body: 'editUser', data: rows, user: userData, isEditing: true });
         });
     }else {
-        return res.send('not access');
+        return res.sendFile(path.join(__dirname, '/public/error404.html'));
     }
 })
 
@@ -177,7 +177,7 @@ app.get('/emp/profile', emp_auth, function (req, res) {
             res.render('emp/layout', { body: 'editProfile', data: rows, user: userData });
         });
     }else {
-        return res.send('not access');
+        return res.sendFile(path.join(__dirname, '/public/error404.html'));
     }
 })
 
@@ -191,7 +191,7 @@ app.get('/emp/create', emp_auth, function (req, res) {
         // return res.render('emp/editUser', { data: data, isEditing: false });
         res.render('emp/layout', { body: 'editUser', data: data, user: userData, isEditing: false });
     }else {
-        return res.send('not access');
+        return res.sendFile(path.join(__dirname, '/public/error404.html'));
     }
     
 });
@@ -201,7 +201,7 @@ app.get('/emp/detail_order', emp_auth, function (req, res) {
     if (userData && userData.role) {
         res.render('emp/layout', { body: 'detailorder', user: userData });
     }else {
-        return res.send('not access');
+        return res.sendFile(path.join(__dirname, '/public/error404.html'));
     }
 })
 
@@ -255,11 +255,6 @@ app.post('/logout', (req, res) => {
     res.cookie('authToken', '', { maxAge: 0 });
     res.render('emp/login');
 });
-
-
-
-
-
 
 // app.get('/manages', (req, res) => {
 //     res.render('emp/layout', { body: 'manages' });
