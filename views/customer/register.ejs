@@ -4,26 +4,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Customer Registration</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap');
+
+        * {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            margin-top: 0;
+        }
+
+        body {
+            display: flex;
+            background-color: #fff6f6;
+            margin: 0;
+        }
+
+        .container {
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .left-section,
+        .right-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .left-section {
+            flex-direction: column;
+            flex: 3;
+        }
+
+        .right-section {
+            flex: 2;
+            background-color: #f0dfdb;
+            border-top-left-radius: 50px;
+            border-bottom-left-radius: 50px;
+        }
+
+        h2 {
+            font-size: 60px;
+            color: #6e2b28;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 10px;
+        }
+
+        label {
+            color: #8c6658;
+            margin-bottom: 10px;
+        }
+
+        input, textarea {
+            font-size: 20px;
+            border: none;
+            border-bottom: 1px solid #c4a89c;
+            background: transparent;
+            width: 550px;
+            max-width: 100%;
+        }
+
+        .regis-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .regis-btn {
+            padding: 10px;
+            border-color: #6e2b28;
+            border-width: 1px;
+            background-color: #d9a694;
+            border-radius: 15px;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+
+        .regis-btn:hover {
+            background-color: #c48e80;
+        }
+
+        .login-text {
+            font-size: 20px;
+        }
+
+        .login-acc {
+            text-decoration: none;
+            color: #6e2b28;
+            font-size: 20px;
+        }
+
+        .login-acc:hover {
+            text-decoration: underline;
+        }
+
+        .logo {
+            font-size: 80px;
+            font-weight: bold;
+            color: #6e2b28;
+        }
+    </style>
 </head>
 
 <body>
-    <form action="/api/process_register" method="POST" onsubmit="return check()">
-        <label>First Name: </label>
-        <input type="text" name="fname" id="fname">
-        <label>Last Name: </label>
-        <input type="text" name="lname" id="lname">
-        <label>Phone: </label>
-        <input type="text" name="phone" id="phone">
-        <label>Adress: </label>
-        <textarea name="address" id="address"></textarea>
-        <label>Email: </label>
-        <input type="email" name="email" id="email">
-        <label>Password: </label>
-        <input type="password" name="password" id="password">
+    <div class="container">
+        <div class="left-section">
+            <h2>Registration</h2>
+            <form action="/api/process_register" method="POST" class="regis-form" onsubmit="return check()">
+                <div class="form-group">
+                    <label>First Name: </label>
+                    <input type="text" name="fname" id="fname">
+                </div>
+                <div class="form-group">
+                    <label>Last Name: </label>
+                    <input type="text" name="lname" id="lname">
+                </div>
+                <div class="form-group">
+                    <label>Phone: </label>
+                    <input type="text" name="phone" id="phone">
+                </div>
+                <div class="form-group">
+                    <label>Address: </label>
+                    <textarea name="address" id="address"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Email: </label>
+                    <input type="email" name="email" id="email">
+                </div>
+                <div class="form-group">
+                    <label>Password: </label>
+                    <input type="password" name="password" id="password">
+                </div>
 
-        <button type="submit">Submit</button>
-    </form>
+                <button type="submit" class="regis-btn">Create Account</button>
+                <p class="login-text">Already have account ? <a href="/login" class="login-acc">Login Account</a></p>
+            </form>
+        </div>
+        <div class="right-section">
+            <div class="logo">CeleStar</div>
+        </div>
+    </div>
 
     <script>
         function check() {
