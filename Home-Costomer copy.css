@@ -1,0 +1,109 @@
+:root {
+  --font-basetext: "Poppins", serif;
+  --font-weight-basetext: 400;
+  --font-style-basetext: normal;
+  --font-secondary: 'Jomolhari', serif;
+  --font-weight-secondary: 400;
+  --font-style-secondary: normal;
+  --font-logo: "Fraunces", serif;
+  --font-weight-logo: 600;
+  --font-style-logo: normal;
+  --font-thai: "Noto Sans Thai", sans-serif;
+  --font-weight-thai: 400;
+  --font-style-thai: normal;
+  --color-red: #580201;
+  --color-veryred: #450100;
+  --color-bs: #A56037;
+  --color-bg: #F0E9E9;
+  --color-bar: #F2E9E4;
+  --color-white: #FFFFFF;
+  --color-pink: #BF8579;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.font-basetext {
+  font-family: var(--font-basetext);
+  font-weight: var(--font-weight-basetext);
+  font-style: var(--font-style-basetext);
+}
+
+.font-secondary {
+  font-family: var(--font-secondary);
+  font-weight: var(--font-weight-secondary);
+  font-style: var(--font-style-secondary);
+}
+
+.font-logo {
+  font-family: var(--font-logo);
+  font-weight: var(--font-weight-logo);
+  font-style: var(--font-style-logo);
+}
+
+.font-thai {
+  font-family: var(--font-thai);
+  font-weight: var(--font-weight-thai);
+  font-style: var(--font-style-thai);
+}
+
+.custom-input:focus {
+  --tw-ring-color: var(--color-red);
+}
+
+.custom-ring {
+  --tw-ring-width: 1.5px;
+}
+
+.bg-custom {
+  background-color: var(--color-bg);
+}
+
+.bar-custom {
+  background-color: var(--color-bar);
+}
+
+.fill-custom-red {
+  fill: var(--color-red);
+}
+
+.article-bg {
+  width: 100%;
+  height: 100vh;
+  background-image: url('pic/bg.png');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+/* เพิ่มเลเยอร์โปร่งใสให้เฉพาะ background */
+.article-bg::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.7); /* ปรับความโปร่งใสที่นี่ */
+  z-index: 0;
+}
+
+/* ทำให้ text อยู่เหนือ background */
+.article-bg > * {
+  position: relative;
+  z-index: 1;
+}
+
+body {
+  min-height: 100vh;
+  width: 100vw;
+  background-color: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+}
+
+section {
+  width: 100%;
+  height: 100%;
+}
