@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Celestar - Jewelry</title>
+    <link href="Home-Customer.css" rel="stylesheet">
+    <script defer src="Categories-Customer.js"></script>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=IBM+Plex+Sans+Thai:wght@100;200;300;400;500;600;700&family=Noto+Sans+Thai:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Sorts+Mill+Goudy:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        body {
+            overflow-x: hidden;
+            width: 100vw;
+            user-select: none;
+        }
+    </style>
+</head>
+<body class="bg-custom">
+    <header class="fixed z-50 bar-custom shadow-xl shadow-gray-600/10 w-full px-10 py-3 flex items-center gap-x-4">
+        <h1 class="font-logo text-3xl" style="color: var(--color-red);">Celestar</h1>
+        <div class="relative font-basetext text-sm flex-shrink-0">
+            <input type="text" placeholder="Search"
+                class="border rounded-full py-2 px-4 pl-10 focus:outline-none focus:ring custom-ring hover:ring custom-ring"
+                style="--tw-ring-color: var(--color-red); border-color: var(--color-red);">
+            <span class="absolute left-3 top-2 text-gray-800">
+            <img src="pic/search.svg" alt="Search Icon" class="w-5 h-5" >
+            </span>
+        </div>        
+        <nav class="ml-auto">
+        <ul class="flex space-x-6 font-secondary text-[var(--color-red)]">
+                <li><a href="#" class="hover:underline">About</a></li>
+                <li><a href="Home-Custumer.html" class="hover:underline">Home</a></li>
+                <li><a href="Home-Custumer.html#Contact" class="hover:underline">Contact</a></li>
+                <li><a href="#" class="hover:underline text-[var(--color-bs)]">Account Name</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <article class="bg-[var(--color-bar)] pt-15 flex font-secondary">
+        <!-- เมนูบาร์ด้านซ้าย -->
+        <nav class="fixed top-15 left-0 w-55 h-full bg-[var(--color-softpink)] text-lg overflow-hidden">
+            <div class="group1">
+                <!-- เมนูหย่าย -->
+                <button class="menuButton w-full text-left pl-5 p-4 flex justify-items-start bg-[var(--color-pink)] text-white">
+                    <img class="DropD transition-transform duration-300 ease-in-out" src="pic/Non_selectDropDown.svg" alt="dropdown arrow">
+                    <span class="pl-7">Ring</span>
+                </button>
+                <!-- เมนูย่อยยย -->
+                <ul class="menuList hidden max-h-0 overflow-hidden transition-all duration-500 ease-in-out bg-[var(--color-softpink)] text-[var(--color-pink)] p-4 space-y-4 pl-15">
+                    <li><a href="#ringDimon" class="hover:underline">Dimond</a></li>
+                    <li><a href="#" class="hover:underline">Jade</a></li>
+                    <li><a href="#" class="hover:underline">Bead</a></li>
+                    <li><a href="#" class="hover:underline">Pearl</a></li>
+                </ul>
+            </div>
+            
+            <div class="group2">
+                <!-- เมนูหย่าย -->
+                <button class="menuButton w-full text-left pl-5 p-4 flex justify-items-start bg-[var(--color-pink)] text-white">
+                    <img class="DropD transition-transform duration-300 ease-in-out" src="pic/Non_selectDropDown.svg" alt="dropdown arrow">
+                    <span class="pl-7">Necklace</span>
+                </button>
+                <!-- เมนูย่อยยย -->
+                <ul class="menuList hidden max-h-0 overflow-hidden transition-all duration-500 ease-in-out bg-[var(--color-softpink)] text-[var(--color-pink)] p-4 space-y-4 pl-15">
+                    <li><a href="#" class="hover:underline">Dimond</a></li>
+                    <li><a href="#" class="hover:underline">Jade</a></li>
+                    <li><a href="#" class="hover:underline">Bead</a></li>
+                    <li><a href="#" class="hover:underline">Pearl</a></li>
+                </ul>
+            </div>
+            
+            <div class="group3">
+                <!-- เมนูหย่าย -->
+                <button class="menuButton w-full text-left pl-5 p-4 flex justify-items-start bg-[var(--color-pink)] text-white">
+                    <img class="DropD transition-transform duration-300 ease-in-out" src="pic/Non_selectDropDown.svg" alt="dropdown arrow">
+                    <span class="pl-7">Earring</span>
+                </button>
+                <!-- เมนูย่อยยย -->
+                <ul class="menuList hidden max-h-0 overflow-hidden transition-all duration-500 ease-in-out bg-[var(--color-softpink)] text-[var(--color-pink)] p-4 space-y-4 pl-15">
+                    <li><a href="#" class="hover:underline">Dimond</a></li>
+                    <li><a href="#" class="hover:underline">Jade</a></li>
+                    <li><a href="#" class="hover:underline">Bead</a></li>
+                    <li><a href="#" class="hover:underline">Pearl</a></li>
+                </ul>
+            </div>
+
+            <div class="group4">
+                <!-- เมนูหย่าย -->
+                <button class="menuButton w-full text-left pl-5 p-4 flex justify-items-start bg-[var(--color-pink)] text-white">
+                    <img class="DropD transition-transform duration-300 ease-in-out" src="pic/Non_selectDropDown.svg" alt="dropdown arrow">
+                    <span class="pl-7">Bracelet</span>
+                </button>
+                <!-- เมนูย่อยยย -->
+                <ul class="menuList hidden max-h-0 overflow-hidden transition-all duration-500 ease-in-out bg-[var(--color-softpink)] text-[var(--color-pink)] p-4 space-y-4 pl-15">
+                    <li><a href="#" class="hover:underline">Dimond</a></li>
+                    <li><a href="#" class="hover:underline">Jade</a></li>
+                    <li><a href="#" class="hover:underline">Bead</a></li>
+                    <li><a href="#" class="hover:underline">Pearl</a></li>
+                </ul>
+            </div>
+            
+        </nav>
+    
+        <!-- ส่วนฝั่งขวา -->
+        <section class="ml-55 p-8">
+            <div id="Ring" class="">
+                <h1 class="font-logo text-5xl text-center text-[var(--color-red)] p-8">- Ring -</h1>
+                <div id="ringDimon" class="bg-[var(--color-softpink)] w-full p-3 rounded-lg">
+                    <h2 class="pl-5 text-xl text-[var(--color-bs)]">Dimond</h2>
+                </div>
+                <div class="grid grid-cols-3 gap-7 pt-7 justify-items-center">
+                    
+                    <button class="relative bg-white shadow-lg p-5 rounded-lg flex flex-col items-center w-70 hover:cursor-pointer overflow-hidden group">
+                        <!-- ภาพหลัก -->
+                        <img src="pic/NK2.png" class="w-60 h-60 object-cover transition-opacity duration-300 group-hover:opacity-50">
+                    
+                        <!-- ชื่อ -->
+                        <div class="text-center my-7 relative">
+                            <span class="block font-logo text-lg">Sinkha</span>
+                        </div>
+                    
+                        <!-- รูปภาพแทนไอคอนลูกตา -->
+                        <img src="pic/Lookartar.svg" class="absolute w-40 h-40 opacity-0 transition-opacity duration-300 group-hover:opacity-100 z-20"
+                            style="top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                    
+                        <!-- เลเยอร์โปร่งใส -->
+                        <div class="absolute inset-0 bg-white bg-opacity-20 opacity-0 transition-opacity duration-300 group-hover:opacity-60"></div>
+                    </button>
+                    
+                    <button class="relative bg-white shadow-lg p-5 rounded-lg flex flex-col items-center w-70 hover:cursor-pointer overflow-hidden group">
+                        <!-- ภาพหลัก -->
+                        <img src="pic/NK2.png" class="w-60 h-60 object-cover transition-opacity duration-300 group-hover:opacity-50">
+                    
+                        <!-- ชื่อ -->
+                        <div class="text-center my-7 relative">
+                            <span class="block font-logo text-lg">Sinkha</span>
+                        </div>
+                    
+                        <!-- รูปภาพแทนไอคอนลูกตา -->
+                        <img src="pic/Lookartar.svg" class="absolute w-40 h-40 opacity-0 transition-opacity duration-300 group-hover:opacity-100 z-20"
+                            style="top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                    
+                        <!-- เลเยอร์โปร่งใส -->
+                        <div class="absolute inset-0 bg-white bg-opacity-20 opacity-0 transition-opacity duration-300 group-hover:opacity-60"></div>
+                    </button>
+                    
+                    <button class="relative bg-white shadow-lg p-5 rounded-lg flex flex-col items-center w-70 hover:cursor-pointer overflow-hidden group">
+                        <!-- ภาพหลัก -->
+                        <img src="pic/NK2.png" class="w-60 h-60 object-cover transition-opacity duration-300 group-hover:opacity-50">
+                    
+                        <!-- ชื่อ -->
+                        <div class="text-center my-7 relative">
+                            <span class="block font-logo text-lg">Sinkha</span>
+                        </div>
+                    
+                        <!-- รูปภาพแทนไอคอนลูกตา -->
+                        <img src="pic/Lookartar.svg" class="absolute w-40 h-40 opacity-0 transition-opacity duration-300 group-hover:opacity-100 z-20"
+                            style="top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                    
+                        <!-- เลเยอร์โปร่งใส -->
+                        <div class="absolute inset-0 bg-white bg-opacity-20 opacity-0 transition-opacity duration-300 group-hover:opacity-60"></div>
+                    </button>
+                    
+                    <button class="relative bg-white shadow-lg p-5 rounded-lg flex flex-col items-center w-70 hover:cursor-pointer overflow-hidden group">
+                        <!-- ภาพหลัก -->
+                        <img src="pic/NK2.png" class="w-60 h-60 object-cover transition-opacity duration-300 group-hover:opacity-50">
+                    
+                        <!-- ชื่อ -->
+                        <div class="text-center my-7 relative">
+                            <span class="block font-logo text-lg">Sinkha</span>
+                        </div>
+                    
+                        <!-- รูปภาพแทนไอคอนลูกตา -->
+                        <img src="pic/Lookartar.svg" class="absolute w-40 h-40 opacity-0 transition-opacity duration-300 group-hover:opacity-100 z-20"
+                            style="top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                    
+                        <!-- เลเยอร์โปร่งใส -->
+                        <div class="absolute inset-0 bg-white bg-opacity-20 opacity-0 transition-opacity duration-300 group-hover:opacity-60"></div>
+                    </button>
+                    
+                    <button class="relative bg-white shadow-lg p-5 rounded-lg flex flex-col items-center w-70 hover:cursor-pointer overflow-hidden group">
+                        <!-- ภาพหลัก -->
+                        <img src="pic/NK2.png" class="w-60 h-60 object-cover transition-opacity duration-300 group-hover:opacity-50">
+                    
+                        <!-- ชื่อ -->
+                        <div class="text-center my-7 relative">
+                            <span class="block font-logo text-lg">Sinkha</span>
+                        </div>
+                    
+                        <!-- รูปภาพแทนไอคอนลูกตา -->
+                        <img src="pic/Lookartar.svg" class="absolute w-40 h-40 opacity-0 transition-opacity duration-300 group-hover:opacity-100 z-20"
+                            style="top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                    
+                        <!-- เลเยอร์โปร่งใส -->
+                        <div class="absolute inset-0 bg-white bg-opacity-20 opacity-0 transition-opacity duration-300 group-hover:opacity-60"></div>
+                    </button>
+                    
+                    <button class="relative bg-white shadow-lg p-5 rounded-lg flex flex-col items-center w-70 hover:cursor-pointer overflow-hidden group">
+                        <!-- ภาพหลัก -->
+                        <img src="pic/NK2.png" class="w-60 h-60 object-cover transition-opacity duration-300 group-hover:opacity-50">
+                    
+                        <!-- ชื่อ -->
+                        <div class="text-center my-7 relative">
+                            <span class="block font-logo text-lg">Sinkha</span>
+                        </div>
+                    
+                        <!-- รูปภาพแทนไอคอนลูกตา -->
+                        <img src="pic/Lookartar.svg" class="absolute w-40 h-40 opacity-0 transition-opacity duration-300 group-hover:opacity-100 z-20"
+                            style="top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                    
+                        <!-- เลเยอร์โปร่งใส -->
+                        <div class="absolute inset-0 bg-white bg-opacity-20 opacity-0 transition-opacity duration-300 group-hover:opacity-60"></div>
+                    </button>
+                    
+                    <button class="relative bg-white shadow-lg p-5 rounded-lg flex flex-col items-center w-70 hover:cursor-pointer overflow-hidden group">
+                        <!-- ภาพหลัก -->
+                        <img src="pic/NK2.png" class="w-60 h-60 object-cover transition-opacity duration-300 group-hover:opacity-50">
+                    
+                        <!-- ชื่อ -->
+                        <div class="text-center my-7 relative">
+                            <span class="block font-logo text-lg">Sinkha</span>
+                        </div>
+                    
+                        <!-- รูปภาพแทนไอคอนลูกตา -->
+                        <img src="pic/Lookartar.svg" class="absolute w-40 h-40 opacity-0 transition-opacity duration-300 group-hover:opacity-100 z-20"
+                            style="top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                    
+                        <!-- เลเยอร์โปร่งใส -->
+                        <div class="absolute inset-0 bg-white bg-opacity-20 opacity-0 transition-opacity duration-300 group-hover:opacity-60"></div>
+                    </button>
+                    
+                    <button class="relative bg-white shadow-lg p-5 rounded-lg flex flex-col items-center w-70 hover:cursor-pointer overflow-hidden group">
+                        <!-- ภาพหลัก -->
+                        <img src="pic/NK2.png" class="w-60 h-60 object-cover transition-opacity duration-300 group-hover:opacity-50">
+                    
+                        <!-- ชื่อ -->
+                        <div class="text-center my-7 relative">
+                            <span class="block font-logo text-lg">Sinkha</span>
+                        </div>
+                    
+                        <!-- รูปภาพแทนไอคอนลูกตา -->
+                        <img src="pic/Lookartar.svg" class="absolute w-40 h-40 opacity-0 transition-opacity duration-300 group-hover:opacity-100 z-20"
+                            style="top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                    
+                        <!-- เลเยอร์โปร่งใส -->
+                        <div class="absolute inset-0 bg-white bg-opacity-20 opacity-0 transition-opacity duration-300 group-hover:opacity-60"></div>
+                    </button>
+                    
+                    <button class="relative bg-white shadow-lg p-5 rounded-lg flex flex-col items-center w-70 hover:cursor-pointer overflow-hidden group">
+                        <!-- ภาพหลัก -->
+                        <img src="pic/NK2.png" class="w-60 h-60 object-cover transition-opacity duration-300 group-hover:opacity-50">
+                    
+                        <!-- ชื่อ -->
+                        <div class="text-center my-7 relative">
+                            <span class="block font-logo text-lg">Sinkha</span>
+                        </div>
+                    
+                        <!-- รูปภาพแทนไอคอนลูกตา -->
+                        <img src="pic/Lookartar.svg" class="absolute w-40 h-40 opacity-0 transition-opacity duration-300 group-hover:opacity-100 z-20"
+                            style="top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                    
+                        <!-- เลเยอร์โปร่งใส -->
+                        <div class="absolute inset-0 bg-white bg-opacity-20 opacity-0 transition-opacity duration-300 group-hover:opacity-60"></div>
+                    </button>
+                </div>
+            </div>
+            
+        </section>
+    </article>
+    
+</body>
+</html>
