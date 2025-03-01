@@ -4,42 +4,170 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Customer Log-in</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap');
+
+        * {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+        }
+
+        body {
+            display: flex;
+            background-color: #fff6f6;
+            margin: 0;
+        }
+
+        .container {
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .left-section,
+        .right-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .left-section {
+            flex-direction: column;
+            flex: 3;
+        }
+
+        .right-section {
+            flex: 2;
+            background-color: #f0dfdb;
+            border-top-left-radius: 50px;
+            border-bottom-left-radius: 50px;
+        }
+
+        h2 {
+            font-size: 60px;
+            color: #6e2b28;
+            margin-bottom: 40px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 15px;
+        }
+
+        label {
+            color: #8c6658;
+            margin-bottom: 20px;
+        }
+
+        input {
+            font-size: 20px;
+            border: none;
+            border-bottom: 1px solid #c4a89c;
+            background: transparent;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .forgot-password {
+            text-decoration: none;
+            color: #6e2b28;
+            font-size: 18px;
+            margin-top: 5px;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        .login-btn {
+            padding: 10px;
+            border-color: #6e2b28;
+            border-width: 1px;
+            background-color: #d9a694;
+            border-radius: 15px;
+            color: white;
+            font-size: 24px;
+            margin-top: 30px;
+            cursor: pointer;
+        }
+
+        .login-btn:hover {
+            background-color: #c48e80;
+        }
+
+        .signup-text {
+            font-size: 20px;
+        }
+
+        .create-acc {
+            text-decoration: none;
+            color: #6e2b28;
+            font-size: 20px;
+        }
+
+        .create-acc:hover {
+            text-decoration: underline;
+        }
+
+        .logo {
+            font-size: 80px;
+            font-weight: bold;
+            color: #6e2b28;
+        }
+    </style>
 </head>
- 
 
 <body>
-    <form action="/api/process_login" method="POST" onsubmit="return check()">
-        <label>Email: </label>
-        <input type="email" name="email" id="email">
-        <label>Password: </label>
-        <input type="password" name="password" id="password">
+    <div class="container">
+        <div class="left-section">
+            <h2>Customer Login</h2>
+            <form action="/api/process_login" method="POST" class="login-form" onsubmit="return check()">
+                <div class="form-group">
+                    <label for="email">Email Address:</label>
+                    <input type="email" id="email">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password">
+                </div>
+                <a href="/forgot" class="forgot-password">Forgot Password ?</a>
+                <button class="login-btn">Login</button>
+                <p class="signup-text">Don’t have an account ? <a href="/register" class="create-acc">Create Account</a>
+                </p>
+            </form>
+        </div>
+        <div class="right-section">
+            <div class="logo">CeleStar</div>
+        </div>
+    </div>
+</body>
 
-        <button>Submit</button>
-        <a href="/forgot">Forgot Password</a>
-    </form>
+<script>
+    function check() {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
 
-    <script>
-        function check() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-
-            if (!email && !password) {
-                alert('Please enter both email and password.');
-                return false;
-            }
-            if (!email) {
-                alert('Please enter email.');
-                return false;
-            }
-            if (!password) {
-                alert('Please enter password.');
-                return false;
-            }
-
-            return true;
+        if (!email && !password) {
+            alert('Please enter both email and password.');
+            return false;
         }
-    </script>
+        if (!email) {
+            alert('Please enter email.');
+            return false;
+        }
+        if (!password) {
+            alert('Please enter password.');
+            return false;
+        }
+
+        return true;
+    }
+</script>
 </body>
 
 </html>
