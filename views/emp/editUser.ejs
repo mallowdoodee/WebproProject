@@ -77,8 +77,7 @@
 <body>
     <div class="container">
 
-        <form action="<%= isEditing ? '/api/emp_edituser' : '/api/emp_createuser' %>" method="POST"
-            onsubmit="return checkInfo()">
+        <form action="<%= isEditing ? '/api/emp_edituser' : '/api/emp_createuser' %>" method="POST" onsubmit="return checkInfo()">
             <% data.forEach((item)=>{ %>
                 <input type="hidden" name="id" value="<%= item.id %>">
                 <div class="form-container">
@@ -107,7 +106,7 @@
                         <% if(isEditing) { %>
                             <input type="submit" value="Update User" class="btn submit">
                             <a class="btn cancel" href="/emp/manages">Cancel</a>
-                            <% } else { %>
+                        <% } else { %>
                                 <div class="form-group">
                                     <div class="form-group">
                                         <label>Role:</label>
@@ -126,11 +125,12 @@
                                 </div>
                                 <input type="submit" value="Create User" class="btn submit">
                                 <a class="btn cancel" href="/emp/manages">Cancel</a>
-                                <% } %>
+                        <% } %>
                 </div>
         </form>
     </div>
-
+    <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
+    
     <script>
         function checkPass() {
             let pass = document.getElementById('password').value;
@@ -149,6 +149,7 @@
         }
 
         function checkInfo() {
+
             const fname = document.getElementById('fname').value;
             const lname = document.getElementById('lname').value;
             const phone = document.getElementById('phone').value;
@@ -158,18 +159,37 @@
             const confirmPass = document.getElementById('confirmPass').value;
 
             if (!fname || !lname || !phone || !address || !email || !password) {
-                alert('กรุณากรอกข้อมูลให้ครบ');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'กรุณากรอกข้อมูลให้ครบ',
+                });
                 return false;
             }
 
             if (password !== confirmPass) {
-                document.getElementById('error_msg').innerText = "Passwords do not match!";
-                alert('Passwords do not match!');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Passwords do not match!',
+                    text: 'กรุณากรอกรหัสผ่านให้ตรงกัน',
+                });
                 return false;
             }
+            
+            Swal.fire({
+                icon: 'success',
+                title: 'สำเร็จ',
+                text: isEditing ? 'แก้ไขข้อมูลเรียบร้อย' : 'สร้างข้อมูลเรียบร้อย',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.forms[0].submit();
+                }
+            });
 
-            return true;
+            return false;
         }
+
+        
     </script>
 
 </body>

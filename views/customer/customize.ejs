@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customized by You!</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/js_cus_ejs/customer.js"></script>
+    <style>
+        body {
+            background-color: #F2EDED;
+            margin: 0 auto;
+        }
+
+        .div1 {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .item.ring {
+            width: 80vh;
+            height: 75vh;
+            overflow: hidden;
+        }
+
+        .item.custom {
+            width: 70vh;
+            padding: 30px;
+            background-color: antiquewhite;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .item img {
+            width: 100%;
+        }
+
+        .heading-div h1 {
+            text-align: center;
+            margin: 0;
+        }
+
+        .custom.form,
+        .custom.name {
+            margin: 0;
+        }
+
+        label,
+        input,
+        select,
+        button {
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+        }
+
+        select,
+        input[type="text"] {
+            margin-bottom: 20px;
+        }
+
+        .heading-div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+
+        button {
+            background-color: black;
+            color: aliceblue;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .submit {
+            background-color: black;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            width: 100%;
+            text-transform: uppercase;
+        }
+
+        .submit:hover {
+            background-color: #333;
+            transform: scale(1.05);
+        }
+
+        .submit:active {
+            background-color: #555;
+            transform: scale(0.98);
+        }
+
+
+        .submit {
+            width: 100%;
+        }
+
+        @media screen and (max-width: 768px) {
+            .div1 {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .item.custom {
+                max-width: 90vw;
+            }
+
+            .heading-div {
+                flex-direction: column;
+                align-items: center;
+                padding: 10px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .heading-div h1 {
+                font-size: 18px;
+            }
+
+            select,
+            input,
+            button {
+                font-size: 14px;
+                padding: 8px;
+            }
+        }
+
+        .back {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: color 0.3s, background-color 0.3s;
+        }
+
+        .back:hover {
+            color: white;
+            /* Change text color on hover */
+            background-color: black;
+            /* Add background */
+            text-decoration: none;
+            /* Ensure no underline appears */
+        }
+
+        textarea {
+            margin: 10px 0;
+            width: 100%;
+            height: 100px;
+        }
+
+        .tooltip-container {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .tooltip {
+            visibility: hidden;
+            background-color: rgba(0, 0, 0, 0.75);
+            color: #fff;
+            text-align: left;
+            padding: 10px;
+            border-radius: 5px;
+            position: absolute;
+            z-index: 100;
+            width: 200px;
+            bottom: 125%;
+            left: 50%;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .tooltip-container:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="top-bar" style="height: 60px; background-color: aquamarine;"></div>
+
+    <div class="heading-div">
+        <a class="back" href="/product">Back</a>
+        <h1>Let's Make Your Ring</h1>
+    </div>
+
+    <div class="div1">
+        <!-- Image Section -->
+        <div class="item ring">
+            <img src="/<%= product.image_path %>" alt="Ring Image">
+        </div>
+    
+        <!-- Customization Section -->
+        <div class="item custom">
+            <div class="custom name">
+                <p style="margin-bottom: 0;" id="category"><%= product.category %></p>
+                <h3 style="margin-top: 0;">
+                    <%= product.name %>
+                </h3>
+                <p>
+                    <%= product.description %>
+                </p>
+                <p>Price: <%= product.base_price %> THB</p>
+            </div>
+    
+            <div class="custom form">
+                <!-- Form Section -->
+                <form id="customizationForm">
+                    <%if (product.category === 'Rings') {%>
+                        <strong><label for="size">Size of Ring</label></strong>
+                        <input type="text" name="size" id="size">
+                        <br>
+                    <%};%>
+
+    
+                    <!-- <strong><label for="material">Material</label></strong>
+                    <select name="material" id="material">
+                        <% let materialCount = 0; %>
+                        <% materialsData.forEach((item) => { %>
+                            <option value="<%= item.name %>">
+                                <%= item.name %>
+                            </option>
+                            <% materialCount++; %>
+                        <% }); %>
+                    </select> <br> -->
+
+                    <strong><label for="material">Material</label></strong>
+                    <select name="material" id="material" onchange="toggleEngraveOption()">
+                        <!-- <option value="">Select a material</option> -->
+                        <% materialsData.forEach((item) => { %>
+                            <option value="<%= item.name %>">
+                                <%= item.name %>
+                            </option>
+                        <% }); %>
+                    </select> 
+                    <br>
+
+                    <!-- ตัวเลือกสำหรับการสลักชื่อ -->
+                    <div>
+                        <strong><label for="color">Color of material: </label></strong>
+                        <input type="color" id="pickedcolor" name="pickedcolor" value="<%= product.color %>"> <br>
+                        <strong><label>Do you want to engrave on Material?</label></strong><br>
+                        <label>
+                            <input type="radio" name="engraveChoice" value="yes" onclick="toggleEngraveMaterialText(true)"> Engrave
+                        </label>
+                        <label>
+                            <input type="radio" name="engraveChoice" value="none" onclick="toggleEngraveMaterialText(false)" checked> None
+                        </label>
+                    </div>
+
+                    <!-- ช่องพิมพ์ข้อความสำหรับการสลัก -->
+                    <div id="engraveMaterialTextContainer" style="display: none;">
+                        <strong><label for="engraveMaterialText">Engrave on Material</label></strong>
+                        <input type="text" name="engraveMaterialText" id="engraveMaterialText" placeholder="Enter text for material">
+                        
+                    </div>
+                    <!-- <strong><label for="color">Color of material: </label></strong>
+                    <input type="color" id="pickedcolor" name="pickedcolor" value="<%= product.color %>"> <br> -->
+    
+                    <strong><label for="stone">Stone</label></strong>
+                    <select name="stone" id="stone">
+                        <% let stoneCount = 0; %>
+                        <% stonesData.forEach((item) => { %>
+                            <option value="<%= item.name %>">
+                                <%= item.name %>
+                            </option>
+                            <% stoneCount++; %>
+                        <% }); %>
+                    </select> <br>
+    
+                    <!-- <% if (product.category === 'Necklaces') { %>
+                        <% if (pendantsData.length > 0) { %>
+                            <strong><label for="pendent">Pendant</label></strong>
+                            <select name="pendent" id="pendent">
+                                <option value="">Select a pendant</option>
+                                <% pendantsData.forEach((pendant) => { %>
+                                    <option value="<%= pendant.name %>">
+                                        <%= pendant.name %>
+                                    </option>
+                                <% }); %>
+                            </select> <br>
+                        <% } else { %>
+                            <p>No pendants available for this necklace.</p>
+                        <% } %>
+                    <% } %> -->
+    
+                    <% if (product.category === 'Bracelets' || product.category === 'Necklaces') { %>
+                        <% if (pendantsData.length > 0) { %>
+                            <strong><label>Pendant</label></strong><br>
+                            <% pendantsData.forEach((pendant, index) => { %>
+                                <div class="pendant-selection" style="position: relative; margin-bottom: 10px;">
+                                    <label class="tooltip-container">
+                                        <input type="checkbox" id="pendant-<%= index %>" name="pendent" value="<%= pendant.name %>" onclick="toggleInput('pendant-<%= index %>-num')">
+                                        <strong><%= pendant.name %></strong>
+                                        <span class="tooltip">
+                                            <strong>ราคา:</strong> <%= pendant.price %> บาท<br>
+                                            <strong>รายละเอียด:</strong> <%= pendant.description %>
+                                        </span>
+                                    </label>
+                                    <div id="pendant-<%= index %>-num" style="display: none; margin-top: 5px;">
+                                        <strong><label for="<%= pendant.name %>-num">จำนวน:</label></strong>
+                                        <input type="number" name="<%= pendant.name %>-num" value="1" min="1" max="10"><strong> ชิ้น </strong><br>
+                                        <strong><label for="<%= pendant.name %>-color">Color of pendant:</label></strong>
+                                        <input type="color" value="#E5E4E2" name="<%= pendant.name %>-color" id="<%= pendant.name %>-color">
+                                        
+                                        <br>
+                                        <strong><label>Do you want to engrave on Pendant?</label></strong><br>
+                                        <label>
+                                            <input type="radio" name="<%= pendant.name %>-engrave" value="yes" onclick="toggleEngravePendantText('<%= pendant.name %>', true)"> Engrave
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="<%= pendant.name %>-engrave" value="none" onclick="toggleEngravePendantText('<%= pendant.name %>', false)" checked> None
+                                        </label>
+                                        
+                                
+                                        <!-- ช่องกรอกข้อความสำหรับการสลัก -->
+                                        <div id="engravePendantTextContainer-<%= pendant.name %>" style="display: none;">
+                                            <strong><label for="engravePendantText-<%= pendant.name %>">Engrave on Pendant</label></strong>
+                                            <input type="text" name="engravePendantText-<%= pendant.name %>" id="engravePendantText-<%= pendant.name %>" placeholder="Enter text for pendant">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                
+                            <% }); %>
+                        <% } else { %>
+                            <p>No pendants available for this bracelet.</p>
+                        <% } %>
+                    <% } %>
+    
+                    <!-- <strong><label>Engrave Location</label></strong><br>
+                    <label>
+                        <input type="radio" name="engraveLocation" value="material" checked onclick="toggleEngraveLocation()"> On Material
+                    </label>
+                    <label>
+                        <input type="radio" name="engraveLocation" value="pendant" onclick="toggleEngraveLocation()"> On Pendant
+                    </label>
+                    <label>
+                        <input type="radio" name="engraveLocation" value="none" onclick="toggleEngraveLocation()">None
+                    </label>
+
+                    ช่องกรอกข้อความสำหรับ Material
+                    <div id="engraveMaterial">
+                        <strong><label for="engraveMaterialText">Engrave on Material</label></strong>
+                        <input type="text" name="engraveMaterialText" id="engraveMaterialText" placeholder="Enter text for material">
+                    </div>
+
+                    ช่องกรอกข้อความสำหรับ Pendant
+                    <div id="engravePendant" style="display: none;">
+                        <strong><label for="engravePendantText">Engrave on Pendant</label></strong>
+                        <input type="text" name="engravePendantText" id="engravePendantText" placeholder="Enter text for pendant">
+                    </div> -->
+
+
+                    <div class="add-image">
+                        <strong><label>Ref Image</label></strong>
+                        <input type="file" name="refImage">
+                    </div>
+                    <div class="add-description">
+                        <strong><label>Description</label></strong>
+                        <textarea name="description" id="description" placeholder="Some description..."></textarea>
+                    </div>
+    
+                    <button class="submit" type="submit" onclick="check_customize(event)">ORDER!</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+      
+</body>
+
+</html>

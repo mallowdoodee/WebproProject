@@ -112,33 +112,33 @@
             </form>
         </div>
 
-        <!-- <a href="/emp/myorders" id="myorder">My Orders</a> -->
-
-
     </div>
 
     <div class="table-container">
         <table>
             <thead>
                 <tr>
+                    <th>Order No.</th>
+                    <th>Category</th>
                     <th>Date</th>
-                    <th>Product</th>
-                    <th>Description</th>
                     <th></th>
                 </tr>
             </thead>
 
             <tbody>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        <!-- <a href="#" id="accept">Accept</a>
-                        <a href="#" id="decline">Decline</a> -->
-                        <a href="/emp/detail_order" id="details">Details</a>
-                    </td>
-                </tr>
+                <%data.forEach((item) => {%>
+                    <tr>
+                        <td><%=item.customer_id%></td>
+                        <td><%=item.category%></td>
+                        <td><%=item.created_at%></td>
+                        
+                        <td>
+                            <!-- <a href="#" id="accept">Accept</a>
+                            <a href="#" id="decline">Decline</a> -->
+                            <a href="/emp/detail_order" id="details">Details</a>
+                        </td>
+                    </tr>
+                <%})%>
             </tbody>
         </table>
     </div>

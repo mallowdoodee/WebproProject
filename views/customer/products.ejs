@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        body {
+            background-color: #F2EDED;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            display: flex;
+            justify-content: space-around;
+            width: 80%;
+            height: 70vh;
+            gap: 30px;
+            
+        }
+        .left {
+            background-color: lightgray;
+            width: 100%;
+        }
+        
+        .right {
+            background-color: white;
+            width: 100%;
+            padding: 20px;
+            overflow: auto;
+        }
+
+        .checkout {
+            position: absolute;
+            bottom: 10px;
+            right: 3%;
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+        <div class="left">
+            <a href="/editAccount">Account</a>
+        </div>
+
+        <div class="right">
+            <div class="material">
+                <h2>Material</h2>   
+                <input type="radio" name="material" value="Gold">
+                <label>Gold</label>
+                <input type="radio" name="material" value="Silver">
+                <label>Silver</label>
+                <input type="radio" name="material" value="Rose Gold">
+                <label>Rose Gold</label>
+            </div>
+            
+            <div class="pendants">
+                <h2>Pendants</h2>   
+                <input type="radio" name="pendants" value="Gold">
+                <label>Gold</label>
+                <input type="radio" name="pendants" value="Silver">
+                <label>Silver</label>
+                <input type="radio" name="pendants" value="Rose Gold">
+                <label>Rose Gold</label>
+            </div>
+            
+            <div class="stones">
+                <h2>Stones</h2>   
+                <input type="checkbox" name="stones" value="Diamond">
+                <label>Diamond</label>
+                <input type="checkbox" name="stones" value="Emerald">
+                <label>Emerald</label>
+                <input type="checkbox" name="stones" value="Sapphire">
+                <label>Sapphire</label>
+            </div>
+            
+            <div class="add-description">
+                <h2>Description</h2>
+                <textarea id="description"></textarea>
+            </div>
+
+            <div class="add-img">
+                <h2>Add Image</h2>
+                <input type="file">
+            </div>
+            
+            <button class="checkout" onclick="collectData()">
+                Check Out
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function collectData() {
+            // ดึงค่าที่เลือกจาก radio buttons
+            let material = document.querySelector('input[name="material"]:checked')?.value || "";
+            let pendants = document.querySelector('input[name="pendants"]:checked')?.value || "";
+
+            // ดึงค่าที่เลือกจาก checkbox (stones)
+            // let stone = document.querySelectorAll('input[name="stones"]:checked');
+            
+            let stones = Array.from(document.querySelectorAll('input[name="stones"]:checked')).map(stone => stone.value);
+            console.log(stones)
+
+            // ดึงค่าจาก textarea
+            let description = document.getElementById("description").value; 
+
+            // รวมข้อมูลเป็น JSON object
+            let userData = {
+                material: material,
+                pendants: pendants,
+                stones: stones,  // จะเป็น array เช่น ["Diamond", "Emerald"]
+                description: description
+            };
+
+            // แสดง JSON ใน Console
+            console.log(JSON.stringify(userData, null, 2));
+        }
+    </script>
+</body>
+
+</body>
+</html>

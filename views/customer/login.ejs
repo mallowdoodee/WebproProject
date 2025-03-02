@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer Log-in</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/js_cus_ejs/customer.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap');
 
@@ -127,7 +129,7 @@
     <div class="container">
         <div class="left-section">
             <h2>Customer Login</h2>
-            <form action="/api/process_login" method="POST" class="login-form" onsubmit="return check()">
+            <form onsubmit="return check_login(event)" class="login-form">                
                 <div class="form-group">
                     <label for="email">Email Address:</label>
                     <input type="email" id="email">
@@ -147,27 +149,5 @@
     </div>
 </body>
 
-<script>
-    function check() {
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-
-        if (!email && !password) {
-            alert('Please enter both email and password.');
-            return false;
-        }
-        if (!email) {
-            alert('Please enter email.');
-            return false;
-        }
-        if (!password) {
-            alert('Please enter password.');
-            return false;
-        }
-
-        return true;
-    }
-</script>
-</body>
 
 </html>

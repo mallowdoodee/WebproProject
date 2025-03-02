@@ -7,10 +7,256 @@
         padding: 20px;
         box-sizing: border-box;
     }
+
+    /* .content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    } */
+
+    .card-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 50px;
+    }
+
+    .card {
+        box-shadow: 0 0 10px 10px lightgray;
+        padding: 30px;
+        cursor: pointer;
+
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-container {
+        display: flex;
+        width: 80%;
+        height: 70%;
+        gap: 20px;
+        padding: 30px;
+        border-radius: 10px;
+        position: relative;
+    }
+
+    .modal-left {
+        flex: 1;
+        background-color: white;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .modal-right {
+        flex: 1;
+        background-color: white;
+        padding: 20px;
+        /* text-align: center; */
+    }
+
+    .close-btn {
+        position: absolute;
+        top: 0;
+        right: 0;
+        cursor: pointer;
+        font-size: 20px;
+        background: none;
+        border: none;
+        color: white;
+    }
 </style>
 
 <div class="container">
     <div class="head">
         <h1>Products</h1>
     </div>
+
+    <%Object.keys(allData).forEach(category=> {%>
+        <h2><%= category %></h2>
+        <div class="card-container">
+            <% if (category == 'materials') { %>
+                <% allData[category].forEach(item => { %>
+                    <div class="card" onclick="openModal(this)"
+                    data-category="<%= category %>"
+                    data-id="<%= item.id %>"
+                    data-name="<%= item.name %>"
+                    data-color="<%= item.color %>"
+                    data-price="<%= item.price %>"
+                    data-description="<%= item.description %>"
+                    >
+                        <%= item.name %>
+                    </div>
+                <% }) %>
+            <%};%>
+        </div>
+    <%});%>
+
+    <div class="create-product">
+        <a href="/createProduct">Add Product</a>
+    </div>
 </div>
+
+<div class="modal" id="modal">
+    <div class="modal-container" id="modal-container"> 
+        <button class="close-btn" onclick="closeModal()">✖</button>
+        <div class="modal-left" id="modal-left">
+            <!-- แสดงข้อมูลฝั่งซ้าย -->
+        </div>
+    
+        <div class="modal-right" id="modal-right">
+            <!-- แสดงข้อมูลฝั่งขวา -->
+        </div>
+    </div>
+</div>
+
+<script>
+    let previousModalContent = "";
+
+    function openModal(data) {
+        const category = data.dataset.category;
+        const id = data.dataset.id;
+        const name = data.dataset.name;
+        const price = data.dataset.price;
+        const description = data.dataset.description;
+
+        document.getElementById("modal").style.display = "flex";
+
+        previousModalContent = `
+            <button class="close-btn" onclick="closeModal()">✖</button>
+            <div class="modal-left" id="modal-left">
+                <h2>${name}</h2>
+                <p>รายละเอียดของสินค้า...</p>
+            </div>
+            <div class="modal-right" id="modal-right">
+                <h2>${name}</h2>
+                <h3>Price: ${price} Baht</h3>
+                <p>${description}</p>
+                <div class="category">${category}</div>
+                <button onclick="editProduct('${id}', '${name}', '${price}', '${description}', '${category}')">Edit Product</button>
+                <button onclick="delProduct('${id}', '${category}')">Delete</button>
+                </div>
+        `;
+
+        document.getElementById("modal-container").innerHTML = previousModalContent;
+    }
+
+    function editProduct(id, name, price, description, category) {
+        document.getElementById("modal-right").innerHTML = `
+            <button class="back-btn" onclick="goBack()">< Back</button>
+            <h1>Edit Product</h1>
+            <form id="edit-product-form">
+                <input type="hidden" name="category" value=${category}>
+                <input type="hidden" name="id" value=${id}>
+                <div class="form-group">
+                    <label>Name:</label>
+                    <input type="text" name="name" value="${name}">
+                </div>
+
+                <div class="form-group">
+                    <label>Price:</label>
+                    <input type="number" name="price" value="${price}">
+                </div>
+                
+                <div class="form-group">
+                    <label>Description:</label>
+                    <textarea name="description">${description}</textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Category:</label>
+                    <div class="category">${category}</div>
+                </div>
+                <input type="submit" value="Done">
+            </form>
+        `;
+
+        document.getElementById('edit-product-form').onsubmit = async function (event) {
+            event.preventDefault();
+
+            const updateProduct = {
+                category: category,
+                id: id,
+                name: document.querySelector('[name="name"]').value,
+                price: document.querySelector('[name="price"]').value,
+                description: document.querySelector('[name="description"]').value
+            }
+
+            // console.log(updateProduct)
+
+            const response = await fetch('/api/prod_edit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(updateProduct)
+            });
+
+            const result = await response.json();
+            console.log("result", result.product)
+            
+            if (result.success) {
+                openModal({
+                    dataset: {
+                        id: result.product.id,
+                        name: result.product.name,
+                        price: result.product.price,
+                        description: result.product.description,
+                        category: result.product.category
+                    }
+                });
+
+                updateCard(result.product)
+            }else {
+                alert('error updating product')
+            }
+        }
+    }
+
+    function updateCard(updatedData) {
+        const cards = document.querySelectorAll(".card");
+        cards.forEach(card => {
+            if (card.dataset.id === updatedData.id) {
+                card.dataset.name = updatedData.name;
+                card.dataset.price = updatedData.price;
+                card.dataset.description = updatedData.description;
+
+                card.innerHTML = updatedData.name;
+            }
+        });
+    }
+
+    async function delProduct(id, category) {
+        console.log(id)
+        console.log(category)
+
+        const response = await fetch('/api/prod_del', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({category, id})
+            });
+    }
+
+    function goBack() {
+        document.getElementById("modal-container").innerHTML = previousModalContent;
+    }
+
+    function closeModal() {
+        document.getElementById("modal").style.display = "none";
+    }
+
+    document.getElementById("modal").addEventListener("click", function (event) {
+        if (event.target === this) {
+            closeModal();
+        }
+    });
+
+
+</script>

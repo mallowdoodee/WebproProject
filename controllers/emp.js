@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const emp_edit = async (req, res) => {
     try {
         const { id, fname, lname, phone, address, email } = req.body;
-        console.log(id);
+        // console.log(id);
         const sql = `UPDATE employees SET fname = ?, lname = ?, phone = ?, 
                     address = ?, email = ? WHERE id = ?;`;
         const userData = [fname, lname, phone, address, email, id];
@@ -12,7 +12,7 @@ const emp_edit = async (req, res) => {
             if (err) {
                 return res.status(500).json({ error: err.message });
             }
-            res.redirect('emp/manages');
+            res.redirect('/emp/manages');
         })
     }catch(error) {
         console.log(error);
