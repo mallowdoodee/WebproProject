@@ -4,129 +4,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product List</title>
+    <title>Celestar - Jewelry</title>
+    <link href="public/css/Home-Customer.css" rel="stylesheet">
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@100..900&display=swap" rel="stylesheet">
     <style>
-        /* General Page Styling */
+        @font-face {
+            font-family: IBMPlexSansThai;
+            src: url(./IBMPlexSansThai-Regular.ttf);
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #F9F9F9;
-            margin: 0;
-            padding: 20px;
-            text-align: center;
-        }
-
-        /* Main Container */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        /* Heading Styles */
-        h1 {
-            font-size: 28px;
-            color: #333;
-            margin-bottom: 20px;
-        }
-
-        .category-title {
-            font-size: 22px;
-            color: #555;
-            margin-top: 30px;
-            text-transform: uppercase;
-            text-align: left;
-            margin-left: 20px;
-        }
-
-        /* Product Row Layout */
-        .product-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            justify-content: flex-start;
-            padding: 10px 20px;
-        }
-
-        /* Product Card Styling */
-        .product-card {
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            width: 180px;
-            /* Smaller width for rows */
-            text-align: center;
-        }
-
-        .product-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Product Image */
-        .product-card img {
-            width: 100%;
-            height: 120px;
-            /* Smaller image */
-            object-fit: cover;
-        }
-
-        /* Product Info */
-        .product-info {
-            padding: 10px;
-        }
-
-        .product-info strong {
-            font-size: 16px;
-            color: #222;
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .product-info p {
-            font-size: 14px;
-            color: #777;
-        }
-
-        /* Link Styling */
-        .product-card a {
-            text-decoration: none;
-            color: inherit;
-            display: block;
+            font-family: IBMPlexSansThai;
+            overflow-x: hidden;
+            width: 100vw;
+            user-select: none;
         }
     </style>
 </head>
 
-<body>
+<body class="bg-custom">
 
-    <div class="container">
-        <h1>Product List</h1>
+    <header class="fixed z-50 bar-custom shadow-xl shadow-gray-600/10 w-full px-10 py-3 flex items-center gap-x-4">
+        <!-- LOGO -->
+        <h1 class="font-logo text-3xl" style="color: var(--color-red);">Celestar</h1>
 
-        <% for (const category in categorizedProducts) { %>
-            <h2 class="category-title">
-                <%= category %>
-            </h2>
+        <!-- Search -->
+        <div class="relative font-basetext text-sm flex-shrink-0">
+            <input type="text" placeholder="Search"
+                class="border rounded-full py-2 px-4 pl-10 focus:outline-none focus:ring custom-ring hover:ring custom-ring"
+                style="--tw-ring-color: var(--color-red); border-color: var(--color-red);">
+            <span class="absolute left-3 top-2 text-gray-800">
+                <img src="pic/search.svg" alt="Search Icon" class="w-5 h-5">
+            </span>
+        </div>
 
-            <div class="product-row">
-                <% categorizedProducts[category].forEach((product)=> { %>
-                    <div class="product-card">
-                        <a href="/make-yours/<%= product.id %>">
-                            <img src="/<%= product.id %>.png" alt="<%= product.name %>">
-                            <div class="product-info">
-                                <strong>
-                                    <%= product.name %>
-                                </strong>
-                                <p>
-                                    <%= product.base_price %> THB
-                                </p>
-                            </div>
-                        </a>
-                    </div>
-                    <% }); %>
+        <!-- Top Bar -->
+        <nav class="ml-auto">
+            <ul class="flex space-x-6 font-thai text-[var(--color-red)]">
+                <li><a href="Home-Custumer.html" class="hover:underline">หน้าแรก</a></li>
+                <li><a href="#" class="hover:underline">เกี่ยวกับ</a></li>
+                <li><a href="Home-Custumer.html#Contact" class="hover:underline">ติดต่อ</a></li>
+                <li><a href="#" class="hover:underline text-[var(--color-bs)]">ชื่อบัญชีผู้ใช้</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <article class="bg-[var(--color-bar)] mt-15 flex font-thai">
+        <!-- Side Bar -->
+        <nav class="fixed top-15 left-0 w-55 h-full bg-[var(--color-softpink)] text-lg overflow-hidden">
+
+            <div class="group2">
+                <button
+                    class="menuButton border-b-2 w-full text-left pl-5 p-4 flex justify-items-start bg-[var(--color-pink)] text-white">
+                    <span class="pl-7"><a href="#ต่างหู">ต่างหู</a></span>
+                </button>
             </div>
-            <% } %>
-    </div>
 
+            <div class="group1">
+                <button
+                    class="menuButton border-b-2 w-full text-left pl-5 p-4 flex justify-items-start bg-[var(--color-pink)] text-white">
+                    <span class="pl-7"><a href="#สร้อยข้อมือ">สร้อยข้อมือ</a></span>
+                </button>
+            </div>
+
+            <div class="group3">
+                <button
+                    class="menuButton border-b-2 w-full text-left pl-5 p-4 flex justify-items-start bg-[var(--color-pink)] text-white">
+                    <span class="pl-7"><a href="#สร้อยคอ">สร้อยคอ</a></span>
+                </button>
+            </div>
+
+            <div class="group4">
+                <button
+                    class="menuButton w-full text-left pl-5 p-4 flex justify-items-start bg-[var(--color-pink)] text-white">
+                    <span class="pl-7"><a href="#แหวน">แหวน</a></span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Body -->
+        <section class="ml-55 p-8">
+            <div id="Ring" class="">
+                <% for (const category in categorizedProducts) { %>
+                    <h1 class="font-thaiS text-5xl text-center text-[var(--color-red)] p-8 bg-[var(--color-softpink)] w-full p-3 rounded-lg" id="<%= category %>">
+                        - <%= category %> -
+                    </h1>
+
+                    <div class="product-row">
+                        <div class="grid grid-cols-3 gap-7 pt-7 justify-items-center">
+                            <% categorizedProducts[category].forEach((product)=> { %>
+                                <div class="product-card mb-10">
+                                    <button
+                                        class="relative bg-white shadow-lg p-5 rounded-lg flex flex-col items-center w-70 hover:cursor-pointer overflow-hidden group">
+                                        <!-- ภาพสินค้า -->
+                                            <img src="/<%= product.id %>.png"
+                                                class="w-60 h-60 object-cover transition-opacity duration-300 group-hover:opacity-50">
+
+                                            <!-- ชื่อสินค้า -->
+                                            <div class="font-thai my-7 relative ">
+                                                <span class="block text-m">
+                                                    <strong>
+                                                        <%= product.name %>
+                                                    </strong>
+                                                    <p>
+                                                        <%= product.base_price %> THB
+                                                    </p>
+                                                </span>
+                                            </div>
+
+                                        <!-- เอฟเฟกต์ Hover -->
+                                        <a href="/make-yours/<%= product.id %>">
+                                            <img src="pic/Lookartar.svg"
+                                                class="absolute w-40 h-40 opacity-0 transition-opacity duration-300 group-hover:opacity-100 z-20"
+                                                style="top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                                            <div
+                                                class="absolute inset-0 bg-white bg-opacity-20 opacity-0 transition-opacity duration-300 group-hover:opacity-60">
+                                            </div>
+                                        </a>
+                                    </button>
+                                </div>
+                                <% }); %>
+                        </div>
+                    </div>
+                    <% } %>
+        </section>
+    </article>
 </body>
-
 </html>
