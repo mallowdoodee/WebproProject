@@ -1,4 +1,8 @@
 <style>
+    body {
+        background-color: #F0E9E9;
+    }
+
     .container {
         width: 100%;
         display: flex;
@@ -19,7 +23,7 @@
 
     h1 {
         font-size: 2rem;
-        color: #333;
+        color: #580201;
     }
 
     .create {
@@ -47,22 +51,26 @@
 
     table {
         width: 100%;
-        border-collapse: collapse;
+        border-collapse: separate;
+        border-spacing: 0 10px;
     }
 
     th, td {
         padding: 12px;
         text-align: left;
-        border-bottom: 1px solid #ddd;
     }
 
     th {
-        background-color: #f2f2f2;
         font-weight: bold;
+        color: #A56037;
+        border-bottom: 1px solid #E5CFC5;
+        border-top: 1px solid #E5CFC5;
     }
 
     td {
         background-color: #fff;
+        opacity: 0.9;
+        border-radius: 3px;
     }
 
     .edit, .del {
@@ -81,25 +89,23 @@
 
     .del {
         background-color: #BF3F3F;
+        margin-top: 15px;
+        border: none;
     }
 
     .edit:hover, .del:hover, .create:hover {
         opacity: 0.8;
     }
 
-    .del {
-        border: none;
-    }
-
     #edit_del {
         display: inline-block;
-
     }
 
     .noitems {
         display: flex;
         margin-top: 5%;
         justify-content: center;
+        color: #A56037;
     }
 </style>
 
@@ -137,7 +143,7 @@
                             <td><%= item.email %></td>
                             <td><%= item.role %></td>
                             <td>
-                                <a class="edit" href="/emp/edit?id=<%= item.id %>">Edit</a>
+                                <a class="edit" href="/emp/edit?id=<%= item.id %>">Edit</a><br>
                                 <form id="edit_del" action="/api/emp_deleteuser" method="POST" onsubmit="return confirm('Are you sure you want to delete this user?')">
                                     <input type="hidden" name="id" value="<%= item.id %>">
                                     <input type="submit" value="Delete" class="del">

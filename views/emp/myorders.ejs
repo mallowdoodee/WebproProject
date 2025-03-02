@@ -18,6 +18,7 @@
 
     label {
         color: #A56037;
+        margin-right: 15px;
     }
 
     .table-container {
@@ -27,9 +28,9 @@
 
     table {
         width: 100%;
-        border-collapse: collapse;
+        border-collapse: separate;
+        border-spacing: 0 10px;
         color: #A56037;
-        border-top: 1px solid #E5CFC5;
     }
 
     th, td {
@@ -41,11 +42,14 @@
         text-align: center;
         font-weight: bold;
         border-bottom: 1px solid #E5CFC5;
+        border-top: 1px solid #E5CFC5;
     }
 
     td {
         height: 100px;
         background-color: #fff;
+        border-radius: 3px;
+        opacity: 0.9;
     }
 
     #orders, #details {
@@ -119,7 +123,6 @@
                     <th></th>
                 </tr>
             </thead>
-
             <tbody>
                 <tr>
                     <td></td>
