@@ -20,10 +20,15 @@
             font-family: "Fraunces", serif;
         }
 
+        h3 {
+            margin-bottom: 5px;
+            margin-top: 8px;
+        }
+
         .container {
             display: inline;
             background-color: #fff0f0;
-            padding: 50px;
+            padding: 30px;
             padding-top: 10px;
             border-radius: 35px;
         }
@@ -33,7 +38,7 @@
             display: flex;
             align-items: center;
             gap: 40px;
-            margin-top: 30px;
+            margin-bottom: 20px;
         }
 
         .confirm {
@@ -91,13 +96,50 @@
                 <img src="ring1.png" alt="" style="width: 300px; height: 300px;">
             </div>
             <div class="order-details">
-                <div class="order-info">
-                    <h3>Name Order</h3>
-                    <p>Order Details</p>
-                    <li></li>
+                <h3>Name Order</h3>
+                <li><strong>Material:</strong>
+                    <%= order.material.name %>
+                </li>
+                <li>
+                    <strong>Color Of Material:</strong>
+                    <input type="color" value="<%= order.material.color_material %>">
+                </li>
+                <li><strong>Engrave on Material:</strong>
+                    <%= order.material.engraveMaterialText %>
+                </li>
+                <li><strong>Stone:</strong>
+                    <%= order.stone %>
+                </li>
+
+                <!-- Pendant List -->
+                <div class="pendant-list">
+                    <h3>Pendants</h3>
+                    <% order.pendant.forEach((item)=> { %>
+                        <div class="pendant-item">
+                            <span><strong>Name:</strong>
+                                <%= item.name %>
+                            </span>
+                            <span><strong>Amount</strong>
+                                <%= item.amount %>
+                            </span>
+                            <span><strong>Color:</strong></span>
+                            <input type="color" value="<%= item.colorOfPendant %>">
+                            <% if (item.engravePendantText !='' ) { %>
+                                <span><strong>Engrave:</strong>
+                                    <%= item.engravePendantText %>
+                                </span>
+                                <% } %>
+                        </div>
+                        <% }); %>
+                        <li><strong>Description:</strong> <%= order.description || '-' %></li>
+                        <% if (order.refImage) { %>
+                            <img src="/<%= order.refImage %>" alt="Reference Image" class="img-preview">
+                        <% } %>
+                        <h3>Price: 10</h3>
                 </div>
             </div>
         </div>
+
         <div class="payment-section">
             <div class="box">
                 <img src="fakeQR.png" alt="" style="width: 250px; height: 250px; border-radius: 20px;">
