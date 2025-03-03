@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CeleStar - Ordering</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Noto+Sans+Thai&display=swap');
+
+        body {
+            font-family: "Noto Sans Thai", sans-serif;
+            font-size: 18px;
+            display: flex;
+            justify-content: center;
+            background-color: #fff6f6;
+        }
+
+        h1 {
+            font-family: "Fraunces", serif;
+        }
+
+        .container {
+            display: inline;
+            background-color: #fff0f0;
+            padding: 50px;
+            padding-top: 10px;
+            border-radius: 35px;
+        }
+
+        .order-section,
+        .payment-section {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            margin-top: 30px;
+        }
+
+        .confirm {
+            padding: 10px;
+            border-color: #6e2b28;
+            border-width: 1px;
+            background-color: #1dca42;
+            border-radius: 15px;
+            color: white;
+            font-size: 18px;
+            margin-top: 15px;
+            cursor: pointer;
+        }
+
+        .confirm:hover {
+            background-color: #1de372;
+        }
+
+        .cancel {
+            padding: 10px;
+            border-color: #6e2b28;
+            border-width: 1px;
+            background-color: #f41818;
+            border-radius: 15px;
+            color: white;
+            font-size: 18px;
+            margin-top: 15px;
+            cursor: pointer;
+        }
+
+        .cancel:hover {
+            background-color: #fc6d63;
+        }
+
+        ::file-selector-button {
+            border: none;
+            background: rgb(255, 188, 43);
+            color: white;
+            padding: 10px;
+        }
+
+        .upload {
+            border: 1px solid rgb(253, 154, 67);
+            color: goldenrod;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Your Order</h1>
+        <div class="order-section">
+            <div class="order-image">
+                <img src="ring1.png" alt="" style="width: 300px; height: 300px;">
+            </div>
+            <div class="order-details">
+                <div class="order-info">
+                    <h3>Name Order</h3>
+                    <p>Order Details</p>
+                    <li></li>
+                </div>
+            </div>
+        </div>
+        <div class="payment-section">
+            <div class="box">
+                <img src="fakeQR.png" alt="" style="width: 250px; height: 250px; border-radius: 20px;">
+            </div>
+            <div class="bank-info">
+                <h3>Bank Info</h3>
+                <p>Bank : Kasikorn</p>
+                <p>Account : 0 - 1234 - 56789</p>
+                <p>
+                <form action="/upload" method="POST" enctype="multipart/form-data">
+                    <input type="file" name="image" class="upload" required>
+                    <% data.forEach((item)=>{ %>
+                        <input type="hidden" name="id" value="<%=item.id%>">
+                        <% }); %> <br>
+                            <button type="btn-confirm" class="confirm">Confirm</button>
+                            <button class="cancel">Cancel</button>
+                </form>
+                </p>
+                <p class="status">Status: Pending</p>
+            </div>
+        </div>
+</body>
+
+</html>

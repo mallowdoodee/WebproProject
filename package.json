@@ -9,7 +9,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "* 66070127 นางสาวพรทิพย์ สอนสุจิตรา\r * 66070132 นางสาวพิชชากานต์ เกริกกวิน\r * 66070175 นางสาวรัตนาภรณ์ มธุรัสสกุล\r * 66070267 นายธนภัทร แสงวัฒนสิริ\r * 66070287 นางสาวปภาวดี จันทร์สอน",
   "dependencies": {
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.3",
@@ -18,8 +18,17 @@
     "ejs": "^3.1.10",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1",
     "mysql": "^2.18.1",
     "sqlite3": "^5.1.7",
     "sweetalert2": "^11.17.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mallowdoodee/WebproProject.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mallowdoodee/WebproProject/issues"
+  },
+  "homepage": "https://github.com/mallowdoodee/WebproProject#readme"
 }

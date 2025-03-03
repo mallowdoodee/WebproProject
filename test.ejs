@@ -256,6 +256,47 @@
             <div class="logo">CeleStar</div>
         </div>
     </div>
+    
+    <div class="container">
+        <!-- list order -->
+        <div class="list-order" id="list-order">
+            <h2>Order Details</h2>
+            <h3>#ORDER<%=data[0].id%></h3>
+            <div class="list" id="list">
+                <li><strong>Material:</strong> <%= order.material.name %></li>
+                <li>
+                    <strong>Color Of Material:</strong>
+                    <input type="color" value="<%= order.material.color_material %>">
+                </li>
+                <li><strong>Engrave on Material:</strong> <%= order.material.engraveMaterialText %></li>
+                <li><strong>Stone:</strong> <%= order.stone %></li>
+    
+                <!-- Pendant List -->
+                <div class="pendant-list">
+                    <strong>Pendants:</strong>
+                    <% order.pendant.forEach((item) => { %>
+                        <div class="pendant-item">
+                            <span><strong>Name:</strong> <%= item.name %></span>
+                            <span><strong>Amount</strong> <%= item.amount %></span>
+                            <span><strong>Color:</strong></span>
+                            <input type="color" value="<%= item.colorOfPendant %>">
+                            <% if (item.engravePendantText != '') { %>
+                                <span><strong>Engrave:</strong> <%= item.engravePendantText %></span>
+                            <% } %>
+                        </div>
+                    <% }); %>
+                </div>
+    
+                <li><strong>Description:</strong> <%= order.description || '-' %></li>
+                <div id="add-list">
+                    <li><strong>Add Order:</strong></li>
+    
+                </div>
+                <% if (order.refImage) { %>
+                    <img src="/<%= order.refImage %>" alt="Reference Image" class="img-preview">
+                <% } %>
+            </div>
+
 </body>
 
 
