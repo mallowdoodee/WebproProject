@@ -151,16 +151,21 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-app.get('/ordering', cus_auth, (req, res) => {
-    const userData = req.isUser;
-    const sql = `SELECT * FROM orders WHERE id = ${userData.id}`;
-    db.all(sql, (err, rows) => {
-        if (err) {
-            console.error(err.message);
-            return res.status(500).send("Failed to retrieve data.");
-        }
-        const parsedOrder = JSON.parse(rows[0].order_detail);
-        res.render('customer/ordering', { body: 'detailorder', data: rows, order: parsedOrder, user: userData});
+// app.get('/ordering', (req, res) => {
+//     const sql = `SELECT * FROM orders WHERE id = ${ req.query.id }`;
+//     db.all(sql, [], (err, rows) => {
+//         if (err) {
+//             console.error(err.message);
+//             return res.status(500).send("Failed to retrieve data.");
+//         }
+//         const parsedOrder = JSON.parse(rows[0].order_detail);
+//         res.render('customer/ordering', { body: 'detailorder', data: rows, order: parsedOrder});
+//     });
+// });
+app.get('/ordering', (req, res) => {
+    db.all('SELECT * FROM orders', [], (err, rows) => {
+        if (err) console.error(err.message);
+        res.render('customer/ordering', { data: rows });
     });
 });
 
