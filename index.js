@@ -68,7 +68,7 @@ app.get('/', cus_auth, function (req, res) {
     res.render('customer/layout-home', { body: 'home', user: userData })
 });
 
-app.get('/editAccount', cus_auth, function (req, res) {
+app.get('/profile', cus_auth, function (req, res) {
     const userData = req.isUser;
     const sql = `SELECT * FROM customers WHERE email = ?`;
     db.all(sql, userData.email, (err, results) => {
