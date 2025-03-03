@@ -1,4 +1,6 @@
 <style>
+    /* @import url('https://fonts.googleapis.com/css2?family=Jomolhari&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap'); */
+
     body {
         background-color: #F0E9E9;
     }
@@ -29,7 +31,7 @@
     }
 
     .card {
-        box-shadow: 0 0 10px 10px lightgray;
+        box-shadow: 0 0 8px 8px lightgray;
         padding: 30px;
         cursor: pointer;
 
@@ -63,12 +65,17 @@
         background-color: white;
         padding: 20px;
         text-align: center;
+        border-radius: 10px;
+        color: #D8A273;
+        font-weight: 400;
     }
 
     .modal-right {
         flex: 1;
         background-color: white;
-        padding: 20px;
+        padding: 50px;
+        padding-top: 10px;
+        color: #A56037;
         /* text-align: center; */
     }
 
@@ -82,6 +89,44 @@
         border: none;
         color: white;
     }
+
+    .modal-right h2 {
+        font-size: 48px;
+        font-weight: 400;
+    }
+
+    h3 {
+        font-size: 30px;
+        font-weight: 400;
+        color: #BF3F3F;
+    }
+
+    .editbtn {
+        width: 150px;
+        height: 40px;
+        border-radius: 5px;
+        opacity: 0.8;
+        border: none;
+        background-color: #D8A273;
+        color: white;
+        font-weight: 400;
+        font-size: 18px;
+        font-family: 'Jomolhari';
+    }
+
+    .delbtn {
+        width: 150px;
+        height: 40px;
+        border-radius: 5px;
+        opacity: 0.8;
+        border: none;
+        background-color: #D8A273;
+        color: white;
+        font-weight: 400;
+        font-size: 18px;
+        /* font-family: 'Jomolhari', serif; */
+    }
+
 </style>
 
 <div class="container">
@@ -151,8 +196,8 @@
                 <h3>Price: ${price} Baht</h3>
                 <p>${description}</p>
                 <div class="category">${category}</div>
-                <button onclick="editProduct('${id}', '${name}', '${price}', '${description}', '${category}')">Edit Product</button>
-                <button onclick="delProduct('${id}', '${category}')">Delete</button>
+                <button onclick="editProduct('${id}', '${name}', '${price}', '${description}', '${category}')" class="editbtn">Edit Product</button>
+                <button onclick="delProduct('${id}', '${category}')" class="delbtn>Delete</button>
                 </div>
         `;
 
