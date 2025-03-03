@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customer Log-in</title>
+    <title>Customer Login</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/js_cus_ejs/customer.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Noto+Sans+Thai&display=swap');
 
         * {
-            font-family: 'Playfair Display', serif;
+            font-family: "Fraunces", serif;
             font-size: 22px;
         }
 
@@ -39,13 +39,6 @@
             flex: 3;
         }
 
-        .right-section {
-            flex: 2;
-            background-color: #f0dfdb;
-            border-top-left-radius: 50px;
-            border-bottom-left-radius: 50px;
-        }
-
         h2 {
             font-size: 60px;
             color: #6e2b28;
@@ -71,7 +64,7 @@
             width: 550px;
         }
 
-        .login-form {
+        .form-con {
             display: flex;
             flex-direction: column;
         }
@@ -117,10 +110,18 @@
             text-decoration: underline;
         }
 
+        .right-section {
+            flex: 2;
+            background-color: #f0dfdb;
+            border-top-left-radius: 50px;
+            border-bottom-left-radius: 50px;
+        }
+
         .logo {
             font-size: 80px;
             font-weight: bold;
             color: #6e2b28;
+            position: absolute;
         }
     </style>
 </head>
@@ -129,7 +130,7 @@
     <div class="container">
         <div class="left-section">
             <h2>Customer Login</h2>
-            <form onsubmit="return check_login(event)" class="login-form">                
+            <form onsubmit="return check_login(event)" class="form-con">
                 <div class="form-group">
                     <label for="email">Email Address:</label>
                     <input type="email" id="email">
@@ -140,7 +141,8 @@
                 </div>
                 <a href="/forgot" class="forgot-password">Forgot Password ?</a>
                 <button class="login-btn">Login</button>
-                <p class="signup-text">Don’t have an account ? <a href="/register" class="create-acc">Create Account</a></p>
+                <p class="signup-text">Don’t have an account ? <a href="/register" class="create-acc">Create Account</a>
+                </p>
             </form>
         </div>
         <div class="right-section">

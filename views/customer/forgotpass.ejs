@@ -4,30 +4,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Reset Password</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Noto+Sans+Thai&display=swap');
+
+        * {
+            font-family: "Fraunces", serif;
+            font-size: 22px;
+        }
+
+        body {
+            display: flex;
+            background-color: #fff6f6;
+            margin: 0;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            width: 100vw;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h2 {
+            font-size: 60px;
+            color: #6e2b28;
+            margin-bottom: 40px;
+        }
+
+        .form-con {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 10px;
+        }
+
+        label {
+            color: #8c6658;
+            margin-bottom: 20px;
+        }
+
+        input {
+            font-size: 20px;
+            border: none;
+            border-bottom: 1px solid #c4a89c;
+            background: transparent;
+            width: 550px;
+        }
+
+        .submit-btn {
+            padding: 13px;
+            border-color: #6e2b28;
+            border-width: 1px;
+            background-color: #d9a694;
+            border-radius: 15px;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background-color: #c48e80;
+        }
+
+        .login-btn {
+            margin-top: 10px;
+            text-decoration: none;
+            color: #6e2b28;
+            font-size: 20px;
+        }
+
+        .login-btn:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 
 <body>
-    <form action="/api/cus_forgot" method="POST" onsubmit="return check()">
-        <div class="form-group">
-            <label>Email: </label>
-            <input type="email" name="email" id="email">
-        </div>
-
-        <div class="form-group">
-            <label>Password:</label>
-            <input type="password" id="password" name="password" onkeyup="checkPass()">
-        </div>
-
-        <div class="form-group">
-            <label>Confirm Password:</label>
-            <input type="password" id="confirmPass" onkeyup="checkPass()">
-            <p id="error_msg" class="error-message" style="color: red;"></p>
-        </div>
-
-        <input type="submit" name="Submit">
-
-    </form>
+    <div class="container">
+        <h2>Reset Password</h2>
+        <form action="/api/cus_forgot" method="POST" onsubmit="return check()" class="form-con">
+            <div class="form-group">
+                <label>Email: </label>
+                <input type="email" name="email" id="email">
+            </div>
+            <div class="form-group">
+                <label>Password:</label>
+                <input type="password" id="password" name="password" onkeyup="checkPass()">
+            </div>
+            <div class="form-group">
+                <label>Confirm Password:</label>
+                <input type="password" id="confirmPass" onkeyup="checkPass()">
+                <p id="error_msg" class="error-message" style="color: red;"></p>
+            </div>
+            <button class="submit-btn">Confirm Reset</button>
+            <a href="/login" class="login-btn">< Back to Login</a></p>
+        </form>
+    </div>
 
     <script>
         function checkPass() {
@@ -68,7 +147,6 @@
                 alert('Passwords do not match!');
                 return false;
             }
-
             return true;
         }
     </script>
