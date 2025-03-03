@@ -11,6 +11,9 @@
   --font-thai: "Noto Sans Thai", sans-serif;
   --font-weight-thai: 400;
   --font-style-thai: normal;
+  --font-thaiS: "Noto Sans Thai", sans-serif;
+  --font-weight-thaiS: 700;
+  --font-style-thaiS: normal;
   --color-red: #580201;
   --color-veryred: #450100;
   --color-bs: #A56037;
@@ -23,6 +26,10 @@
 
 html {
   scroll-behavior: smooth;
+}
+
+.colors{
+  border-color: var(--color-pink)
 }
 
 .font-basetext {
@@ -49,6 +56,12 @@ html {
   font-style: var(--font-style-thai);
 }
 
+.font-thaiS {
+  font-family: var(--font-thaiS);
+  font-weight: var(--font-weight-thaiS);
+  font-style: var(--font-style-thaiS);
+}
+
 .custom-input:focus {
   --tw-ring-color: var(--color-red);
 }
@@ -72,7 +85,7 @@ html {
 .article-bg {
   width: 100%;
   height: 100vh;
-  background-image: url('/bg.png');
+  background-image: url('pic/bg.png');
   background-size: cover;
   background-position: center;
   position: relative;
