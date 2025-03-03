@@ -3,19 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Shop Log-in</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap');
+
+    * {
+        font-family: 'Playfair Display', serif;
+        font-size: 22px;
+    }
+
+    body {
+        display: flex;
+        background-color: #6e2b28;
+        margin: 0;
+    }
+
+    h2 {
+        font-size: 60px;
+        color: #F2E9E4;
+        margin-bottom: 40px;
+    }
+
+    .container {
+        display: flex;
+        width: 100vw;
+        height: 100vh;
+    }
+
+    .left-section,
+    .right-section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .right-section {
+        flex-direction: column;
+        flex: 3;
+    }
+
+    .left-section {
+        flex: 2;
+        background-color: #F0DFDB;
+        border-top-right-radius: 50px;
+        border-bottom-right-radius: 50px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 10px;
+    }
+
+    label {
+        color: #F2E9E4;
+        margin-bottom: 20px;
+    }
+
+    input {
+        font-size: 20px;
+        border: none;
+        border-bottom: 1px solid #F0DFDB;
+        background: transparent;
+        width: 550px;
+        color: #F0DFDB;
+    }
+
+    .login-form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .forgot-password {
+        text-decoration: none;
+        color: #F0DFDB;
+        font-size: 18px;
+        margin-top: 5px;
+    }
+
+    .forgot-password:hover {
+        text-decoration: underline;
+    }
+
+    .login-btn {
+        padding: 10px;
+        border-color: #F0DFDB;
+        border-width: 1px;
+        background-color: #d9a694;
+        border-radius: 15px;
+        color: white;
+        font-size: 24px;
+        margin-top: 50px;
+        cursor: pointer;
+    }
+
+    .login-btn:hover {
+        background-color: #c48e80;
+    }
+
+    .logo {
+        font-size: 80px;
+        font-weight: bold;
+        color: #6e2b28;
+    }
+
+    </style>
 </head>
 
 <body>
-    <form action="/api/emp_login" method="POST" onsubmit="return check()">
-        <label>Email: </label>
-        <input type="email" name="email" id="email">
-        <label>Password: </label>
-        <input type="password" name="password" id="password">
-
-        <input type="submit" name="Submit">
-        <a href="/emp/forgot">Forgot Password</a>
-    </form>
+    <div class="container">
+        <div class="left-section">
+            <div class="logo">CeleStar</div>
+        </div>
+        <div class="right-section">
+            <h2>Shop Login</h2>
+            <form action="/api/emp_login" method="POST" onsubmit="return check()">
+                <div class="form-group">
+                    <label>Email Address: </label>
+                    <input type="email" name="email" id="email">
+                </div>
+                <div class="form-group">
+                    <label style="margin-top: 10px;">Password: </label>
+                    <input type="password" name="password" id="password">
+                </div>
+                <a href="/emp/forgot" class="forgot-password">Forgot Password ?</a><br>
+                <input type="submit" name="Submit" class="login-btn" value="Login">
+            </form>
+        </div>
+    </div>
 
     <script>
         function check() {
