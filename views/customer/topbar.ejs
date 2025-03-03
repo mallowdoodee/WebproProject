@@ -8,7 +8,7 @@
         <span class="absolute left-3 top-2 text-gray-800">
             <img src="search.svg" alt="Search Icon" class="w-5 h-5" >
         </span>
-    </div>        
+    </div>
 
     <nav class="ml-auto">
         <ul class="flex space-x-6 font-secondary" style="color: var(--color-red);">
@@ -20,7 +20,12 @@
                 <li>/</li>
                 <li><a href="/register" class="hover:underline">Sign in</a></li>
             <%}else{%>
-                <li><a href="/editAccount" class="hover:underline"><%=  user.email %></a></li>
+                <li><a href="/profile" class="hover:underline"><%= user.email %></a></li>
+                <li>/</li>
+                <li>
+                    <a href="#" onclick="document.getElementById('logoutForm').submit();" class="hover:underline">Logout</a>
+                    <form id="logoutForm" action="/logout" method="POST" style="display: none;"></form>
+                </li>
             <%}%>
         </ul>
     </nav>
