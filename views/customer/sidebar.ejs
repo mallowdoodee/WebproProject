@@ -1,15 +1,31 @@
+<!-- Side Bar -->
 <nav class="fixed top-15 left-0 w-55 h-full bg-[var(--color-softpink)] text-lg overflow-hidden">
-    <% categories.forEach(category => { %>
-        <div class="group">
-            <button class="menuButton w-full text-left pl-5 p-4 flex justify-items-start bg-[var(--color-pink)] text-white">
-                <img class="DropD transition-transform duration-300 ease-in-out" src="/pic/Non_selectDropDown.svg" alt="dropdown arrow">
-                <span class="pl-7"><%= category.name %></span>
-            </button>
-            <ul class="menuList hidden max-h-0 overflow-hidden transition-all duration-500 ease-in-out bg-[var(--color-softpink)] text-[var(--color-pink)] p-4 space-y-4 pl-15">
-                <% category.subcategories.forEach(sub => { %>
-                    <li><a href="#<%= sub.id %>" class="hover:underline"><%= sub.name %></a></li>
-                <% }) %>
-            </ul>
-        </div>
-    <% }) %>
+
+    <div class="group">
+        <a href="#ต่างหู"><button
+            class="menuButton w-full text-left pl-5 p-4 flex justify-items-start bg-[var(--color-pink)] text-white">
+            <span class="pl-7">ต่างหู</span>
+        </button> </a>
+    </div>
+
+    <div class="group">
+        <a href="#สร้อยข้อมือ"><button
+            class="menuButton w-full text-left pl-5 p-4 flex justify-items-start bg-[var(--color-pink)] text-white">
+            <span class="pl-7">สร้อยข้อมือ</span>
+        </button></a>
+    </div>
+
+    <div class="group">
+        <a href="#สร้อยคอ"><button
+            class="menuButton w-full text-left pl-5 p-4 flex justify-items-start bg-[var(--color-pink)] text-white">
+            <span class="pl-7">สร้อยคอ</span>
+        </button></a>
+    </div>
+
+    <div class="group">
+        <a href="#แหวน"><button
+            class="menuButton w-full text-left pl-5 p-4 flex justify-items-start bg-[var(--color-pink)] text-white">
+            <span class="pl-7">แหวน</span>
+        </button></a>
+    </div>
 </nav>

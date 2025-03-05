@@ -1,7 +1,7 @@
 <style>
-    body {
+    /* body {
         background-color: #F0E9E9;
-    }
+    } */
     
     .container {
         width: 100%;
@@ -13,7 +13,7 @@
     }
 
     #accept,
-    #decline {
+    #decline, #cancel {
         padding: 8px 16px;
         color: white;
         cursor: pointer;
@@ -22,6 +22,7 @@
     }
 
     #accept {
+        border: 1px solid #67C14B;
         background-color: #67C14B;
     }
 
@@ -30,8 +31,12 @@
         border: 1.5px solid #BF3F3F;
     }
 
+    #cancel {
+        background-color: rgb(65, 65, 189);
+    }
+
     #accept:hover,
-    #decline:hover {
+    #decline:hover, #cancel:hover {
         opacity: 0.8;
     }
 
@@ -91,116 +96,447 @@
         margin-bottom: 15px;
     }
 
+    .list-order {
+        background: #fff;
+        padding: 40px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .order-title {
+        color: #333;
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+
+    .status {
+        color: #007bff;
+        font-weight: bold;
+    }
+
+    .section {
+        margin-bottom: 20px;
+    }
+
+    h4 {
+        background: #f5f5f5;
+        padding: 10px;
+        border-radius: 5px;
+        font-size: 18px;
+    }
+
+    p {
+        margin: 7px 10px;
+    }
+
+    hr {
+        border: 0;
+        height: 1px;
+        background: #ddd;
+        margin: 20px 0;
+    }
+
+    .material-box,
+    .pendant-box {
+        background: #f9f9f9;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    .pendant-item {
+        border-bottom: 1px solid #ddd;
+        padding: 10px;
+    }
+
+    .pendant-item:last-child {
+        border-bottom: none;
+    }
+
+
+    /* .list-order {
+        background: #fff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px 10px rgba(142, 142, 142, 0.1);
+        margin-bottom: 40px;
+    } */
+
+    h2, h3 {
+        text-align: center;
+    }
+    h3 {
+        color: rgb(120, 120, 120);
+    }
+
+
+    /* .list-content {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    } */
+
+    /* .list-content li {
+        list-style: none;
+        padding: 10px;
+        background: #f9f9f9;
+        border-radius: 5px;
+    }  */
+
+
+    /* .pendant-list {
+        grid-column: span 2;
+        background: #eef7ff;
+        padding: 10px;
+        border-radius: 5px; 
+    } */
+
+    .info-order {
+        display: grid;
+        align-items: center;
+    }
+
+    .pendant-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 5px 0;
+    } 
+
+    .form-container {
+        max-width: 100%;
+        margin-top: 30px;
+        padding: 20px;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+        margin-top: 10px;
+        font-weight: bold;
+    }
+
+    input[type="text"], input[type="number"] {
+        padding: 8px;
+        margin-top: 5px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    button {
+        margin-top: 15px;
+        padding: 10px;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    button:hover {
+        background: #0056b3;
+    }
+
+    /* form {
+        display: flex;
+        flex-direction: column;
+    } */
+
+    .img-preview {
+        display: block;
+        width: 50%;
+        margin-top: 15px;
+        border-radius: 5px;
+    }
+
+    input[type="color"] {
+        border: none;
+        cursor: pointer;
+    }
+
+    #add-list li {
+        background-color: #ffe4e1;
+        border-radius: 0;
+        grid-column: span 2;
+        padding: 10px;
+        cursor: pointer;
+    }
+
+    .add-item {
+        display: flex;
+        align-items: center;
+        background-color: #ffe4e1;
+    }
+
+    .form-container, .butt {
+        text-align: center;
+    }
+
+    /* .list-check {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    } */
+
+    /* .check-item {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    } */
+
+    /* .img-payment {
+        max-width: 30%;
+        height: auto;
+        border-radius: 5px;
+    } */
+
+    .info-order {
+        background: #fff;
+        padding: 20px;
+        /* gap: 50px; */
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        /* max-width: 400px; */
+        margin-top: 40px;
+    }
+
+    h2 {
+        text-align: center;
+        color: #333;
+    }
+
+    .list-check {
+        display: flex;
+        /* flex-direction: column; */
+        align-items: center;
+    }
+
+    .img-payment {
+        max-width: 30%;
+        border-radius: 8px;
+        margin-right: 15px;
+    }
+
+    .check-item {
+        width: 100%;
+    }
+
+    .check-item label {
+        display: block;
+        background: #f9f9f9;
+        padding: 10px;
+        margin: 5px 0;
+        border-radius: 5px;
+        transition: 0.3s;
+        cursor: pointer;
+    }
+
+    .check-item label:hover {
+        background: #e3f2fd;
+    }
+
+    /* .butt {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 15px;
+    } */
+
+    /* button {
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    } */
+
+
 </style>
 
 <div class="container">
-    <!-- list order -->
-    <div class="list-order">
-        <h2>List</h2>
-        <!-- <div class="list"> -->
-        <ul id="productList">
-            <li>product1</li>
-            <li>product1</li>
-            <li>product1</li>
-        </ul>
-        <!-- </div> -->
+    <div class="list-order" id="list-order">
+        <h2>Order Details</h2>
+        <h3 class="order-title">#ORDER<%= data[0].id %> - <span class="status"><%= data[0].order_status %></span></h3>
+
+        <div class="list-content" id="list">
+            <!-- Material Section -->
+            <div class="section">
+                <h4>Material Details</h4>
+                <div class="material-box">
+                    <p><strong>Material:</strong> <%= order.material.name %></p>
+                    <p>
+                        <strong>Color of Material:</strong>
+                        <input type="color" value="<%= order.material.color_material %>" disabled>
+                    </p>
+                    <% if (order.material.engraveMaterialText) { %>
+                        <p><strong>Engrave on Material:</strong> <%= order.material.engraveMaterialText %></p>
+                    <% } %>
+                </div>
+            </div>
+
+            <hr>
+
+            <!-- Stone Section -->
+            <div class="section">
+                <h4>Stone Details</h4>
+                <p><strong>Stone:</strong> <%= order.stone %></p>
+            </div>
+
+            <hr>
+
+            <!-- Ring Size -->
+            <% if (data[0].category === 'แหวน') { %>
+                <div class="section">
+                    <h4>Ring Size</h4>
+                    <p><strong>Size:</strong> <%= order.size %></p>
+                </div>
+            <% } %>
+
+            <!-- Bracelet Pendant List -->
+            <% if (data[0].category === 'สร้อยข้อมือ') { %>
+                <div class="section">
+                    <h4>Pendants</h4>
+                    <div class="pendant-box">
+                        <% order.pendant.forEach((item) => { %>
+                            <div class="pendant-item">
+                                <li><strong>ชื่อสินค้า:</strong> <%= item.name %></li>
+                                <li><strong>จำนวน:</strong> <%= item.amount %> ชิ้น</li>
+                                <li>
+                                    <strong>สี:</strong>
+                                    <input type="color" value="<%= item.colorOfPendant %>" disabled>
+                                </li>
+                                <% if (item.engravePendantText) { %>
+                                    <li><strong>สลักชื่อ:</strong> <%= item.engravePendantText %></li>
+                                <% } %>
+                            </div>
+                        <% }); %>
+                    </div>
+                </div>
+            <% } %>
+
+            <div class="section">
+                <h4>Description:</h4>
+                <p> <%= order.description || '-' %></p>
+            </div>
+            
+            <div class="section">
+                <h4>Add Order:</h4>
+            </div>
+            <div id="add-list">
+                <% if (data[0].order_status !== 'รอดำเนินการ') {%>
+                    <% if (Array.isArray(add.add_order) && add.add_order.length > 0) { %>
+                        <% add.add_order.forEach((item) => { %>
+                            <div class="add-item">
+                                <li><span><strong>ชื่อสินค้า:</strong> <%= item.name %></span></li>
+                                <li><span><strong>จำนวน</strong> <%= item.amount %></span></li>
+                                <li><span><strong>ราคา:</strong> <%= item.price %></span></li>
+                            </div>
+                        <% }); %>
+                    <%}%>
+                <% } %>
+            </div>
+            <% if (order.refImage) { %>
+                <img src="/<%= order.refImage %>" alt="Reference Image" class="img-preview">
+            <% } %>
+        </div>
 
     </div>
     <!-- image -->
     <!-- description -->
     <!-- ชื่อสินค้า-ราคา-ok -->
+    <%if (data[0].order_status === 'รอดำเนินการ') {%>
     <div class="form-container">
-        <form action="">
-            <label>ชื่อสินค้า: </label><input type="text" id="productName">
-            <label>ราคา: </label><input type="number" min="0" id="price">
-            <label>จำนวน: </label><input type="number" min="1" id="quantity">
-            <button type="button" onclick="add()">Add to List</button>
-        </form>
-        <!-- <div id="total-container">
-            <h2 id="total">Total: 0 Baht</h2>
-        </div> -->
-    </div>
+        <form action="#" id="productForm">
+            <label for="productName">ชื่อสินค้า:</label>
+            <input type="text" id="productName" placeholder="กรอกชื่อสินค้า" required>
 
-    <!-- total price -->
-    <div id="total-container">
-        <h2 id="total">Total: 0 Baht</h2>
-    </div>
+            <label for="price">ราคา:</label>
+            <input type="number" id="price" min="0" placeholder="0" required>
 
-    <!-- ปุ่ม access/decline -->
-    <div class="butt">
-        <a href="#" id="accept">Accept</a>
-        <button id="decline" onclick="openModal()">Decline</button>
-    </div>
+            <label for="quantity">จำนวน:</label>
+            <input type="number" id="quantity" min="1" placeholder="1" required>
 
-</div>
-<!-- decline => description -->
-
-<div class="modal">
-    <div class="modal-container">
-        <form>
-            <label>เหตุผลที่ยกเลิก</label>
-            <textarea id="description" placeholder="Enter something..."></textarea>
-
-            <a class="btn send" onclick="sendModal()">submit</a>
-            <button class="btn cancel" onclick="closeModal()">cancel</button>
+            <button type="button" onclick="add()">เพิ่มข้อมูลสินค้า</button>
         </form>
     </div>
+
+        <!-- total price -->
+        <div id="total-container">
+            <h2 id="total">Total: <%= order.total %> Baht</h2>
+        </div>
+
+        <!-- ปุ่ม access/decline -->
+        <div class="butt">
+            <button onclick="accept()" id="accept">Accept</button>
+            <button id="decline" onclick="openModal()">Decline</button>
+            <a href="/emp/orders" id="cancel">Cancel</a>
+        </div>
+            <!-- decline => description -->
+
+        <div class="modal">
+            <div class="modal-container">
+                <form>
+                    <label>เหตุผลที่ยกเลิก</label>
+                    <textarea id="description" placeholder="Enter something..."></textarea>
+
+                    <a class="btn send" onclick="sendModal()">submit</a>
+                    <button class="btn cancel" onclick="closeModal()">cancel</button>
+                </form>
+            </div>
+        </div>
+    <%};%>
+
+
+    <!-- <input type="hidden" id="payment_status" value="<%= data[0].payment_status %>">     -->
+    <%if (data[0].order_status !== 'ยอมรับออเดอร์แล้ว' && data[0].order_status !== 'รอดำเนินการ') {%>
+        <div class="info-order">
+            <h2>Payment</h2>
+            <div class="list-check">
+                <img src="/<%= data[0].payment_image %>" alt="Receipt Image" class="img-payment">
+                <%if (data[0].payment_status === "paid") {%>
+                    <div class="check-item">
+                        <label><input type="checkbox" class="check" checked disabled> ตรวจสอบ ชื่อบัญชีปลายทาง</label>
+                        <label><input type="checkbox" class="check" checked disabled> ตรวจสอบ จำนวนเงิน</label>
+                        <label><input type="checkbox" class="check" checked disabled> ตรวจสอบ ยอดเงินเข้าบัญชี</label>
+                        <label><input type="checkbox" class="check" checked disabled> ตรวจสอบ เวลาที่ทำรายการ</label>
+                        <label><input type="checkbox" class="check" checked disabled> ตรวจสอบ เลขที่อ้างอิง (Ref No.)</label>
+                    </div>
+                <%}else{%>
+                    <div class="check-item">
+                        <label><input type="checkbox" class="check"> ตรวจสอบ ชื่อบัญชีปลายทาง</label>
+                        <label><input type="checkbox" class="check"> ตรวจสอบ จำนวนเงิน</label>
+                        <label><input type="checkbox" class="check"> ตรวจสอบ ยอดเงินเข้าบัญชี</label>
+                        <label><input type="checkbox" class="check"> ตรวจสอบ เวลาที่ทำรายการ</label>
+                        <label><input type="checkbox" class="check"> ตรวจสอบ เลขที่อ้างอิง (Ref No.)</label>
+                    </div>
+                </div>
+                <div class="butt">
+                    <button id="accept" style="display: none;" onclick="payment_check()">ยืนยันรับออเดอร์</button>
+                    <a id="decline" href="/emp/myorders">ยกเลิก</a>
+                </div>
+                 <%}%>
+        
+    </div>
+
+
+    <%};%>
+
+
 </div>
 
+<!-- <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const checkboxes = document.querySelectorAll(".check").value;
+        const acceptButton = document.getElementById("accept");
 
-
-
-<script>
-    function add() {
-        let name = document.getElementById("productName").value;
-        let price = parseInt(document.getElementById('price').value);
-        let quantity = parseInt(document.getElementById('quantity').value);
-
-        if (!name || isNaN(price) || isNaN(quantity)) {
-            alert("กรุณากรอกข้อมูลให้ครบถ้วน");
-            return false;
+        function checkAllChecked() {
+            const allChecked = [...checkboxes].every(input => input.checked);
+            acceptButton.disabled = !allChecked;
         }
+    //     checkboxes.forEach(checkbox => {
+    //     checkbox.addEventListener("change", checkAllChecked);
+    // });
+    });
+</script> -->
 
-        let ul = document.getElementById('productList');
-        let li = document.createElement('li');
-        li.innerHTML = `${name} - ${price} บาท - ${quantity} ชิ้น <button onclick="removeItem(this)">ลบ</button>`;
 
-        ul.appendChild(li);
-
-        let total = document.getElementById('total');
-        let totalInt = parseInt(total.textContent.match(/\d+/)[0])
-
-        total.innerHTML = `Total: ${totalInt + (price * quantity)} Baht`;
-
-        document.getElementById("productName").value = "";
-        document.getElementById("price").value = "";
-        document.getElementById("quantity").value = "";
-
-    }
-
-    function removeItem(button) {
-        let list = button.parentElement.textContent;
-        let numbers = list.match(/\d+/g);
-
-        let price = numbers[0];
-        let quantity = numbers[1];
-
-        let total = document.getElementById('total');
-        let totalInt = parseInt(total.textContent.match(/\d+/)[0])
-
-        total.innerHTML = `Total: ${totalInt - (price * quantity)} Baht`;
-
-        button.parentElement.remove();
-    }
-
-    function openModal() {
-        document.querySelector(".modal-container").style.display = "block";
-        document.querySelector(".modal").style.display = "block";
-    }
-
-    function closeModal() {
-        document.querySelector(".modal-container").style.display = "none";
-        document.querySelector(".modal").style.display = "none";
-    }
-
-</script>

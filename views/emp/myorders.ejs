@@ -1,7 +1,7 @@
 <style>
-    body {
+    /* body {
         background-color: #F0E9E9;
-    }
+    } */
 
     .container {
         width: 100%;
@@ -68,6 +68,7 @@
         opacity: 0.8;
     }
 
+
     .option {
         display: flex;
         justify-content: space-between;
@@ -124,19 +125,16 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        
-                        <!-- <a href="#" id="accept">Accept</a>
-                        <a href="#" id="decline">Decline</a> -->
-                    </td>
-                    <td>
-                        <a href="#" id="details">Details</a>
-                    </td>
-                </tr>
+                <%data.forEach((item) => {%>
+                    <tr>
+                        <td><%=item.id%></td>
+                        <td><%=item.category%></td>
+                        <td><%=item.updated_at%></td>
+                        <td><%=item.order_status%></td>
+                        <td>
+                            <a href="/emp/myorders_detail?id=<%=item.id%>" id="details">Details</a>                        </td>
+                    </tr>
+                <%})%>
             </tbody>
         </table>
     </div>

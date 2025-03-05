@@ -1,0 +1,47 @@
+<style>
+    .container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    .category {
+        padding: 30px;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+
+    }
+
+    .card {
+        background-color: lightgray;
+        padding: 30px;
+        cursor: pointer;
+    }
+
+</style>
+
+<div class="container">
+    <div class="head">
+        <h1>Category</h1>
+        <hr width="100%" size="1" color="#E5CFC5">
+    </div>
+
+    <div class="category">
+        <a class="card">
+            <h2>สินค้า (Product)</h2>
+        </a>
+        <a class="card" href="/emp/?name=materials">
+            <h2>วัสดุ (Material)</h2>
+        </a>
+        <a class="card" href="/emp/?name=pendants">
+            <h2>จี้ (Pendant)</h2>
+        </a>
+        <a class="card" href="/emp/?name=stones">
+            <h2>อัญมณี (Stone)</h2>
+        </a>
+    </div>
+</div>

@@ -20,7 +20,10 @@
 <body>
     <%- include('topbar') %>
     <%- include(body) %>
-    <%- include('contact') %>
+    <% if(body === 'home'){%>
+        <%- include('contact') %>
+    <%}%>
+    
 
 </body>
 </html>

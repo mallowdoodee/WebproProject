@@ -1,9 +1,7 @@
 <style>
-    /* @import url('https://fonts.googleapis.com/css2?family=Jomolhari&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap'); */
-
-    body {
+    /* body {
         background-color: #F0E9E9;
-    }
+    } */
 
     .container {
         width: 100%;
@@ -28,6 +26,7 @@
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 50px;
+        margin-top: 30px;
     }
 
     .card {
@@ -130,34 +129,30 @@
 </style>
 
 <div class="container">
-    <div class="head">
-        <h1>Products</h1>
-        <hr width="100%" size="1" color="#E5CFC5">
-    </div>
-
-    <%Object.keys(allData).forEach(category=> {%>
-        <h2><%= category %></h2>
+    <%Object.keys(allData).forEach(category => {%>
+        <div class="head">
+            <h1><%= category %></h1>
+            <hr width="100%" size="1" color="#E5CFC5">
+        </div>
         <div class="card-container">
-            <% if (category == 'materials') { %>
                 <% allData[category].forEach(item => { %>
                     <div class="card" onclick="openModal(this)"
                     data-category="<%= category %>"
                     data-id="<%= item.id %>"
                     data-name="<%= item.name %>"
-                    data-color="<%= item.color %>"
                     data-price="<%= item.price %>"
-                    data-description="<%= item.description %>"
-                    >
+                    data-description="<%= item.description %>">
                         <%= item.name %>
                     </div>
                 <% }) %>
-            <%};%>
         </div>
     <%});%>
 
     <div class="create-product">
         <a href="/createProduct">Add Product</a>
     </div>
+
+    <a href="/emp/category">ย้อนกลับไป</a>
 </div>
 
 <div class="modal" id="modal">
@@ -172,145 +167,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    let previousModalContent = "";
-
-    function openModal(data) {
-        const category = data.dataset.category;
-        const id = data.dataset.id;
-        const name = data.dataset.name;
-        const price = data.dataset.price;
-        const description = data.dataset.description;
-
-        document.getElementById("modal").style.display = "flex";
-
-        previousModalContent = `
-            <button class="close-btn" onclick="closeModal()">✖</button>
-            <div class="modal-left" id="modal-left">
-                <h2>${name}</h2>
-                <p>รายละเอียดของสินค้า...</p>
-            </div>
-            <div class="modal-right" id="modal-right">
-                <h2>${name}</h2>
-                <h3>Price: ${price} Baht</h3>
-                <p>${description}</p>
-                <div class="category">${category}</div>
-                <button onclick="editProduct('${id}', '${name}', '${price}', '${description}', '${category}')" class="editbtn">Edit Product</button>
-                <button onclick="delProduct('${id}', '${category}')" class="delbtn>Delete</button>
-                </div>
-        `;
-
-        document.getElementById("modal-container").innerHTML = previousModalContent;
-    }
-
-    function editProduct(id, name, price, description, category) {
-        document.getElementById("modal-right").innerHTML = `
-            <button class="back-btn" onclick="goBack()">< Back</button>
-            <h1>Edit Product</h1>
-            <form id="edit-product-form">
-                <input type="hidden" name="category" value=${category}>
-                <input type="hidden" name="id" value=${id}>
-                <div class="form-group">
-                    <label>Name:</label>
-                    <input type="text" name="name" value="${name}">
-                </div>
-
-                <div class="form-group">
-                    <label>Price:</label>
-                    <input type="number" name="price" value="${price}">
-                </div>
-                
-                <div class="form-group">
-                    <label>Description:</label>
-                    <textarea name="description">${description}</textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label>Category:</label>
-                    <div class="category">${category}</div>
-                </div>
-                <input type="submit" value="Done">
-            </form>
-        `;
-
-        document.getElementById('edit-product-form').onsubmit = async function (event) {
-            event.preventDefault();
-
-            const updateProduct = {
-                category: category,
-                id: id,
-                name: document.querySelector('[name="name"]').value,
-                price: document.querySelector('[name="price"]').value,
-                description: document.querySelector('[name="description"]').value
-            }
-
-            // console.log(updateProduct)
-
-            const response = await fetch('/api/prod_edit', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(updateProduct)
-            });
-
-            const result = await response.json();
-            console.log("result", result.product)
-            
-            if (result.success) {
-                openModal({
-                    dataset: {
-                        id: result.product.id,
-                        name: result.product.name,
-                        price: result.product.price,
-                        description: result.product.description,
-                        category: result.product.category
-                    }
-                });
-
-                updateCard(result.product)
-            }else {
-                alert('error updating product')
-            }
-        }
-    }
-
-    function updateCard(updatedData) {
-        const cards = document.querySelectorAll(".card");
-        cards.forEach(card => {
-            if (card.dataset.id === updatedData.id) {
-                card.dataset.name = updatedData.name;
-                card.dataset.price = updatedData.price;
-                card.dataset.description = updatedData.description;
-
-                card.innerHTML = updatedData.name;
-            }
-        });
-    }
-
-    async function delProduct(id, category) {
-        console.log(id)
-        console.log(category)
-
-        const response = await fetch('/api/prod_del', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({category, id})
-            });
-    }
-
-    function goBack() {
-        document.getElementById("modal-container").innerHTML = previousModalContent;
-    }
-
-    function closeModal() {
-        document.getElementById("modal").style.display = "none";
-    }
-
-    document.getElementById("modal").addEventListener("click", function (event) {
-        if (event.target === this) {
-            closeModal();
-        }
-    });
-
-
-</script>

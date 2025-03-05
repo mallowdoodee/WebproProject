@@ -12,7 +12,7 @@
         background-color: #F2E9E4;
     }
 
-    .brand {
+    .brand a {
         color: #580201;
     }
 
@@ -62,7 +62,10 @@
 
 <div class="nav-container">
     <div class="brand">
-        <h1>Celestar</h1>
+        <a href="/emp/home">
+            <h1>Celestar</h1>
+        </a>
+        
     </div>
 
     <div class="shopName">
@@ -74,7 +77,7 @@
         <div class="dropdown-menu">
             <a href="/emp/profile?id=<%= user.id %>" id="edit">My Profile</a>
 
-            <form action="/logout" method="POST">
+            <form action="/emp/logout" method="POST">
                 <input id="logout" type="submit" value="Logout">
             </form>
         </div>

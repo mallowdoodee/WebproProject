@@ -164,6 +164,7 @@ function toggleEngravePendantText(name, show) {
 //     document.getElementById('engravePendant').style.display = selectedLocation === 'pendant' ? 'block' : 'none';
 // }
 
+// const checkout_list = [];
 async function check_customize(event) {
     event.preventDefault();
 
@@ -181,17 +182,28 @@ async function check_customize(event) {
         const engravePendantText = document.querySelector(`input[name="engravePendantText-${name}"]`)?.value;
 
         if (amountInput && amountInput.value <= 0) {
-            alert('กรุณาเลือก pendant ตั้งแต่ 1 ชิ้นขึ้นไป');
+            Swal.fire({
+                title: "ข้อผิดพลาด!",
+                text: "กรุณาเลือก pendant ตั้งแต่ 1 ตัวชิ้นขึ้นไป",
+                icon: "error",
+                confirmButtonText: "ตกลง"
+            });
             isValid = false;
             return;
         }
 
         const amount = amountInput ? parseInt(amountInput.value) : 1;
         if (engrave === 'yes' && !engravePendantText) {
-            alert('กรุณาใส่ข้อความสำหรับสลักชื่อ');
+            Swal.fire({
+                title: "ข้อผิดพลาด!",
+                text: "กรุณาใส่ข้อความสำหรับสลักชื่อ",
+                icon: "error",
+                confirmButtonText: "ตกลง"
+            });
             isValid = false;
             return;
         }
+
 
         if (isValid) {
             pendants.push({ name, amount, colorOfPendant, engravePendantText });
@@ -202,17 +214,39 @@ async function check_customize(event) {
     const engrave_material = document.querySelector('input[name="engraveChoice"]:checked')?.value;
     const engraveMaterialText = document.querySelector('input[name="engraveMaterialText"]')?.value;
     if (engrave_material === 'yes' && !engraveMaterialText) {
-        alert('กรุณาใส่ข้อความสำหรับสลักชื่อ'); 
+        Swal.fire({
+            title: "ข้อผิดพลาด!",
+            text: "กรุณาใส่ข้อความสำหรับสลักชื่อ",
+            icon: "error",
+            confirmButtonText: "ตกลง"
+        });
         isValid = false;
         return;
     }
+
+    const category = document.getElementById('category').textContent;
+    let customData = {};
+    const size = formData.get('size');
+    console.log(size)
+    if (category === 'แหวน') {
+        if (!size || size < 16) {
+            Swal.fire({
+                title: "ข้อผิดพลาด!",
+                text: "กรุณาเลือกขนาดแหวนตั้งแต่ 16 มิลลิเมตรขึ้นไป",
+                icon: "error",
+                confirmButtonText: "ตกลง"
+            });
+            isValid = false;
+            return;
+        }else {
+            customData.size = size;
+        }
+    };
 
     if (!isValid) {
         return;
     }
 
-    const category = document.getElementById('category').textContent;
-    const size = formData.get('size');
     const materialname = formData.get('material');
     const color_material = formData.get('pickedcolor');
     const stone = formData.get('stone');
@@ -226,13 +260,11 @@ async function check_customize(event) {
     const material = {
         name: materialname,
         color_material: color_material,
+        engraveMaterialText: engraveMaterialText
     };
 
-    if (engrave_material !== 'none') {
-        material.engraveMaterialText = engraveMaterialText;
-    }
-
-    let customData = {
+    console.log(category)
+    customData = {
         material: material,
         stone: stone,
         refImage: refImage,
@@ -240,43 +272,47 @@ async function check_customize(event) {
         total: total,
         category: category
     };
-    if (category === 'Bracelets' || category === 'Necklaces') {
+
+    if (category === 'สร้อยข้อมือ' || category === 'สร้อยคอ') {
         customData.pendant = pendants;
-    }else if (category === 'Rings') {
-        customData.size = size;
-    };
+    }
     
     console.log(customData);
+    
+    // const pop = document.getElementById('pop-up');
+    // const totalpop = document.getElementById('total-pop');
+    // const total = parseInt(document.getElementById('total').textContent.match(/\d+/)[0]);
+    // totalpop.innerHTML = `TOTAL: ${total} BAHT`;
+    // pop.style.display = 'flex';
+
 
     try {
-        const response = await fetch("/api/add_order_from_cus", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(customData)
-        });
-
-        const result = await response.json();
-        //เดะมาทำต่อ
-
-    //     const userData = result.payload.users
-    //     // console.log(.email)
-
-    //     if (response.ok) {
-    //         // console.log("yoooooo")
-    //         Swal.fire({
-    //             icon: 'success',
-    //             title: 'เข้าสู่ระบบเรียบร้อย',
-    //             text: `สวัสดี คุณ ${userData.email.split('@')[0]}! ยินดีต้อนรับ🎉😊`
-    //         }).then(() => {
-    //             window.location.href = "/product";
-    //         });
-    //     } else {
-    //         Swal.fire({
-    //             icon: 'error',
-    //             title: 'Error',
-    //             text: result.message || 'เกิดข้อผิดพลาด',
-    //         });
-    //     }
+        Swal.fire({
+            title: "คุณแน่ใจหรือไม่?",
+            text: "คุณต้องการสั่งออเดอร์นี้หรือไม่?",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#BF8579",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "ใช่, สั่งเลย!",
+            cancelButtonText: "ยกเลิก"
+          }).then(async (result) => {
+            if (result.isConfirmed) {
+              const response = await fetch("/api/add_order_from_cus", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(customData)
+              });
+          
+              if (response.ok) {
+                Swal.fire("สำเร็จ!", "ออเดอร์ของคุณถูกบันทึกเรียบร้อยแล้ว", "success")
+                .then(() => {
+                    window.location.href = "/myorders";
+                });
+              } else {
+                Swal.fire("ล้มเหลว!", "ไม่สามารถบันทึกออเดอร์ได้", "error");
+              }
+            }});
     } catch (error) {
         Swal.fire({
             icon: 'error',
@@ -285,4 +321,8 @@ async function check_customize(event) {
         });
     }
     
+}
+
+function closePopup() {
+    document.getElementById('pop-up').style.display = 'none';   
 }

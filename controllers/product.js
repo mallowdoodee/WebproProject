@@ -1,23 +1,24 @@
 const db = require('../config/dbconn');
 
 const prod_edit = (req, res) => {
-    const { category, id, name, additional_price, description } = req.body;
-    // console.log(category)
-    const sql = `UPDATE ${category} SET name = ?, additional_price = ?, 
+    const { category, id, name, price, description } = req.body;
+    console.log("category: ", category)
+    const sql = `UPDATE ${category} SET name = ?, price = ?, 
                     description = ? WHERE id = ?;`;
-        const product = [name, additional_price, description, id];
+    const product = [name, price, description, id];
         db.run(sql, product, function(err) {
             if (err) {
+                console.log("errorrrrrrr")
                 return res.status(500).json({ error: err.message });
             }
             const updateProduct = {
                 category,
                 id,
                 name,
-                additional_price,
+                price,
                 description
             };
-            // console.log(updateProduct)
+            console.log("success")
             res.json({ success: true, product: updateProduct })
         });
 
@@ -33,7 +34,8 @@ const prod_delete = (req, res) => {
             console.error('Error deleting employee:', err.message);
             return res.status(500).send({ message: "Error processing request" });
         }
-        res.redirect('/emp/products');
+        res.status(200).json({ message: '][ออเดอร์สำเร็จ' });
+        // res.redirect(`/emp/?name=${category}`);
     })
 }
 

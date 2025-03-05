@@ -1,28 +1,36 @@
 require('dotenv').config();
 const express = require('express');
-const multer = require("multer");
-const sqlite3 = require("sqlite3").verbose();
 const path = require('path');
 const app = express();
 const port = process.env.PORT;
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 // const Swal = require('sweetalert2');
+const session = require("express-session");
+const multer = require("multer");
 
 
 const db = require('./config/dbconn.js');
 
 const { cus_register, cus_login, cus_forgot, emp_login, emp_forgot } = require('./controllers/auth.js');
-const { cus_auth, emp_auth } = require('./middleware/auth');
-const { emp_edit, emp_create, emp_delete, emp_editProfile } = require('./controllers/emp.js');
+const { cus_auth, emp_auth, optional_cus_auth }  = require('./middleware/auth');
+const { emp_edit, emp_create, emp_delete, emp_editProfile }  = require('./controllers/emp.js');
 const { prod_edit, prod_delete } = require('./controllers/product.js');
-const { order_from_cus } = require('./controllers/order.js');
+const { order_from_cus, accept_order, payment_check } = require('./controllers/order.js');
 // const { readdirSync } = require('fs');
 
 // use, set
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
+
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }
+}));
+
 // app.use(Swal);
 app.use(express.static('public'));
 app.use(express.static('pic'));
@@ -40,6 +48,8 @@ app.post('/api/cus_forgot', cus_forgot);
 //order
 app.post('/api/add_order_from_cus', cus_auth, order_from_cus);
 
+app.post('/api/accept_order', emp_auth(['admin', 'jeweler']), accept_order);
+app.post('/api/payment_check', emp_auth(['admin', 'jeweler']), payment_check);
 
 //enployee
 app.post('/api/emp_login', emp_login);
@@ -63,7 +73,7 @@ app.get('/protected-route', cus_auth, (req, res) => {
 // readdirSync('./routes').map((r) => app.use('/auth', require('./routes/'+ r)));
 
 //customer
-app.get('/', cus_auth, function (req, res) {
+app.get('/', optional_cus_auth, function (req, res) {
     const userData = req.isUser;
     res.render('customer/layout-home', { body: 'home', user: userData })
 });
@@ -82,63 +92,76 @@ app.get('/profile', cus_auth, function (req, res) {
     // res.render('customer/editAccount');
 });
 
+// app.get('/profile', cus_auth, (req, res) => {
+//     const userDa
+//     res.render('customer/editAccount')
+// })
+
 app.get('/product', cus_auth, (req, res) => {
+    const userData = req.isUser;
     const productQuery = `
       SELECT id, name, base_price, category 
       FROM products
       ORDER BY category;
     `;
-
+  
     db.all(productQuery, (err, products) => {
-        if (err) {
-            console.error(err.message);
-            return res.status(500).send('Server Error');
+      if (err) {
+        console.error(err.message);
+        return res.status(500).send('Server Error');
+      }
+  
+      // Group products by category
+      const categorizedProducts = products.reduce((acc, product) => {
+        if (!acc[product.category]) {
+          acc[product.category] = [];
         }
-
-        // Group products by category
-        const categorizedProducts = products.reduce((acc, product) => {
-            if (!acc[product.category]) {
-                acc[product.category] = [];
-            }
-            acc[product.category].push(product);
-            return acc;
-        }, {});
-
-        res.render('customer/product', { categorizedProducts });
-        //   res.render('customer/layout-home', { body: 'product', categorizedProducts, user: userData });
+        acc[product.category].push(product);
+        return acc;
+      }, {});
+  
+      res.render('customer/product', { categorizedProducts, user: userData });
+    //   res.render('customer/layout-prod', { body: 'product', categorizedProducts, user: userData });
 
     });
 });
 
 app.get('/make-yours/:id', cus_auth, function (req, res) {
+    const userData = req.isUser;
     const productId = req.params.id;
-
+  
     const productQuery = 'SELECT * FROM products WHERE id = ?;';
     const materialsQuery = 'SELECT * FROM materials;';
     const stonesQuery = 'SELECT * FROM stones;';
     const colorQuery = 'SELECT name FROM colors;';
     const pendantsQuery = 'SELECT * FROM pendants;';
-
+  
     db.get(productQuery, [productId], (err, product) => {
-        if (!product) return res.status(404).send("Product not found"); // Handle invalid ID
-
-        db.all(materialsQuery, (_, materials) => {
-            db.all(stonesQuery, (_, stones) => {
-                db.all(colorQuery, (_, colors) => {
-                    db.all(pendantsQuery, (_, pendants) => { // Fetch pendants
-                        res.render('customer/customize', {
-                            product: product,
-                            materialsData: materials || [],
-                            stonesData: stones || [],
-                            colorData: colors || [],
-                            pendantsData: pendants || [] // Send pendants to the template
-                        });
-                    });
-                });
+      if (!product) return res.status(404).send("Product not found"); // Handle invalid ID
+  
+      db.all(materialsQuery, (_, materials) => {
+        db.all(stonesQuery, (_, stones) => {
+          db.all(colorQuery, (_, colors) => {
+            db.all(pendantsQuery, (_, pendants) => { // Fetch pendants
+              res.render('customer/customize', {
+                product: product,
+                user: userData,
+                materialsData: materials || [],
+                stonesData: stones || [],
+                colorData: colors || [],
+                pendantsData: pendants || [] // Send pendants to the template
+              });
             });
+          });
         });
+      });
     });
-});
+  });
+
+app.get('/myorders', cus_auth, (req, res) => {
+    const userData = req.isUser;
+    res.render('customer/layout-home', { body: 'myorder', user: userData });
+})
 
 const storage = multer.diskStorage({
     destination: './uploads/',
@@ -153,12 +176,15 @@ const upload = multer({ storage: storage });
 
 app.get('/ordering', cus_auth, (req, res) => {
     const userData = req.isUser;
-    const sql = `SELECT * FROM orders WHERE id = ${userData.id}`;
+    console.log(userData)
+    const sql = `SELECT * FROM orders WHERE id = 6`;
     db.all(sql, (err, rows) => {
         if (err) {
             console.error(err.message);
             return res.status(500).send("Failed to retrieve data.");
         }
+
+        console.log("rows: ", rows)
         const parsedOrder = JSON.parse(rows[0].order_detail);
         res.render('customer/ordering', { body: 'detailorder', data: rows, order: parsedOrder, user: userData});
     });
@@ -169,7 +195,7 @@ app.post('/upload', upload.single('image'), (req, res) => {
     if (!req.file) return res.send('กรุณาอัปโหลดไฟล์');
 
     const filePath = req.file.filename;
-    db.run(`UPDATE orders SET payment_receipt = (?) WHERE id = ${id}`, [filePath], (err) => {
+    db.run(`UPDATE orders SET payment_image = (?) WHERE id = ${id}`, [filePath], (err) => {
         if (err) {
             console.error(err.message);
         }
@@ -177,50 +203,97 @@ app.post('/upload', upload.single('image'), (req, res) => {
     });
 });
 
+
 //employee
 app.get('/emp/home', emp_auth(['admin', 'jeweler']), (req, res) => {
     const userData = req.emp;
-    const sql = 'SELECT * FROM employees';
-    db.all(sql, (err, rows) => {
-        if (err) {
-            console.log(err.message);
-            return res.status(500).send("Failed to retrieve data.");
-        }
-        res.render('emp/layout', { body: 'home', data: rows, user: userData });
-    });
+        const sql = 'SELECT * FROM employees';
+        db.all(sql, (err, rows) => {
+            if (err) {
+                console.log(err.message);
+                return res.status(500).send("Failed to retrieve data.");
+            }
+            res.render('emp/layout', { body: 'home', data: rows, user: userData });
+        });
 });
 
 app.get('/emp/orders', emp_auth(['admin', 'jeweler']), (req, res) => {
     const userData = req.emp;
-    // const sql = 'SELECT * FROM orders WHERE jeweler_id IS NULL';
-    db.all('SELECT * FROM orders WHERE jeweler_id IS NULL', (err, rows) => {
-        if (err) {
-            console.log(err.message);
-            return res.status(500).send("Failed to retrieve data.");
-        }
-        rows.forEach((user) => {
-            console.log(user.customer_id)
+        // const sql = 'SELECT * FROM orders WHERE jeweler_id IS NULL';
+        db.all('SELECT * FROM orders WHERE jeweler_id IS NULL', (err, rows) => {
+            if (err) {
+                console.log(err.message);
+                return res.status(500).send("Failed to retrieve data.");
+            }
+            // rows.forEach((user) => {
+            //     console.log(user.customer_id)
+                
 
-
-        })
-        res.render('emp/layout', { body: 'orders', data: rows, user: userData });
-    });
+            // })
+            res.render('emp/layout', { body: 'orders', data: rows, user: userData });
+        });
 });
 
 app.get('/emp/myorders', emp_auth(['admin', 'jeweler']), (req, res) => {
     const userData = req.emp;
-    // console.log(userData.id)
-
-    const sql = `SELECT * FROM orders WHERE jeweler_id = ${userData.id}`;
-    db.all(sql, (err, rows) => {
-        if (err) {
-            console.log(err.message);
-            return res.status(500).send("Failed to retrieve data.");
-        }
-        // console.log(rows);
-        res.render('emp/layout', { body: 'myorders', data: rows, user: userData });
-    });
+        const sql = `SELECT * FROM orders WHERE jeweler_id = ${userData.id}`;
+        db.all(sql, (err, rows) => {
+            if (err) {
+                console.log(err.message);
+                return res.status(500).send("Failed to retrieve data.");
+            }
+            // req.session.orderIds = rows.map(order => order.id);
+            res.render('emp/layout', { body: 'myorders', data: rows, user: userData });
+        });
 });
+
+app.get('/emp/myorders_detail', emp_auth(['admin', 'jeweler']), (req, res) => {
+    const userData = req.emp;
+        const sql = `SELECT * FROM orders WHERE id=${req.query.id};`;
+        db.all(sql, (err, rows) => {
+            if (err) {
+                console.log(err.message);
+                return res.status(500).send("Failed to retrieve data.");
+            }
+        
+            req.session.orderId = rows[0].id;
+        
+            let parsedOrder = {};
+            let parsedOrder_add = { add_order: [], add_total: 0 };
+        
+            try {
+                parsedOrder = JSON.parse(rows[0].order_detail || '{}');
+                parsedOrder_add = JSON.parse(rows[0].add_order || '{}');
+            } catch (parseError) {
+                console.log("JSON Parsing Error:", parseError.message);
+            }
+        
+            res.render('emp/layout', {
+                body: 'detailorder',
+                data: rows,
+                order: parsedOrder,
+                add: parsedOrder_add,
+                user: userData
+            });
+        });
+})
+
+
+app.get('/emp/detail_order', emp_auth(['admin', 'jeweler']), function (req, res) {
+    const userData = req.emp;
+        const sql = `SELECT * FROM orders WHERE id=${req.query.id};`;
+        db.all(sql, (err, rows) => {
+            if (err) {
+                console.log(err.message);
+                return res.status(500).send("Failed to retrieve data.");
+            }
+            // console.log(rows)
+            req.session.orderId = rows[0].id;
+            const parsedOrder = JSON.parse(rows[0].order_detail);
+            res.render('emp/layout', { body: 'detailorder', data: rows, order: parsedOrder, user: userData });
+        });
+
+})
 
 // app.get('/emp/products', emp_auth, (req, res) => {
 //     const userData = req.emp;
@@ -243,101 +316,110 @@ app.get('/emp/myorders', emp_auth(['admin', 'jeweler']), (req, res) => {
 //     }
 // });
 
-app.get('/emp/products', emp_auth(['admin', 'jeweler']), (req, res) => {
+app.get('/emp/category', emp_auth(['admin', 'jeweler']), (req, res) => {
+    const userData = req.emp;
+    res.render('emp/layout', { body: 'category', user: userData });
+
+})
+
+app.get('/emp/', emp_auth(['admin', 'jeweler']), (req, res) => {
+    // console.log(req.query.name)
+    const category = req.query.name
     const userData = req.emp;
 
-    let allProducts = {};
-    // const category = ['products', 'materials', 'pendants', 'stones', 'color'];
-    const category = ['materials']
-    const sql_materials = 'SELECT * FROM materials';
-    db.all(sql_materials, (err, rows) => {
-        if (err) {
-            console.log(err.message);
-            return res.status(500).send("Failed to retrieve data.");
-        }
-        allProducts[category] = rows;
-        // console.log(allProducts);
-        // console.log("all: ", allProducts[0][0])
-        res.render('emp/layout', { body: 'products', allData: allProducts, user: userData });
-    });
+        let allProducts = {};
+    //     // const category = ['products', 'materials', 'pendants', 'stones', 'color'];
+    //     // const category = ['materials']
+        const sql = `SELECT * FROM ${category}`;
+        db.all(sql, (err, rows) => {
+            if (err) {
+                console.log(err.message);
+                return res.status(500).send("Failed to retrieve data.");
+            }
+            // console.log(rows)
+            allProducts[category] = rows;
+            // console.log(allProducts.pendants[0]);
+            // console.log("all: ", allProducts[0][0])
+            res.render('emp/layout', { body: 'products', allData: allProducts, user: userData });
+        });
 });
 
 app.post('/emp/product_edit', emp_auth(['admin', 'jeweler']), (req, res) => {
     const userData = req.emp;
     const { category, id } = req.body;
     console.log("id: ", category);
-    const sql = `SELECT * FROM ${category} WHERE id = ${id}`;
-    db.all(sql, (err, rows) => {
-        if (err) {
-            return res.status(500).send("Failed to retrieve data.");
-        }
-        console.log(rows)
-    })
+        const sql = `SELECT * FROM ${category} WHERE id = ${id}`;
+        db.all(sql, (err, rows) => {
+            if (err) {
+                return res.status(500).send("Failed to retrieve data.");
+            }
+            console.log(rows)
+        })
 })
 
 app.get('/emp/manages', emp_auth(['admin']), (req, res) => {
     const userData = req.emp;
     const searchTerm = req.query.search;
-    if (!searchTerm) {
-        const sql = 'SELECT * FROM employees WHERE email != ?';
-        db.all(sql, [userData.email], (err, rows) => {
-            if (err) {
-                console.log(err.message);
-                return res.status(500).send("Failed to retrieve data.");
-            }
-            res.render('emp/layout', { body: 'manages', data: rows, user: userData, notFound: false });
-        });
-    } else {
-        let sql2 = 'SELECT * FROM employees WHERE (fname LIKE ? OR email LIKE ? OR role LIKE ?) AND email != ?';
-        db.all(sql2, [`%${searchTerm}%`, `%${searchTerm}%`, `%${searchTerm}%`, userData.email], (err, results) => {
-            if (err) {
-                console.log(err.message);
-                return res.status(500).send("Error in search operation.");
-            }
-            if (results.length === 0) {
-                return res.render('emp/layout', { body: 'manages', data: results, user: userData, notFound: true });
-            }
-            res.render('emp/layout', { body: 'manages', data: results, user: userData, notFound: false });
-        });
-    }
+        if (!searchTerm) {
+            const sql = 'SELECT * FROM employees WHERE email != ?';
+            db.all(sql, [userData.email], (err, rows) => {
+                if (err) {
+                    console.log(err.message);
+                    return res.status(500).send("Failed to retrieve data.");
+                }
+                res.render('emp/layout', { body: 'manages', data: rows, user: userData, notFound: false });
+            });
+        } else {
+            let sql2 = 'SELECT * FROM employees WHERE (fname LIKE ? OR email LIKE ? OR role LIKE ?) AND email != ?';
+            db.all(sql2, [`%${searchTerm}%`, `%${searchTerm}%`, `%${searchTerm}%`, userData.email], (err, results) => {
+                if (err) {
+                    console.log(err.message);
+                    return res.status(500).send("Error in search operation.");
+                }
+                if (results.length === 0) {
+                    return res.render('emp/layout', { body: 'manages', data: results, user: userData, notFound: true });
+                }
+                res.render('emp/layout', { body: 'manages', data: results, user: userData, notFound: false });
+            });
+        }
 });
 
 
 
 app.get('/emp/edit', emp_auth(['admin']), function (req, res) {
     const userData = req.emp;
-    const sql = `SELECT * FROM employees WHERE id=${req.query.id};`;
-    db.all(sql, (err, rows) => {
-        if (err) {
-            console.log(err.message);
-            return res.status(500).send("Failed to retrieve data.");
-        }
-        // res.render('emp/editUser', { data: rows, isEditing: true });
-        res.render('emp/layout', { body: 'editUser', data: rows, user: userData, isEditing: true });
-    });
+        const sql = `SELECT * FROM employees WHERE id=${req.query.id};`;
+        db.all(sql, (err, rows) => {
+            if (err) {
+                console.log(err.message);
+                return res.status(500).send("Failed to retrieve data.");
+            }
+            // res.render('emp/editUser', { data: rows, isEditing: true });
+            res.render('emp/layout', { body: 'editUser', data: rows, user: userData, isEditing: true });
+        });
 
 })
 
 app.get('/emp/profile', emp_auth(['admin', 'jeweler']), function (req, res) {
     const userData = req.emp;
-    const sql = `SELECT * FROM employees WHERE id=${req.emp.id};`;
-    db.all(sql, (err, rows) => {
-        if (err) {
-            console.log(err.message);
-            return res.status(500).send("Failed to retrieve data.");
-        }
-        res.render('emp/layout', { body: 'editProfile', data: rows, user: userData });
-    });
+        const sql = `SELECT * FROM employees WHERE id=${req.emp.id};`;
+        db.all(sql, (err, rows) => {
+            if (err) {
+                console.log(err.message);
+                return res.status(500).send("Failed to retrieve data.");
+            }
+            res.render('emp/layout', { body: 'editProfile', data: rows, user: userData });
+        });
 })
 
 app.get('/emp/create', emp_auth(['admin']), function (req, res) {
     const userData = req.emp;
-    let data = [{
-        id: '', fname: '', lname: '', phone: '', address: '', email: ''
-    }];
-    res.render('emp/layout', { body: 'editUser', data: data, user: userData, isEditing: false });
+        let data = [{
+            id: '', fname: '', lname: '', phone: '', address: '', email: ''
+        }];
+        res.render('emp/layout', { body: 'editUser', data: data, user: userData, isEditing: false });
 
-
+    
 });
 
 app.get('/emp/detail_order', emp_auth(['admin', 'jeweler']), function (req, res) {
@@ -361,7 +443,7 @@ app.get('/emp/detail_order', emp_auth(['admin', 'jeweler']), function (req, res)
 //     }else {
 //         res.send("This is a protected area.");
 //     }
-
+    
 // });
 
 // routing 
@@ -383,7 +465,7 @@ app.get('/forgot', function (req, res) {
 //     res.render('customer/product');
 // });
 
-app.get('/createProduct', emp_auth(['admin', 'jeweler']), function (req, res) {
+app.get('/createProduct',  emp_auth(['admin', 'jeweler']), function (req, res) {
     const userData = req.emp;
     res.render('emp/layout', { body: 'createProduct', user: userData });
 })
@@ -398,8 +480,16 @@ app.get('/emp/forgot', function (req, res) {
 });
 
 app.post('/logout', (req, res) => {
-    res.cookie('authToken', '', { maxAge: 0 });
-    res.render('emp/login');
+    res.cookie('authToken', '', { expires: new Date(0), httpOnly: true });
+    res.redirect('/');
+});
+    
+
+
+app.post('/emp/logout', (req, res) => {
+    res.cookie('authToken', '', { expires: new Date(0), httpOnly: true });
+    // res.render('emp/login');
+    res.redirect('/emp/login');
 });
 
 
