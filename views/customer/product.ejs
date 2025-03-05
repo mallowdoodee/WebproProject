@@ -23,18 +23,21 @@
 
         /* TAILWIND.css */
         :root {
-            --font-basetext: "Noto Sans Thai";
+            --font-basetext: "Poppins", serif;
             --font-weight-basetext: 400;
             --font-style-basetext: normal;
-            --font-secondary: 'Noto Sans Thai';
+            --font-secondary: 'Jomolhari', serif;
             --font-weight-secondary: 400;
             --font-style-secondary: normal;
-            --font-logo: "Fraunces";
+            --font-logo: "Fraunces", serif;
             --font-weight-logo: 600;
             --font-style-logo: normal;
-            --font-thai: "Noto Sans Thai";
+            --font-thai: "Noto Sans Thai", sans-serif;
             --font-weight-thai: 400;
             --font-style-thai: normal;
+            --font-thaiS: "Noto Sans Thai", sans-serif;
+            --font-weight-thaiS: 700;
+            --font-style-thaiS: normal;
             --color-red: #580201;
             --color-veryred: #450100;
             --color-bs: #A56037;
@@ -188,7 +191,7 @@
     <%- include('topbar') %>
 
 
-        <article class="bg-[var(--color-bar)] pt-15 flex font-secondary">
+        <article class="bg-[var(--color-bar)] pt-15 flex font-thai">
             <!-- Side Bar -->
             <%- include('sidebar') %>
 

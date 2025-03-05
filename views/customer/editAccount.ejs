@@ -81,7 +81,9 @@
     </style>
 </head>
 
-<body>
+<body class="bg-custom">
+    <%- include('topbar') %>
+    
     <div class="container">
         <% data.forEach((item)=>{ %>
             <form onsubmit="return checkInfo()">
