@@ -140,7 +140,7 @@ const emp_login = async (req, res) => {
             jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
                 if (err) throw err;
                 res.cookie('authToken', token, { httpOnly: true, secure: true });
-                return res.redirect('/emp/home');
+                return res.redirect('/emp/orders');
                 // res.json({
                 //     message: "Login successful!",
                 //     token, payload,

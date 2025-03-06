@@ -25,35 +25,28 @@
 <div class="fixed top-15 left-0 w-63 h-full bg-[var(--color-softpink)] text-lg overflow-hidden">
 
     <div class="menu font-secondary">
-        <a href="/emp/home">
-            <button>
-                <span class="pl-7">Home</span>
-            </button>
+        <a href="/emp/orders">
+                <span class="pl-7">New Orders</span>
         </a>
     </div>
 
     <div class="menu font-secondary">
         <a href="/emp/myorders">
-            <button>
-                <span class="pl-7">Orders</span>
-            </button>
+                <span class="pl-7">My Orders</span>
         </a>
     </div>
 
     <div class="menu font-secondary">
         <a href="/emp/category">
-            <button>
                 <span class="pl-7">Products</span>
-            </button>
         </a>
     </div>
 
     <% if (user.role==='admin' ) { %>
         <div class="menu font-secondary">
             <a href="/emp/manages">
-                <button>
                     <span class="pl-7">Manage</span>
-                </button>
             </a>
         </div>
     <% } %>   
+</div>
