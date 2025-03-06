@@ -87,7 +87,7 @@ app.get('/profile', cus_auth, function (req, res) {
             return res.status(500).send("Failed to retrieve data.");
         }
         // console.log(results)
-        res.render('customer/editAccount', { data: results });
+        res.render('customer/editAccount', { data: results, user:userData});
     })
     // res.render('customer/editAccount');
 });
