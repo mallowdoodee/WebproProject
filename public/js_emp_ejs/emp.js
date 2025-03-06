@@ -233,15 +233,14 @@ function openModal(data) {
         <button class="close-btn" onclick="closeModal()">✖</button>
         <div class="modal-left" id="modal-left">
             <h2>${name}</h2>
-            <p>รายละเอียดของสินค้า...</p>
         </div>
         <div class="modal-right" id="modal-right">
             <h2>${name}</h2>
             <h3>Price: ${price} Baht</h3>
-            <p>${description}</p>
-            <div class="category">${category}</div>
-            <button onclick="editProduct('${id}', '${name}', '${price}', '${description}', '${category}')">Edit Product</button>
-            <button onclick="delProduct('${id}', '${category}')">Delete</button>
+            <p class="font-thai mb-6">${description}</p>
+            <div class="category font-secondary inline-block bg-[#EDD1CC] text-[#A56037] p-2 mb-8">${category}</div><br>
+            <button class="editpro bg-[#D8A273] w-26" onclick="editProduct('${id}', '${name}', '${price}', '${description}', '${category}')">Edit Product</button>
+            <button class="delpro bg-[#D15F5F] ml-2 w-18" onclick="delProduct('${id}', '${category}')">Delete</button>
             </div>
     `;
 
@@ -251,31 +250,34 @@ function openModal(data) {
 function editProduct(id, name, price, description, category) {
     console.log("yess")
     document.getElementById("modal-right").innerHTML = `
-        <button class="back-btn" onclick="goBack()">< Back</button>
-        <h1>Edit Product</h1>
+        < <button class="back-btn" onclick="goBack()">Go Back</button>
+        <h1 class="font-logo text-4xl text-[var(--color-red)] mb-4 mt-1">Edit Product</h1>
         <form id="edit-product-form">
             <input type="hidden" name="category" value=${category}>
             <input type="hidden" name="id" value=${id}>
             <div class="form-group">
-                <label>Name:</label>
+                <label>Name:</label><br>
                 <input type="text" name="name" value="${name}">
+                <hr width="30%" size="1">
             </div>
 
             <div class="form-group">
-                <label>Price:</label>
+                <label>Price:</label><br>
                 <input type="number" name="price" value="${price}">
+                <hr width="30%" size="1">
             </div>
             
             <div class="form-group">
-                <label>Description:</label>
-                <textarea name="description">${description}</textarea>
+                <label>Description:</label><br>
+                <textarea class="w-80" name="description">${description}</textarea>
+                <hr width="70%" size="1">
             </div>
             
             <div class="form-group">
-                <label>Category:</label>
-                <div class="category">${category}</div>
+                <label>Category:</label><br>
+                <div class="category font-secondary inline-block bg-[#EDD1CC] text-[#A56037] p-1 mb-1">${category}</div>
+                <input class="done font-secondary" type="submit" value="Done">
             </div>
-            <input type="submit" value="Done">
         </form>
     `;
 

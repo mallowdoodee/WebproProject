@@ -27,13 +27,24 @@
         grid-template-columns: repeat(3, 1fr);
         gap: 50px;
         margin-top: 30px;
+        font-family: var(--font-thai);
     }
 
     .card {
-        box-shadow: 0 0 8px 8px lightgray;
+        background-color: #EDD1CC;
         padding: 30px;
         cursor: pointer;
+        box-shadow: 5px 8px 10px gainsboro;
+        border-radius: 2px;
+    }
 
+    .card:hover {
+        background-color: #D29F8E;
+        padding: 30px;
+        cursor: pointer;
+        box-shadow: 5px 8px 10px gainsboro;
+        border-radius: 2px;
+        transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     .modal {
@@ -74,7 +85,7 @@
         background-color: white;
         padding: 50px;
         padding-top: 10px;
-        color: #A56037;
+        color: #C7885C;
         /* text-align: center; */
     }
 
@@ -89,41 +100,92 @@
         color: white;
     }
 
-    .modal-right h2 {
-        font-size: 48px;
+    .back-btn {
+        color: #A56037;
+        margin-left: -10px;
+    }
+
+    .back-btn:hover {
+        text-decoration: underline;
+        margin-left: -10px;
+    }
+
+    .modal-left h2 {
+        margin-top: 340px;
+        margin-bottom: 10px;
+        font-size: 30px;
         font-weight: 400;
+        font-family: var(--font-style-secondary);
+        color: #D8A273;
+    }
+
+    .modal-right h2 {
+        margin-top: 20px;
+        margin-bottom: 10px;
+        font-size: 38px;
+        font-weight: 400;
+        font-family: var(--font-style-secondary);
+    }
+
+    button {
+        display: inline-block;
+        color: white;
+        padding: 8px;
+        font-family: var(--font-style-secondary);
+        border-radius: 4px;
+        margin-top: 10px;
+    }
+
+    .editpro:hover {
+        background-color: #C78E61;
+    }
+
+    .delpro:hover {
+        background-color: #BF3F3F;
     }
 
     h3 {
+        margin-bottom: 20px;
         font-size: 30px;
         font-weight: 400;
-        color: #BF3F3F;
+        color: #C85A5A;
+        font-family: var(--font-style-secondary);
     }
 
-    .editbtn {
-        width: 150px;
-        height: 40px;
-        border-radius: 5px;
-        opacity: 0.8;
-        border: none;
-        background-color: #D8A273;
-        color: white;
-        font-weight: 400;
-        font-size: 18px;
-        font-family: 'Jomolhari';
+    hr {
+        color: #E5CFC5;
     }
 
-    .delbtn {
-        width: 150px;
-        height: 40px;
-        border-radius: 5px;
+    label {
+        font-family: var(--font-style-secondary);
+        margin-bottom: 18px;
+        color: #A56037;
         opacity: 0.8;
-        border: none;
-        background-color: #D8A273;
+    }
+
+    input,
+    textarea {
+        margin-left: 5px;
+        opacity: 0.8;
+    }
+
+    .form-group {
+        margin-bottom: 14px;
+    }
+    
+    .done {
+        margin-left: 320px;
+        background-color: #A56037;
         color: white;
-        font-weight: 400;
-        font-size: 18px;
-        /* font-family: 'Jomolhari', serif; */
+        display: inline-block;
+        padding: 8px;
+        border-radius: 4px;
+        width: 64px;
+    }
+
+    a:hover {
+        color: #580201;
+        text-decoration: underline;
     }
 
 </style>
@@ -131,8 +193,9 @@
 <div class="container">
     <%Object.keys(allData).forEach(category => {%>
         <div class="head">
-            <h1><%= category %></h1>
-            <hr width="100%" size="1" color="#E5CFC5">
+            < <a href="/emp/category" style="color: #580201;">Go Back</a>
+            <h1 class="font-logo text-4xl text-[var(--color-red)] mb-8 mt-4"><%= category %></h1>
+            <hr width="100%" size="1">
         </div>
         <div class="card-container">
                 <% allData[category].forEach(item => { %>
@@ -152,7 +215,6 @@
         <a href="/createProduct">Add Product</a>
     </div>
 
-    <a href="/emp/category">ย้อนกลับไป</a>
 </div>
 
 <div class="modal" id="modal">

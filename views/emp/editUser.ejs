@@ -9,6 +9,7 @@
         flex-direction: column;
         justify-content: center;
         padding: 20px;
+        padding-top: 10px;
         box-sizing: border-box;
     }
 
@@ -25,21 +26,28 @@
     }
 
     label {
+        font-size: 22px;
         font-weight: bold;
-        margin-bottom: 5px;
+        margin-bottom: 3px;
+        color: #7A2E2E;
+        font-family: var(--font-style-secondary);
     }
 
-    input,
+    .form-group input,
     textarea,
     select {
         padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
+        border: 1px solid #E5CFC5;
+        border-radius: 3px;
+        width: 400px;
+        margin-bottom: 10px;
+        background-color: rgba(255, 255, 255, 0.9);
+        padding-left: 12px;
     }
 
     textarea {
         resize: none;
-        height: 60px;
+        height: 75px;
     }
 
     .error-message {
@@ -52,29 +60,41 @@
     }
 
     .btn {
-        background-color: #007bff;
+        display: inline-block;
+        text-align: center;
+        width: 130px;
+        background-color: #D8A273;
         color: white;
         border: none;
         padding: 10px;
         border-radius: 5px;
         cursor: pointer;
-        font-size: 16px;
-        margin-top: 10px;
+        font-size: 20px;
+        margin-top: 12px;
+        font-family: var(--font-style-secondary);
     }
 
     .btn:hover {
-        background-color: #0056b3;
+        background-color: #C78E61;
     }
 
     .cancel {
-        background-color: white;
-        color: #0056b3;
-        border: 1px solid #0056b3;
+        background-color: #D15F5F;
+        color: white;
+        /*border: 1px solid #0056b3;*/
+        margin-left: 11px;
+        width: 90px;
     }
 
     .cancel:hover {
-        color: white;
+        background-color: #BF3F3F;
     }
+
+    select {
+        padding-left: 10px;
+        width: 100px;
+    }
+
 </style>
 </head>
 
@@ -127,6 +147,7 @@
                                     <input type="password" id="confirmPass" onkeyup="checkPass()">
                                     <p id="error_msg" class="error-message" style="color: red;"></p>
                                 </div>
+                                
                                 <input type="submit" value="Create User" class="btn submit">
                                 <a class="btn cancel" href="/emp/manages">Cancel</a>
                         <% } %>
