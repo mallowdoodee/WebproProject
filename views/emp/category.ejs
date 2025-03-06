@@ -17,17 +17,36 @@
     }
 
     .card {
-        background-color: lightgray;
+        background-color: #EDD1CC;
         padding: 30px;
         cursor: pointer;
+        box-shadow: 5px 8px 10px gainsboro;
+        border-radius: 2px;
+    }
+
+    .card:hover {
+        background-color: #D29F8E;
+        padding: 30px;
+        cursor: pointer;
+        box-shadow: 5px 8px 10px gainsboro;
+        border-radius: 2px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    hr {
+        color: #E5CFC5;
+    }
+
+    h2 {
+        font-family: var(--font-thai);
     }
 
 </style>
 
 <div class="container">
     <div class="head">
-        <h1>Category</h1>
-        <hr width="100%" size="1" color="#E5CFC5">
+        <h1 class="font-logo text-4xl text-[var(--color-red)] mb-8">Category</h1>
+        <hr width="100%" size="1">
     </div>
 
     <div class="category">

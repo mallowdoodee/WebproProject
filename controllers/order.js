@@ -80,4 +80,22 @@ const payment_check = (req, res) => {
     
 };
 
-module.exports = { order_from_cus, accept_order, payment_check }
+const decline_order = (req, res) => {
+    const orderId = req.session.orderId;
+    const userData = req.emp;
+    const { description } = req.body;
+    console.log(description)
+    console.log(orderId)
+
+    const sql = `UPDATE orders SET order_status = "ปฏิเสธการรับออเดอร์", decline_reason = "${description}", 
+        jeweler_id = ${userData.id}, updated_at = CURRENT_TIMESTAMP WHERE id = ${orderId}`;
+    db.run(sql, function (err) {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ error: err.message })
+        }
+        res.status(200).json({ message: 'ปฏิเสธออเดอร์สำเร็จ' })
+    })
+}
+
+module.exports = { order_from_cus, accept_order, payment_check, decline_order }

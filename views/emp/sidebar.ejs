@@ -1,6 +1,6 @@
 <style>
     .menu {
-        height: 100vh;
+        /*height: 100vh;*/
         display: flex;
         flex-direction: column;
         background-color: #BF8579;
@@ -17,14 +17,36 @@
 
     .menu a:hover {
         background-color: #A56037;
+        transition: background-color 0.3s ease, color 0.3s ease;
     }
+
 </style>
 
-<div class="menu">
-        <a href="/emp/home">Home</a>
-        <a href="/emp/myorders">Orders</a>
-        <a href="/emp/category">Products</a>
-        <% if (user.role==='admin' ) { %>
-            <a href="/emp/manages">Manages</a>
-        <% } %>   
+<div class="fixed top-15 left-0 w-63 h-full bg-[var(--color-softpink)] text-lg overflow-hidden">
+
+    <div class="menu font-secondary">
+        <a href="/emp/orders">
+                <span class="pl-7">New Orders</span>
+        </a>
+    </div>
+
+    <div class="menu font-secondary">
+        <a href="/emp/myorders">
+                <span class="pl-7">My Orders</span>
+        </a>
+    </div>
+
+    <div class="menu font-secondary">
+        <a href="/emp/category">
+                <span class="pl-7">Products</span>
+        </a>
+    </div>
+
+    <% if (user.role==='admin' ) { %>
+        <div class="menu font-secondary">
+            <a href="/emp/manages">
+                    <span class="pl-7">Manage</span>
+            </a>
+        </div>
+    <% } %>   
 </div>

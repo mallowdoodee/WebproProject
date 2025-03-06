@@ -12,10 +12,6 @@
         box-sizing: border-box;
     }
 
-    h1 {
-        color: #580201;
-    }
-
     label {
         color: #A56037;
         margin-right: 15px;
@@ -35,7 +31,7 @@
 
     th, td {
         padding: 12px;
-        text-align: left;
+        text-align: center;
     }
 
     th {
@@ -43,6 +39,7 @@
         font-weight: bold;
         border-bottom: 1px solid #E5CFC5;
         border-top: 1px solid #E5CFC5;
+        font-family: var(--font-style-secondary);
     }
 
     td {
@@ -58,16 +55,17 @@
         cursor: pointer;
         border-radius: 5px;
         transition: opacity 0.3s ease;
+        background-color: #D8A273;
+        font-family: var(--font-style-secondary);
     }
 
-    #orders, #details {
-        background-color: #D8A273;
+    #details {
+        padding: 12px 22px;
     }
 
     #orders:hover, #details:hover {
         opacity: 0.8;
     }
-
 
     .option {
         display: flex;
@@ -83,7 +81,7 @@
 
 <div class="container">
     <div class="head">
-        <h1>My Orders</h1>
+        <h1 class="font-logo text-4xl text-[var(--color-red)] mb-6">My Orders</h1>
     </div>
 
     <div class="option">
@@ -91,24 +89,24 @@
             <form>
                 <div class="form-group">
                     <input type="checkbox" id="ring" name="ring" value="ring">
-                    <label>Ring</label>
+                    <label class="font-secondary">Ring</label>
                 </div>
                 <div class="form-group">
                     <input type="checkbox" id="necklace" name="necklace" value="necklace">
-                    <label>Necklace</label>
+                    <label class="font-secondary">Necklace</label>
                 </div>
                 <div class="form-group">
                     <input type="checkbox" id="earring" name="earring" value="earring">
-                    <label>Earring</label>
+                    <label class="font-secondary">Earrings</label>
                 </div>
                 <div class="form-group">
                     <input type="checkbox" id="bracelet" name="bracelet" value="bracelet">
-                    <label>Bracelet</label>
+                    <label class="font-secondary">Bracelet</label>
                 </div>
             </form>
         </div>
 
-        <a href="/emp/orders" id="orders">All Orders</a>
+        <!-- <a href="/emp/orders" id="orders">All Orders</a> -->
 
 
     </div>
@@ -127,12 +125,13 @@
             <tbody>
                 <%data.forEach((item) => {%>
                     <tr>
-                        <td><%=item.id%></td>
-                        <td><%=item.category%></td>
-                        <td><%=item.updated_at%></td>
-                        <td><%=item.order_status%></td>
+                        <td class="font-secondary"><%=item.id%></td>
+                        <td class="font-thai"><%=item.category%></td>
+                        <td class="font-secondary"><%=item.updated_at%></td>
+                        <td class="font-thai" style="color: #88C974;"><%=item.order_status%></td>
                         <td>
-                            <a href="/emp/myorders_detail?id=<%=item.id%>" id="details">Details</a>                        </td>
+                            <a href="/emp/myorders_detail?id=<%=item.id%>" id="details">Details</a> 
+                        </td>
                     </tr>
                 <%})%>
             </tbody>

@@ -5,16 +5,347 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CeleStar - Ordering</title>
+    <link href="css/Home-Customer.css" rel="stylesheet">
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Noto+Sans+Thai&display=swap');
 
-        body {
+        /* body {
             font-family: "Noto Sans Thai", sans-serif;
             font-size: 18px;
             display: flex;
             justify-content: center;
             background-color: #fff6f6;
-        }
+        } */
+    
+    .container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    #accept,
+    #decline, .cancel {
+        padding: 8px 16px;
+        color: white;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: opacity 0.3s ease;
+    }
+
+    #accept {
+        border: 1px solid #67C14B;
+        background-color: #67C14B;
+    }
+
+    #decline {
+        background-color: #BF3F3F;
+        border: 1.5px solid #BF3F3F;
+    }
+
+    .cancel {
+        background-color: rgb(65, 65, 189);
+    }
+
+    #accept:hover,
+    #decline:hover, .cancel:hover {
+        opacity: 0.8;
+    }
+
+    .modal-container {
+        display: none;
+        width: 100%;
+        max-width: 50%;
+        height: 270px;
+        background-color: #ffffff;
+        padding: 30px;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        border-radius: 10px;
+        z-index: 10000;
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+    }
+
+    .btn {
+        background-color: #ff4d4d;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        font-size: 16px;
+        border-radius: 5px;
+    }
+
+    .send {
+        background-color: #67C14B;
+    }
+
+    /* .modal-container form {
+        margin-top: 30px;
+    } */
+
+    textarea {
+        width: 100%;
+        height: 200px;
+        border: 1px solid gray;
+        resize: none;
+        margin-bottom: 15px;
+    }
+
+    .list-order {
+        background: #fff;
+        padding: 40px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .order-title {
+        color: #333;
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+
+    .status {
+        color: #007bff;
+        font-weight: bold;
+    }
+
+    .section {
+        margin-bottom: 20px;
+    }
+
+    h4 {
+        background: #f5f5f5;
+        padding: 10px;
+        border-radius: 5px;
+        font-size: 18px;
+    }
+
+    p {
+        margin: 7px 10px;
+    }
+
+    hr {
+        border: 0;
+        height: 1px;
+        background: #ddd;
+        margin: 20px 0;
+    }
+
+    .material-box,
+    .pendant-box {
+        background: #f9f9f9;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    .pendant-item {
+        border-bottom: 1px solid #ddd;
+        padding: 10px;
+    }
+
+    .pendant-item:last-child {
+        border-bottom: none;
+    }
+
+
+    /* .list-order {
+        background: #fff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px 10px rgba(142, 142, 142, 0.1);
+        margin-bottom: 40px;
+    } */
+
+    h1, h2, h3 {
+        text-align: center;
+    }
+    h3 {
+        color: rgb(120, 120, 120);
+    }
+
+
+    /* .list-content {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    } */
+
+    /* .list-content li {
+        list-style: none;
+        padding: 10px;
+        background: #f9f9f9;
+        border-radius: 5px;
+    }  */
+
+
+    /* .pendant-list {
+        grid-column: span 2;
+        background: #eef7ff;
+        padding: 10px;
+        border-radius: 5px; 
+    } */
+
+    .info-order {
+        display: grid;
+        align-items: center;
+    }
+
+    .pendant-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 5px 0;
+    } 
+
+    .form-container {
+        max-width: 100%;
+        margin-top: 30px;
+        padding: 20px;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+        margin-top: 10px;
+        font-weight: bold;
+    }
+
+    input[type="text"], input[type="number"] {
+        padding: 8px;
+        margin-top: 5px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    button {
+        margin-top: 15px;
+        padding: 10px;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    button:hover {
+        background: #0056b3;
+    }
+
+    /* form {
+        display: flex;
+        flex-direction: column;
+    } */
+
+    .img-preview {
+        display: block;
+        width: 50%;
+        margin-top: 15px;
+        border-radius: 5px;
+    }
+
+    input[type="color"] {
+        border: none;
+        cursor: pointer;
+    }
+
+    #add-list li {
+        background-color: #ffe4e1;
+        border-radius: 0;
+        grid-column: span 2;
+        padding: 10px;
+        cursor: pointer;
+    }
+
+    .add-item {
+        display: flex;
+        align-items: center;
+        background-color: #ffe4e1;
+    }
+
+    .form-container, .butt {
+        text-align: center;
+    }
+
+    /* .list-check {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    } */
+
+    /* .check-item {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    } */
+
+    /* .img-payment {
+        max-width: 30%;
+        height: auto;
+        border-radius: 5px;
+    } */
+
+    .info-order {
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-top: 40px;
+    }
+
+    h2 {
+        text-align: center;
+        color: #333;
+    }
+
+    .list-check {
+        display: flex;
+        /* flex-direction: column; */
+        align-items: center;
+    }
+
+    .img-payment {
+        max-width: 30%;
+        border-radius: 8px;
+        margin-right: 15px;
+    }
+
+    .check-item {
+        width: 100%;
+    }
+
+    .check-item label {
+        display: block;
+        background: #f9f9f9;
+        padding: 10px;
+        margin: 5px 0;
+        border-radius: 5px;
+        transition: 0.3s;
+        cursor: pointer;
+    }
+
+    .check-item label:hover {
+        background: #e3f2fd;
+    }
 
         h1 {
             font-family: "Fraunces", serif;
@@ -25,13 +356,13 @@
             margin-top: 8px;
         }
 
-        .container {
+        /* .container {
             display: inline;
             background-color: #fff0f0;
             padding: 30px;
             padding-top: 10px;
             border-radius: 35px;
-        }
+        } */
 
         .order-section,
         .payment-section {
@@ -89,78 +420,135 @@
 </head>
 
 <body>
-    <div class="container">
-        <h1>Your Order</h1>
-        <div class="order-section">
-            <div class="order-image">
-                <img src="ring1.png" alt="" style="width: 300px; height: 300px;">
-            </div>
-            <div class="order-details">
-                <h3>Name Order</h3>
-                <li><strong>Material:</strong>
-                    <%= order.material.name %>
-                </li>
-                <li>
-                    <strong>Color Of Material:</strong>
-                    <input type="color" value="<%= order.material.color_material %>">
-                </li>
-                <li><strong>Engrave on Material:</strong>
-                    <%= order.material.engraveMaterialText %>
-                </li>
-                <li><strong>Stone:</strong>
-                    <%= order.stone %>
-                </li>
+    <%- include('topbar') %>
+    <!-- <article class="flex flex-col justify-between text-center h-screen w-screen max-w-full overflow-hidden px-6"> -->
 
-                <!-- Pendant List -->
-                <div class="pendant-list">
-                    <h3>Pendants</h3>
-                    <% order.pendant.forEach((item)=> { %>
-                        <div class="pendant-item">
-                            <span><strong>Name:</strong>
-                                <%= item.name %>
-                            </span>
-                            <span><strong>Amount</strong>
-                                <%= item.amount %>
-                            </span>
-                            <span><strong>Color:</strong></span>
-                            <input type="color" value="<%= item.colorOfPendant %>">
-                            <% if (item.engravePendantText !='' ) { %>
-                                <span><strong>Engrave:</strong>
-                                    <%= item.engravePendantText %>
-                                </span>
-                                <% } %>
+        <div class="container mt-15">
+            <div class="list-order" id="list-order">
+                <h1>ออเดอร์ของคุณ</h1>
+                <h3 class="order-title">#ORDER<%= data[0].id %> - <span class="status"><%= data[0].order_status %></span></h3>
+        
+                <div class="list-content" id="list">
+                    <!-- Material Section -->
+                    <div class="section">
+                        <h4>Material Details</h4>
+                        <div class="material-box">
+                            <p><strong>Material:</strong> <%= order.material.name %></p>
+                            <p>
+                                <strong>Color of Material:</strong>
+                                <input type="color" value="<%= order.material.color_material %>" disabled>
+                            </p>
+                            <% if (order.material.engraveMaterialText) { %>
+                                <p><strong>Engrave on Material:</strong> <%= order.material.engraveMaterialText %></p>
+                            <% } %>
                         </div>
-                        <% }); %>
-                        <li><strong>Description:</strong> <%= order.description || '-' %></li>
-                        <% if (order.refImage) { %>
-                            <img src="/<%= order.refImage %>" alt="Reference Image" class="img-preview">
+                    </div>
+        
+                    <hr>
+        
+                    <!-- Stone Section -->
+                    <div class="section">
+                        <h4>Stone Details</h4>
+                        <p><strong>Stone:</strong> <%= order.stone %></p>
+                    </div>
+        
+                    <hr>
+        
+                    <!-- Ring Size -->
+                    <% if (data[0].category === 'แหวน') { %>
+                        <div class="section">
+                            <h4>Ring Size</h4>
+                            <p><strong>Size:</strong> <%= order.size %></p>
+                        </div>
+                    <% } %>
+        
+                    <!-- Bracelet Pendant List -->
+                    <% if (data[0].category === 'สร้อยข้อมือ') { %>
+                        <div class="section">
+                            <h4>Pendants</h4>
+                            <div class="pendant-box">
+                                <% order.pendant.forEach((item) => { %>
+                                    <div class="pendant-item">
+                                        <li><strong>ชื่อสินค้า:</strong> <%= item.name %></li>
+                                        <li><strong>จำนวน:</strong> <%= item.amount %> ชิ้น</li>
+                                        <li>
+                                            <strong>สี:</strong>
+                                            <input type="color" value="<%= item.colorOfPendant %>" disabled>
+                                        </li>
+                                        <% if (item.engravePendantText) { %>
+                                            <li><strong>สลักชื่อ:</strong> <%= item.engravePendantText %></li>
+                                        <% } %>
+                                    </div>
+                                <% }); %>
+                            </div>
+                        </div>
+                    <% } %>
+        
+                    <div class="section">
+                        <h4>Description:</h4>
+                        <p> <%= order.description || '-' %></p>
+                    </div>
+                    
+                    <%if (data[0].order_status === 'ปฏิเสธการรับออเดอร์') {%>
+                        <div class="section">
+                            <h4>เหตุผลที่ยกเลิก:</h4>
+                            <p><%=data[0].decline_reason%></p>
+                        </div>
+                    <%}else{%>
+                        <div class="section">
+                            <h4>Add Order:</h4>
+                        </div>
+                    <%}%>
+                    <div id="add-list">
+                        <% if (data[0].order_status !== 'รอดำเนินการ') {%>
+                            <% if (Array.isArray(add.add_order) && add.add_order.length > 0) { %>
+                                <% add.add_order.forEach((item) => { %>
+                                    <div class="add-item">
+                                        <li><span><strong>ชื่อสินค้า:</strong> <%= item.name %></span></li>
+                                        <li><span><strong>จำนวน</strong> <%= item.amount %></span></li>
+                                        <li><span><strong>ราคา:</strong> <%= item.price %></span></li>
+                                    </div>
+                                <% }); %>
+                            <%}%>
                         <% } %>
-                        <h3>Price: 10</h3>
+                    </div>
+                    <% if (order.refImage) { %>
+                        <img src="/<%= order.refImage %>" alt="Reference Image" class="img-preview">
+                    <% } %>
                 </div>
+        
             </div>
-        </div>
+            </div>
 
-        <div class="payment-section">
-            <div class="box">
-                <img src="fakeQR.png" alt="" style="width: 250px; height: 250px; border-radius: 20px;">
-            </div>
-            <div class="bank-info">
-                <h3>Bank Info</h3>
-                <p>Bank : Kasikorn</p>
-                <p>Account : 0 - 1234 - 56789</p>
-                <p>
-                <form action="/upload" method="POST" enctype="multipart/form-data">
-                    <input type="file" name="image" class="upload" required>
-                    <% data.forEach((item)=>{ %>
-                        <input type="hidden" name="id" value="<%=item.id%>">
-                        <% }); %> <br>
-                            <button type="btn-confirm" class="confirm">Confirm</button>
-                            <button class="cancel">Cancel</button>
-                </form>
-                </p>
-                <p class="status">Status: Pending</p>
-            </div>
-        </div>
-</body>
+            <%if (data[0].order_status === 'ยอมรับออเดอร์แล้ว') {%>
+                <div class="payment-section">
+                    <div class="box">
+                        <img src="fakeQR.png" alt="" style="width: 250px; height: 250px; border-radius: 20px;">
+                    </div>
+                    <div class="bank-info">
+                        <h3>Bank Info</h3>
+                        <p>Bank : Kasikorn</p>
+                        <p>Account : 0 - 1234 - 56789</p>
+                        <p>
+                        <form action="/upload" method="POST" enctype="multipart/form-data">
+                            <input type="file" name="image" class="upload" required>
+                            <% data.forEach((item)=>{ %>
+                                <input type="hidden" name="id" value="<%=item.id%>">
+                                <% }); %> <br>
+                                    <button type="btn-confirm" class="confirm">Confirm</button>
+                                    <button class="cancel">Cancel</button>
+                        </form>
+                        </p>
+                        <p class="status">Status: Pending</p>
+                    </div>
+                </div>
+            <%};%>
+
+            <%if (data[0].order_status === 'ปฏิเสธการรับออเดอร์') {%>
+                <button onclick="">แก้ไขใหม่</button>
+                <button onclick="">ยกเลิกออเดอร์นี้</button>
+            <%};%>
+        <!-- </article> -->
+    </body>
 
 </html>

@@ -13,7 +13,7 @@
     }
 
     #accept,
-    #decline, #cancel {
+    #decline, .cancel {
         padding: 8px 16px;
         color: white;
         cursor: pointer;
@@ -31,12 +31,12 @@
         border: 1.5px solid #BF3F3F;
     }
 
-    #cancel {
+    .cancel {
         background-color: rgb(65, 65, 189);
     }
 
     #accept:hover,
-    #decline:hover, #cancel:hover {
+    #decline:hover, .cancel:hover {
         opacity: 0.8;
     }
 
@@ -68,9 +68,6 @@
     }
 
     .btn {
-        /* position: absolute; */
-        /* top: 10px;
-        right: 15px; */
         background-color: #ff4d4d;
         color: white;
         border: none;
@@ -295,10 +292,8 @@
     .info-order {
         background: #fff;
         padding: 20px;
-        /* gap: 50px; */
         border-radius: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        /* max-width: 400px; */
         margin-top: 40px;
     }
 
@@ -336,20 +331,6 @@
     .check-item label:hover {
         background: #e3f2fd;
     }
-
-    /* .butt {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 15px;
-    } */
-
-    /* button {
-        padding: 10px 15px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    } */
-
 
 </style>
 
@@ -419,9 +400,16 @@
                 <p> <%= order.description || '-' %></p>
             </div>
             
-            <div class="section">
-                <h4>Add Order:</h4>
-            </div>
+            <%if (data[0].order_status === 'ปฏิเสธการรับออเดอร์') {%>
+                <div class="section">
+                    <h4>เหตุผลที่ยกเลิก:</h4>
+                    <p><%=data[0].decline_reason%></p>
+                </div>
+            <%}else{%>
+                <div class="section">
+                    <h4>Add Order:</h4>
+                </div>
+            <%}%>
             <div id="add-list">
                 <% if (data[0].order_status !== 'รอดำเนินการ') {%>
                     <% if (Array.isArray(add.add_order) && add.add_order.length > 0) { %>
@@ -468,19 +456,19 @@
         <!-- ปุ่ม access/decline -->
         <div class="butt">
             <button onclick="accept()" id="accept">Accept</button>
-            <button id="decline" onclick="openModal()">Decline</button>
-            <a href="/emp/orders" id="cancel">Cancel</a>
+            <button id="decline" onclick="open_decline_Modal()">Decline</button>
+            <a href="/emp/orders" class="cancel">Cancel</a>
         </div>
             <!-- decline => description -->
 
-        <div class="modal">
-            <div class="modal-container">
+        <div class="modal" id="modal-decline">
+            <div class="modal-container" id="modal-decline-container">
                 <form>
                     <label>เหตุผลที่ยกเลิก</label>
                     <textarea id="description" placeholder="Enter something..."></textarea>
 
-                    <a class="btn send" onclick="sendModal()">submit</a>
-                    <button class="btn cancel" onclick="closeModal()">cancel</button>
+                    <a class="send" onclick="send_decline_Modal()">ยืนยัน</a>
+                    <a onclick="close_decline_Modal()">ยกเลิก</a>
                 </form>
             </div>
         </div>
@@ -488,7 +476,7 @@
 
 
     <!-- <input type="hidden" id="payment_status" value="<%= data[0].payment_status %>">     -->
-    <%if (data[0].order_status !== 'ยอมรับออเดอร์แล้ว' && data[0].order_status !== 'รอดำเนินการ') {%>
+    <%if (data[0].order_status !== 'ยอมรับออเดอร์แล้ว' && data[0].order_status !== 'รอดำเนินการ' && data[0].order_status !== 'ปฏิเสธการรับออเดอร์') {%>
         <div class="info-order">
             <h2>Payment</h2>
             <div class="list-check">
@@ -511,10 +499,10 @@
                     </div>
                 </div>
                 <div class="butt">
-                    <button id="accept" style="display: none;" onclick="payment_check()">ยืนยันรับออเดอร์</button>
-                    <a id="decline" href="/emp/myorders">ยกเลิก</a>
+                    <button style="display: none;" onclick="payment_check()">ยืนยันรับออเดอร์</button>
+                    <a href="/emp/myorders">ยกเลิก</a>
                 </div>
-                 <%}%>
+                <%}%>
         
     </div>
 

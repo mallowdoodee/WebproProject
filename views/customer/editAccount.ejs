@@ -1,19 +1,21 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit My Account</title>
+    <link href="css/Home-Customer.css" rel="stylesheet">
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script> -->
     <style>
-        .container {
+        /* .container {
             width: 100%;
             display: flex;
             flex-direction: column;
             justify-content: center;
             padding: 20px;
             box-sizing: border-box;
-        }
+        } */
 
         .form-container {
             padding: 20px;
@@ -81,10 +83,8 @@
     </style>
 </head>
 
-<body class="bg-custom">
-    <%- include('topbar') %>
-    
-    <div class="container">
+<!-- <body> -->
+    <!-- <div class="container mt-15"> -->
         <% data.forEach((item)=>{ %>
             <form onsubmit="return checkInfo()">
                 <!-- <input type="hidden" name="id" value="<%= item.id %>"> -->
@@ -109,11 +109,11 @@
                         <label>Email:</label>
                         <input type="email" value="<%= item.email %>" id="email" name="email">
                     </div>
-                    <input type="submit" value="Update" class="btn submit">
+                    <input type="submit" value="บันทึกการเปลี่ยนแปลง" class="btn submit">
                 </div>
             </form>
         <% }); %>
-    </div>
+    <!-- </div> -->
 
     <script>
         function checkInfo() {
@@ -141,6 +141,6 @@
     </script>
 
 
-</body>
+<!-- </body>
 
-</html>
+</html> -->
