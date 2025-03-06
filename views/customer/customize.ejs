@@ -283,43 +283,54 @@
             font-style: var(--font-style-logo);
         }
 
+
         .pop-up {
-            display: none;
-            overflow-y: hidden;
-            justify-content: center;
             position: fixed;
-            text-align: center;
-            border-radius: 30px;
-            top: 20%;
-            left: 15%;
-            width: 70%;
-            padding: 30px;
-            color: rgba(60, 42, 30, 1);
-            background-color: white;
-            z-index: 10000;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            max-width: 50%;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            
         }
 
+        .pop-up-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 999;
+            
+        }
 
-        .order thead {
-            background-color: #d3c5b4;
+        .pop-head {
+            text-align: center;
             font-weight: bold;
         }
 
-        .order tbody {
-            display: block;
-            max-height: 200px;
-            overflow-x: hidden;
-        }
-
-        .order tr {
-            display: table;
-            table-layout: fixed;
+        .order {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 10px 0;
+            background: #f9f9f9;
+            border-radius: 5px;
             width: 100%;
         }
 
-        .order td {
-            padding: 10px;
-            border-bottom: 1px solid rgba(60, 42, 30, 0.3);
+        .order-detail {
+            margin: 12px;
         }
 
         .but-pop {
@@ -330,7 +341,8 @@
         .but-pop button {
             margin: 10px;
             padding: 10px 20px;
-            background-color: rgba(60, 42, 30, 1);
+            background-color: #450100;
+            border: 1px solid #450100;
             border: 2px solid transparent;
             border-radius: 30px;
             color: white;   
@@ -338,6 +350,25 @@
             font-size: 14px;
             font-weight: 700;
             
+        }
+
+        .but-pop button:hover {
+            background-color: white;
+            border: 1px solid #450100;
+            color: #450100;
+        }
+
+        .order p {
+            color: #450100;
+        }
+
+        .checkout {
+            margin-top: 30px;
+            text-align: right;
+        }
+
+        .checkout p {
+            font-size: 25px;
         }
     </style>
 
@@ -395,8 +426,8 @@
                 <strong><label for="material">วัสดุของ<%= product.category %> : </label></strong> <br>
                 <select name="material" id="material" onchange="toggleEngraveOption()">
                     <% materialsData.forEach((item)=> { %>
-                        <option value="<%= item.name %>">
-                            <%= item.name %>
+                        <option value="<%= item.name %>-<%= item.price %>">
+                            <%= item.name %>: <%= item.price %> บาท
                         </option>
                     <% }); %>
                 </select>
@@ -426,14 +457,14 @@
                 <div id="engraveMaterialTextContainer" style="display: none;">
                     <strong><label for="engraveMaterialText">สลักลงบน<%= product.name %>ของคุณ</label></strong>
                     <input type="text" name="engraveMaterialText" id="engraveMaterialText"
-                        placeholder="ข้อความสลักของคุณ">
+                        placeholder="ข้อความสลักของคุณ" maxlength="6">
                 </div>
 
                 <strong><label for="stone">อัญมณี : </label></strong>
                 <select name="stone" id="stone">
                     <% let stoneCount=0; %>
                         <% stonesData.forEach((item)=> { %>
-                            <option value="<%= item.name %>">
+                            <option value="<%= item.name %>-<%= item.price %>">
                                 <%= item.name %>: <%= item.price %> บาท/ชิ้น
                             </option>
                         <% stoneCount++; %>
@@ -448,7 +479,7 @@
                                     <label class="tooltip-container">
                                         <label style="display: inline-flex; align-items: center;">
                                             <input type="checkbox" id="pendant-<%= index %>" name="pendent"
-                                                value="<%= pendant.name %>" onclick="toggleInput('pendant-<%= index %>-num')"
+                                                value="<%= pendant.name %>-<%= pendant.price %>" onclick="toggleInput('pendant-<%= index %>-num')"
                                                 style="margin: 0;">
                                             <strong><%= pendant.name %></strong>
                                         </label>
@@ -479,8 +510,8 @@
                                         <!-- ช่องกรอกข้อความสำหรับการสลัก -->
                                         <div id="engravePendantTextContainer-<%= pendant.name %>" style="display: none;">
                                             <strong><label for="engravePendantText-<%= pendant.name %>">เพิ่มข้อความสลักบนจี้ของคุณ</label></strong>
-                                            <input type="text" name="engravePendantText-<%= pendant.name %>" id="engravePendantText-<%= pendant.name %>"
-                                            placeholder="Enter text for pendant">
+                                            <input type="text" maxlength="6" name="engravePendantText-<%= pendant.name %>" id="engravePendantText-<%= pendant.name %>"
+                                            placeholder="ข้อความสลักของคุณ">
                                         </div>
                                     </div>
                                 </div>
@@ -499,31 +530,33 @@
                     <strong><label>รายละเอียดเพิ่มเติม : </label></strong>
                     <textarea name="description" id="description" placeholder="ระบุข้อความถึงร้านค้าได้เลย!"></textarea>
                 </div>
-
-                <button class="submit" type="submit" onclick="check_customize(event)">สั่งเลย!</button>
+                <div class="checkout">
+                    <!-- <p id="total">ราคารวม: 0 บาท</p> -->
+                    <button class="submit" type="submit" onclick="check_customize(event)">สั่งเลย!</button>
+                </div>
             </form>
         </div>
     </div>
 </div>
-
+<div class="pop-up-overlay" id="pop-up-overlay"></div>
 <div class="pop-up" id="pop-up">
     <div class="pop-content">
-        <h2 style="color: rgba(60, 42, 30, 1);">ออเดอร์ของคุณ <%=user.email.split('@')[0]%></h2>
-        <h3 id="total-pop">TOTAL: 0 BAHT</h3>
-        <table class="order" id="order">
-            <thead>
-                <tr>
-                    <th>รายการสินค้าที่เลือก</th>
-                    <th>ราคา</th>
-                    <th>จำนวน</th>
-                </tr>
-            </thead>
-            <tbody id="tbody">
-                <!-- <tr><td></td></tr> -->
-            </tbody>
-        </table>
+        <div class="pop-head">
+            <%if (user.isMember) {%>
+                <h2 style="color: rgba(60, 42, 30, 1);">ออเดอร์ของคุณ <%=user.email.split('@')[0]%></h2>
+            <%}else{%>
+                <h2 style="color: rgba(60, 42, 30, 1);">ออเดอร์ของคุณ</h2>
+            <%}%>
+            <h3 id="total-pop">TOTAL: 0 BAHT</h3>
+        </div>
+
+        <div class="order" id="order">
+
+        </div>
         <div class="but-pop">
-            <button onclick="confirm()">CONFIRM</button>
+            <%if (user.isMember) {%>
+                <button onclick="confirm()">CONFIRM</button>
+            <%}%>
             <button onclick="closePopup()">CANCEL</button>
         </div>
         

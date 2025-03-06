@@ -1,3 +1,5 @@
+// const { text } = require("body-parser");
+
 let add_order = [];
 let totalPrice = 0;
 
@@ -57,14 +59,64 @@ function removeItem(item, name, price, quantity) {
 }
 
 
-function openModal() {
-    document.querySelector(".modal-container").style.display = "block";
-    document.querySelector(".modal").style.display = "block";
+function open_decline_Modal() {
+    document.getElementById("modal-decline-container").style.display = "block";
+    document.getElementById("modal-decline").style.display = "block";
 }
 
-function closeModal() {
-    document.querySelector(".modal-container").style.display = "none";
-    document.querySelector(".modal").style.display = "none";
+function close_decline_Modal() {
+    console.log("yess")
+    document.getElementById("modal-decline-container").style.display = "none";
+    document.getElementById("modal-decline").style.display = "none";
+}
+
+//decline order
+function send_decline_Modal() {
+    const description = document.getElementById("description").value;
+    if (description == "") {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'กรุณากรอกเหตุผลที่ปฏิเสธออเดอร์นี้'
+        });
+        return;
+    }
+    console.log(description)
+    try {
+        Swal.fire({
+            text: "คุณแน่ใจว่าจะปฏิเสธออเดอร์นี้?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#BF8579",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "ยืนยัน",
+            cancelButtonText: "ยกเลิก"
+          }).then(async (result) => {
+            if (result.isConfirmed) {
+                const response = await fetch("/api/decline_order", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ description }),
+                    credentials: "include"
+              });
+          
+              if (response.ok) {
+                Swal.fire("สำเร็จ!", "คุณปฏิเสธออเดอร์แล้ว", "success")
+                .then(() => {
+                    window.location.href = "/emp/orders";
+                });
+              } else {
+                Swal.fire("ล้มเหลว!", "ไม่สามารถบันทึกออเดอร์ได้", "error");
+              }
+            }});
+    } catch (error) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Server Error',
+            text: 'เกิดข้อผิดพลาดในการเชื่อมต่อ',
+        });
+    }
+
 }
 
 //accept order

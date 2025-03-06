@@ -1,0 +1,24 @@
+<h2>รายการสั่งซื้อของคุณ</h2>
+<table>
+    <thead>
+        <tr>
+            <th>คำสั่งซื้อ</th>
+            <th>ประเภทสินค้า</th>
+            <th>สถานะคำสั่งซื้อ</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <%data.forEach((item) => {%>
+            <tr>
+                <td>คำสั่งซื้อ #<%= item.id%></td>
+                <td><%= item.category%></td>
+                <td><%= item.order_status%></td>
+                <td>
+                    <a href="/ordering?id=<%=item.id%>">ดูรายละเอียด</a>
+                </td>
+            </tr>
+        <%});%>
+    </tbody>
+</table>
+
