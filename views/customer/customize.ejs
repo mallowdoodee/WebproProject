@@ -7,13 +7,13 @@
     <title>Customized by You!</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <link href="css/Home-Customer.css" rel="stylesheet">
     <script src="/js_cus_ejs/customer.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Noto+Sans+Thai:wght@100..900&display=swap');
-        
         body {
             background-color: #F0E9E9;
-            margin: 0 auto;
+            /* margin: 0 auto; */
             font-family: "Noto Sans Thai", sans-serif;
         }
 
@@ -47,10 +47,15 @@
             border-radius: 10px;
         }
 
-        .heading-div {
-            font-family: "Noto Sans Thai";
-            text-align: center;
-            margin: 0;
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            background-color: var(--color-bg);
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 15px 20px;
         }
 
         .custom.form,
@@ -91,6 +96,10 @@
             color: #fff;
         }
 
+        p {
+            padding: 10px;
+        }
+
         select,
         input[type="text"] {
             margin-bottom: 20px;
@@ -103,7 +112,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px;
+            font-family: "Noto Sans Thai", sans-serif;
+            /* padding: 20px; */
             margin: 0 50px;
         }
 
@@ -157,7 +167,7 @@
             .heading-div {
                 flex-direction: column;
                 align-items: center;
-                padding: 10px;
+                /* padding: 10px; */
             }
         }
 
@@ -239,18 +249,6 @@
         }
 
         :root {
-            --font-basetext: "Noto Sans Thai";
-            --font-weight-basetext: 400;
-            --font-style-basetext: normal;
-            --font-secondary: 'Noto Sans Thai';
-            --font-weight-secondary: 400;
-            --font-style-secondary: normal;
-            --font-logo: "Fraunces";
-            --font-weight-logo: 600;
-            --font-style-logo: normal;
-            --font-thai: "Noto Sans Thai";
-            --font-weight-thai: 400;
-            --font-style-thai: normal;
             --color-red: #580201;
             --color-veryred: #450100;
             --color-bs: #A56037;
@@ -264,25 +262,6 @@
         html {
             scroll-behavior: smooth;
         }
-
-        .font-basetext {
-            font-family: var(--font-basetext);
-            font-weight: var(--font-weight-basetext);
-            font-style: var(--font-style-basetext);
-        }
-
-        .font-secondary {
-            font-family: var(--font-secondary);
-            font-weight: var(--font-weight-secondary);
-            font-style: var(--font-style-secondary);
-        }
-
-        .font-logo {
-            font-family: var(--font-logo);
-            font-weight: var(--font-weight-logo);
-            font-style: var(--font-style-logo);
-        }
-
 
         .pop-up {
             position: fixed;
@@ -376,25 +355,12 @@
 
 <body>
     <%- include('topbar') %>
-    <!-- <header class="fixed z-50 bar-custom shadow-xl shadow-gray-600/10 w-full px-10 py-3 flex items-center gap-x-4">
-        <h1 class="font-logo text-3xl" style="color: var(--color-red);">Celestar</h1>
-
-        <nav class="ml-auto">
-            <ul class="flex space-x-6 font-secondary text-[var(--color-red)]">
-                <li><a href="Home-Custumer.html" class="hover:underline">หน้าแรก</a></li>
-                <li><a href="#" class="hover:underline">เกี่ยวกับ</a></li>
-                <li><a href="Home-Custumer.html#Contact" class="hover:underline">ติดต่อ</a></li>
-                <li><a href="#" class="hover:underline text-[var(--color-bs)]">ชื่อบัญชีผู้ใช้</a></li>
-            </ul>
-        </nav>
-    </header> -->
-    <div class="top-bar" style="height: 100px;"></div>
-
-    <div class="heading-div">
-        <a class="back" href="/product">ย้อนกลับ</a>
-        <h1 style="color: #580201;font-size: 30px;padding-right: 30px;">ปรับแต่ง<%= product.category %>ของคุณ</h1>
+    <div class="mt-20 font-thai">
+        <div class="heading-div">
+            <a class="back" href="/product">ย้อนกลับ</a>
+            <h1 style="color: #580201;font-size: 30px;padding-right: 30px;">ปรับแต่ง<%= product.category %>ของคุณ</h1>
     </div>
-
+    
     <div class="div1">
         <!-- Image Section -->
         <div class="item prod">
@@ -413,7 +379,7 @@
                 </p>
                 <p><strong>ราคา : <%= product.base_price %> THB</strong></p>
             </div>
-
+            
         <!-- Form Section -->
         <div class="custom form">
             <form id="customizationForm">
@@ -549,7 +515,7 @@
             <%}%>
             <h3 id="total-pop">TOTAL: 0 BAHT</h3>
         </div>
-
+        
         <div class="order" id="order">
 
         </div>
