@@ -14,25 +14,29 @@
 
     #accept,
     #decline, .cancel {
-        padding: 8px 16px;
+        padding: 8px 14px;
         color: white;
         cursor: pointer;
         border-radius: 5px;
         transition: opacity 0.3s ease;
+        font-family: var(--font-secondary);
     }
 
     #accept {
-        border: 1px solid #67C14B;
+        /*border: 1px solid #67C14B;*/
         background-color: #67C14B;
+        margin-right: 6px;
     }
 
     #decline {
         background-color: #BF3F3F;
-        border: 1.5px solid #BF3F3F;
+        /*border: 1.5px solid #BF3F3F;*/
+        margin-right: 6px;
     }
 
     .cancel {
-        background-color: rgb(65, 65, 189);
+        background-color: #D8A273;
+        display: inline-block;
     }
 
     #accept:hover,
@@ -51,7 +55,7 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.3);
         border-radius: 10px;
         z-index: 10000;
     }
@@ -77,8 +81,29 @@
         border-radius: 5px;
     }
 
+    .send, 
+    .close {
+        border-radius: 2px;
+        font-family: var(--font-thai);
+        color: white;
+    }
+
     .send {
+        background-color: #88C974;
+        padding: 5px 7px;
+    }
+
+    .close {
+        background-color: #D15F5F;
+        padding: 5px;
+    }
+
+    .send:hover {
         background-color: #67C14B;
+    }
+
+    .close:hover {
+        background-color: #C14E4E;
     }
 
     /* .modal-container form {
@@ -87,10 +112,11 @@
 
     textarea {
         width: 100%;
-        height: 200px;
+        height: 140px;
         border: 1px solid gray;
         resize: none;
         margin-bottom: 15px;
+        margin-top: 5px;
     }
 
     .list-order {
@@ -101,42 +127,49 @@
     }
 
     .order-title {
-        color: #333;
+        color: #580201;
         font-size: 20px;
         font-weight: bold;
         margin-bottom: 15px;
     }
 
     .status {
-        color: #007bff;
         font-weight: bold;
+        font-family: var(--font-thai);
     }
 
     .section {
         margin-bottom: 20px;
+        background: #FAF0EE;
     }
 
     h4 {
-        background: #f5f5f5;
+        background: #F6E5E2;
         padding: 10px;
+        padding-left: 15px;
         border-radius: 5px;
         font-size: 18px;
+        font-family: var(--font-logo);
+        font-weight: 500;
+        color: #580201;
     }
 
     p {
         margin: 7px 10px;
+        font-family: var(--font-secondary);
+        color: #B8625C;
     }
 
     hr {
         border: 0;
         height: 1px;
-        background: #ddd;
+        background: #E5CFC5;
         margin: 20px 0;
     }
 
     .material-box,
     .pendant-box {
-        background: #f9f9f9;
+        background: #FAF0EE;
         padding: 10px;
         border-radius: 5px;
     }
@@ -144,6 +177,7 @@
     .pendant-item {
         border-bottom: 1px solid #ddd;
         padding: 10px;
+        font-family: var(--font-thai);
     }
 
     .pendant-item:last-child {
@@ -161,7 +195,16 @@
 
     h2, h3 {
         text-align: center;
+        font-family: var(--font-secondary);
     }
+
+    h2 {
+        text-align: center;
+        color: #8F3B30;
+        margin-bottom: 10px;
+        font-weight: 400;
+    }
+
     h3 {
         color: rgb(120, 120, 120);
     }
@@ -269,6 +312,7 @@
 
     .form-container, .butt {
         text-align: center;
+        font-family: var(--font-thai);
     }
 
     /* .list-check {
@@ -295,11 +339,6 @@
         border-radius: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         margin-top: 40px;
-    }
-
-    h2 {
-        text-align: center;
-        color: #333;
     }
 
     .list-check {
@@ -332,12 +371,31 @@
         background: #e3f2fd;
     }
 
+    .pending {
+        color: #E0B068;
+    }
+
+    .accepted {
+        color: #88C974;
+    }
+
+    .declined {
+        color: #D15F5F;
+    }
+
+    #total {
+        margin-top: 30px;
+        font-size: 30px;
+    }
+
 </style>
 
 <div class="container">
     <div class="list-order" id="list-order">
         <h2>Order Details</h2>
-        <h3 class="order-title">#ORDER<%= data[0].id %> - <span class="status"><%= data[0].order_status %></span></h3>
+        <h3 class="order-title">#ORDER<%= data[0].id %> - <span class="status <%= data[0].order_status === 'รอดำเนินการ' ? 'pending' : (data[0].order_status === 'ยอมรับออเดอร์แล้ว' ? 'accepted' : 'declined') %>">
+            <%= data[0].order_status %>
+        </span></h3>
 
         <div class="list-content" id="list">
             <!-- Material Section -->
@@ -360,7 +418,9 @@
             <!-- Stone Section -->
             <div class="section">
                 <h4>Stone Details</h4>
-                <p><strong>Stone:</strong> <%= order.stone %></p>
+                <div class="material-box">
+                    <p><strong>Stone:</strong> <%= order.stone %></p>
+                </div>
             </div>
 
             <hr>
@@ -369,7 +429,9 @@
             <% if (data[0].category === 'แหวน') { %>
                 <div class="section">
                     <h4>Ring Size</h4>
-                    <p><strong>Size:</strong> <%= order.size %></p>
+                    <div class="material-box">
+                        <p><strong>Size:</strong> <%= order.size %></p>
+                    </div>
                 </div>
             <% } %>
 
@@ -397,7 +459,9 @@
 
             <div class="section">
                 <h4>Description:</h4>
-                <p> <%= order.description || '-' %></p>
+                <div class="material-box">
+                    <p> <%= order.description || '-' %></p>
+                </div>
             </div>
             
             <%if (data[0].order_status === 'ปฏิเสธการรับออเดอร์') {%>
@@ -463,11 +527,11 @@
         <div class="modal" id="modal-decline">
             <div class="modal-container" id="modal-decline-container">
                 <form>
-                    <label>เหตุผลที่ยกเลิก</label>
+                    <label class="font-thaiS">เหตุผลที่ยกเลิก</label>
                     <textarea id="description" placeholder="Enter something..."></textarea>
 
                     <a class="send" onclick="send_decline_Modal()">ยืนยัน</a>
-                    <a onclick="close_decline_Modal()">ยกเลิก</a>
+                    <a class="close" onclick="close_decline_Modal()">ย้อนกลับ</a>
                 </form>
             </div>
         </div>
