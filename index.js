@@ -15,8 +15,8 @@ const db = require('./config/dbconn.js');
 const { cus_register, cus_login, cus_forgot, emp_login, emp_forgot } = require('./controllers/auth.js');
 const { cus_auth, emp_auth, optional_cus_auth }  = require('./middleware/auth');
 const { emp_edit, emp_create, emp_delete, emp_editProfile }  = require('./controllers/emp.js');
-const { prod_edit, prod_delete } = require('./controllers/product.js');
-const { order_from_cus, accept_order, payment_check } = require('./controllers/order.js');
+const { prod_edit, prod_delete, prod_create } = require('./controllers/product.js');
+const { order_from_cus, accept_order, payment_check, decline_order } = require('./controllers/order.js');
 // const { readdirSync } = require('fs');
 
 // use, set
@@ -50,6 +50,7 @@ app.post('/api/add_order_from_cus', cus_auth, order_from_cus);
 
 app.post('/api/accept_order', emp_auth(['admin', 'jeweler']), accept_order);
 app.post('/api/payment_check', emp_auth(['admin', 'jeweler']), payment_check);
+app.post('/api/decline_order', emp_auth(['admin', 'jeweler']), decline_order);
 
 //enployee
 app.post('/api/emp_login', emp_login);
@@ -62,6 +63,7 @@ app.post('/api/emp_editProfile', emp_editProfile);
 //products
 app.post('/api/prod_edit', prod_edit);
 app.post('/api/prod_del', prod_delete);
+app.post('/api/create_product', prod_create);
 
 
 // middleware
@@ -87,7 +89,8 @@ app.get('/profile', cus_auth, function (req, res) {
             return res.status(500).send("Failed to retrieve data.");
         }
         // console.log(results)
-        res.render('customer/editAccount', { data: results, user:userData});
+        res.render('customer/editAccount', { data: results, user: userData });
+        // res.render('customer/layout-home', { body: 'editAccount', data: results, user: userData });
     })
     // res.render('customer/editAccount');
 });
@@ -97,7 +100,7 @@ app.get('/profile', cus_auth, function (req, res) {
 //     res.render('customer/editAccount')
 // })
 
-app.get('/product', cus_auth, (req, res) => {
+app.get('/product', optional_cus_auth, (req, res) => {
     const userData = req.isUser;
     const productQuery = `
       SELECT id, name, base_price, category 
@@ -126,7 +129,7 @@ app.get('/product', cus_auth, (req, res) => {
     });
 });
 
-app.get('/make-yours/:id', cus_auth, function (req, res) {
+app.get('/make-yours/:id', optional_cus_auth, function (req, res) {
     const userData = req.isUser;
     const productId = req.params.id;
   
@@ -160,7 +163,38 @@ app.get('/make-yours/:id', cus_auth, function (req, res) {
 
 app.get('/myorders', cus_auth, (req, res) => {
     const userData = req.isUser;
-    res.render('customer/layout-home', { body: 'myorder', user: userData });
+    const page = req.query.page || "";
+    let sql = ``;
+    if (page === "") {
+        sql = `SELECT * FROM customers WHERE id = ${userData.id}`;
+    }
+    else if (page === 'pending') {
+        sql = `SELECT * FROM orders WHERE customer_id = ${userData.id} and order_status = 'รอดำเนินการ'`;
+    }
+    else if (page === 'check') {
+        sql = `SELECT * FROM orders WHERE customer_id = ${userData.id} and order_status = 'รอตรวจสอบการชำระเงิน' or order_status = 'แก้ไขออเดอร์แล้วรอตรวจสอบ'`;
+    }
+    else if (page === 'accept') {
+        sql = `SELECT * FROM orders WHERE customer_id = ${userData.id} and order_status = 'ยอมรับออเดอร์แล้ว'`;
+    }
+    else if (page === 'decline') {
+        sql = `SELECT * FROM orders WHERE customer_id = ${userData.id} and order_status = 'ปฏิเสธการรับออเดอร์'`;
+    }
+    else if (page === 'paid') {
+        sql = `SELECT * FROM orders WHERE customer_id = ${userData.id} and payment_status = 'paid'`;
+    }
+    else if (page === 'success') {
+        sql = `SELECT * FROM orders WHERE customer_id = ${userData.id} and order_status = 'จัดส่งสำเร็จ'`;
+    }
+    db.all(sql, function (err, rows) {
+        console.log("hello")
+        if(err) {
+            console.error(err.message);
+            return res.status(500).send("Failed to retrieve data.");
+        }
+        // console.log(rows)
+        res.render('customer/layout-home', { body: 'myorder', user: userData, page, data: rows });
+    }) 
 })
 
 const storage = multer.diskStorage({
@@ -176,17 +210,28 @@ const upload = multer({ storage: storage });
 
 app.get('/ordering', cus_auth, (req, res) => {
     const userData = req.isUser;
-    console.log(userData)
-    const sql = `SELECT * FROM orders WHERE id = 6`;
+    const orderId = req.query.id;
+    // console.log(userData)
+    const sql = `SELECT * FROM orders WHERE id = ${orderId}`;
     db.all(sql, (err, rows) => {
         if (err) {
             console.error(err.message);
             return res.status(500).send("Failed to retrieve data.");
         }
 
-        console.log("rows: ", rows)
-        const parsedOrder = JSON.parse(rows[0].order_detail);
-        res.render('customer/ordering', { body: 'detailorder', data: rows, order: parsedOrder, user: userData});
+        let parsedOrder = {};
+        let parsedOrder_add = { add_order: [], add_total: 0 };
+    
+        try {
+            parsedOrder = JSON.parse(rows[0].order_detail || '{}');
+            parsedOrder_add = JSON.parse(rows[0].add_order || '{}');
+        } catch (parseError) {
+            console.log("JSON Parsing Error:", parseError.message);
+        }
+
+        res.render('customer/layout-home', { body: 'ordering', data: rows, add: parsedOrder_add, order: parsedOrder, user: userData });
+
+
     });
 });
 
@@ -205,17 +250,17 @@ app.post('/upload', upload.single('image'), (req, res) => {
 
 
 //employee
-app.get('/emp/home', emp_auth(['admin', 'jeweler']), (req, res) => {
-    const userData = req.emp;
-        const sql = 'SELECT * FROM employees';
-        db.all(sql, (err, rows) => {
-            if (err) {
-                console.log(err.message);
-                return res.status(500).send("Failed to retrieve data.");
-            }
-            res.render('emp/layout', { body: 'home', data: rows, user: userData });
-        });
-});
+// app.get('/emp/home', emp_auth(['admin', 'jeweler']), (req, res) => {
+//     const userData = req.emp;
+//         const sql = 'SELECT * FROM employees';
+//         db.all(sql, (err, rows) => {
+//             if (err) {
+//                 console.log(err.message);
+//                 return res.status(500).send("Failed to retrieve data.");
+//             }
+//             res.render('emp/layout', { body: 'home', data: rows, user: userData });
+//         });
+// });
 
 app.get('/emp/orders', emp_auth(['admin', 'jeweler']), (req, res) => {
     const userData = req.emp;
@@ -292,7 +337,6 @@ app.get('/emp/detail_order', emp_auth(['admin', 'jeweler']), function (req, res)
             const parsedOrder = JSON.parse(rows[0].order_detail);
             res.render('emp/layout', { body: 'detailorder', data: rows, order: parsedOrder, user: userData });
         });
-
 })
 
 // app.get('/emp/products', emp_auth, (req, res) => {
@@ -356,6 +400,28 @@ app.post('/emp/product_edit', emp_auth(['admin', 'jeweler']), (req, res) => {
             console.log(rows)
         })
 })
+
+app.get('/createProduct', emp_auth(['admin', 'jeweler']), function (req, res) {
+    const userData = req.emp;
+    let category = ['materials', 'pendants', 'stones'];
+    let all_product = [];
+    let count = 0;
+
+    category.forEach((item, index) => {
+        let sql = `SELECT * FROM ${item};`;
+        db.all(sql, function(err, rows) {
+            if (err) {
+                return res.status(500).send("Failed to retrieve data.");
+            }
+            all_product[index] = rows;
+            count++;
+
+            if (count === category.length) {
+                res.render('emp/layout', { body: 'createProduct', user: userData, data: all_product });
+            }
+        });
+    });
+});
 
 app.get('/emp/manages', emp_auth(['admin']), (req, res) => {
     const userData = req.emp;
@@ -464,11 +530,6 @@ app.get('/forgot', function (req, res) {
 // app.get('/product', function (req, res) {
 //     res.render('customer/product');
 // });
-
-app.get('/createProduct',  emp_auth(['admin', 'jeweler']), function (req, res) {
-    const userData = req.emp;
-    res.render('emp/layout', { body: 'createProduct', user: userData });
-})
 
 //employee
 app.get('/emp/login', function (req, res) {

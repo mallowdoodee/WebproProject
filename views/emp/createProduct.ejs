@@ -7,35 +7,159 @@
         padding: 20px;
         box-sizing: border-box;
     }
+
+    #form-container-1, #form-container-2 {
+        display: none;
+    }
+
+    #form-pendant, #form-product-1, #add_product_butt {
+        display: none;
+    }
+
 </style>
 
 <div class="container">
-    <form action="">
+    <form>
         <div class="form-group">
-            <label>ชื่อสินค้า: </label><br>
-            <input type="text">
-        </div>
-        <div class="form-group">
-            <label>ราคาสินค้า</label><br>
-            <input type="number" min="1" name="price" id="price">
-        </div>
-        <div class="form-group">
-            <label>รายละเอียดของสินค้า</label><br>
-            <textarea name="description" id="description"></textarea>
-        </div>
-        <div class="form-group">
-            <label>ประเภทสินค้า: </label><br>
+            <label>เลือกประเภท: </label><br>
             <select name="category" id="category">
-                <option value="material">Materials</option>
-                <option value="pendants">Pendants</option>
-                <option value="stones">Stones</option>
+                <option value="">-- กรุณาเลือก --</option>
+                <option value="materials">วัสดุ (Material)</option>
+                <option value="pendants">จี้ (Pendant)</option>
+                <option value="stones">อัญมณี (Stone)</option>
+                <option value="products">สินค้า (Product)</option>
             </select>
         </div>
-        <div class="form-group">
-            <label>รูปสินค้า</label><br>
-            <input type="file">
-        </div>
-        <input type="submit" value="Add Product">
 
+        <div id="form-container-1">
+            <div class="form-group">
+                <label>ชื่อสินค้า: </label><br>
+                <input type="text" name="name_prod" id="name_prod">
+            </div>
+            <!-- <div class="form-group">
+                <label>ราคาสินค้า</label><br>
+                <input type="number" min="1" name="price_prod" id="price_prod">
+            </div> -->
+            <div class="form-group">
+                <label>รายละเอียดของสินค้า</label><br>
+                <textarea name="description_prod" id="description_prod"></textarea>
+            </div>
+            <div class="form-group">
+                <label>รูปภาพสินค้า</label><br>
+                <input type="file" name="image" id="image">
+            </div>
+            <div class="form-group">
+                <label>จำนวนสินค้าในคลัง</label><br>
+                <input type="number" name="stock" id="stock">
+            </div>
+            <div class="form-group" id="type">
+                <label>ประเภทสินค้า</label><br>
+                <select name="type-product" id="type-product">
+                    <option value="">-- กรุณาเลือก --</option>
+                    <option value="สร้อยข้อมือ">สร้อยข้อมือ</option>
+                    <option value="สร้อยคอ">สร้อยคอ</option>
+                    <option value="แหวน">แหวน</option>
+                    <option value="ต่างหู">ต่างหู</option>
+                </select>
+            </div>
+
+            <div class="form-product-1" id="form-product-1">
+                <div class="form-group">
+                    <label>วัสดุ</label><br>
+                    <select name="materials" id="materials">
+                        <%data[0].forEach((item) => {%>
+                            <option value="<%= item.id%>-<%= item.price%>">
+                                <%= item.name%>: <%= item.price%> บาท
+                            </option>
+                        <%});%>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>สีของวัสดุ</label><br>
+                    <input type="color" name="color" id="color" value="#E5E4E2">
+                </div>
+                <div class="form-group">
+                    <label>อัญมณี</label><br>
+                    <select name="stones" id="stones">
+                        <%data[1].forEach((item) => {%>
+                            <option value="<%= item.id%>-<%= item.price%>">
+                                <%= item.name%>: <%= item.price%> บาท
+                            </option>
+                        <%});%>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group" id="form-pendant">
+                <label>จี้</label><br>
+                <select name="pendants" id="pendants">
+                    <%data[2].forEach((item) => {%>
+                        <option value="<%= item.id%>-<%= item.price%>">
+                            <%= item.name%>: <%= item.price%> บาท
+                        </option>
+                    <%});%>
+                </select>
+            </div>
+        </div>
+
+        <div id="form-container-2">
+            <div class="form-group">
+                <label>ชื่อสินค้า: </label><br>
+                <input type="text" name="name" id="name">
+            </div>
+            <div class="form-group">
+                <label>ราคาสินค้า</label><br>
+                <input type="number" min="1" name="price" id="price">
+            </div>
+            <div class="form-group">
+                <label>รายละเอียดของสินค้า</label><br>
+                <textarea name="description" id="description"></textarea>
+            </div>
+        </div>
+        <button type="button" onclick="add_product()" id="add_product_butt">เพิ่มสินค้า</button>
     </form>
 </div>
+
+<script>
+//create product
+document.getElementById('category').addEventListener('change', function() {
+    let selectedType = this.value;
+    const product = document.getElementById('form-container-1');
+    const material = document.getElementById('form-container-2');
+    const butt = document.getElementById('add_product_butt');
+    if (selectedType === 'products') {
+        product.style.display = 'block';
+        material.style.display = 'none';
+        butt.style.display = 'none';
+    }else if (selectedType === "") {
+        product.style.display = 'none';
+        material.style.display = 'none';
+        butt.style.display = 'none';
+    }else {
+        product.style.display = 'none';
+        material.style.display = 'block';
+        butt.style.display = 'block';
+    }
+});
+
+document.getElementById('type-product').addEventListener('change', function() {
+    let selectedType = this.value;
+    // console.log("select: ", selectedType)
+    const product = document.getElementById('form-product-1');
+    const pendants = document.getElementById('form-pendant');
+    const butt = document.getElementById('add_product_butt');
+    if (selectedType === 'สร้อยข้อมือ' || selectedType === 'สร้อยคอ') {
+        pendants.style.display = 'block';
+        product.style.display = 'block';
+        butt.style.display = 'block';
+    }else if (selectedType === "") {
+        pendants.style.display = 'none';
+        product.style.display = 'none';
+        butt.style.display = 'none';
+    }else {
+        product.style.display = 'block';
+        pendants.style.display = 'none';
+        butt.style.display = 'block';
+    }
+});
+</script>

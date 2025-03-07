@@ -1,5 +1,3 @@
-// const { text } = require("body-parser");
-
 let add_order = [];
 let totalPrice = 0;
 
@@ -65,7 +63,6 @@ function open_decline_Modal() {
 }
 
 function close_decline_Modal() {
-    console.log("yess")
     document.getElementById("modal-decline-container").style.display = "none";
     document.getElementById("modal-decline").style.display = "none";
 }
@@ -81,7 +78,7 @@ function send_decline_Modal() {
         });
         return;
     }
-    console.log(description)
+    // console.log(description)
     try {
         Swal.fire({
             text: "คุณแน่ใจว่าจะปฏิเสธออเดอร์นี้?",
@@ -126,7 +123,7 @@ async function accept() {
         add_total: totalPrice,
     }
 
-    console.log(formData)
+    // console.log(formData)
     try {
         Swal.fire({
             title: "คุณแน่ใจหรือไม่?",
@@ -165,20 +162,7 @@ async function accept() {
 }
 
 //payment check
-document.addEventListener("DOMContentLoaded", function () {
-    const checkboxes = document.querySelectorAll(".check");
-    const acceptButton = document.getElementById("accept");
-    function checkAllChecked() {
-        const allChecked = [...checkboxes].every(input => input.checked);
-        acceptButton.style.display = allChecked ? "" : "none";
-    }
 
-    checkboxes.forEach(checkbox => {
-        checkbox.addEventListener("change", checkAllChecked);
-    });
-
-    checkAllChecked();
-});
 
 async function payment_check() {
     try {
@@ -382,8 +366,8 @@ function updateCard(updatedData) {
 
 //delete
 async function delProduct(id, category) {
-    console.log(id)
-    console.log(category)
+    // console.log(id)
+    // console.log(category)
     try {
         Swal.fire({
             title: "คุณแน่ใจหรือไม่?",
@@ -421,12 +405,6 @@ async function delProduct(id, category) {
             text: 'เกิดข้อผิดพลาดในการเชื่อมต่อ',
         });
     }
-
-    const response = await fetch('/api/prod_del', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({category, id})
-        });
 }
 
 function goBack() {
@@ -442,3 +420,137 @@ document.getElementById("modal").addEventListener("click", function (event) {
         closeModal();
     }
 });
+
+
+
+function add_product() {
+    let category = document.getElementById("category").value;
+
+    let name_prod = document.getElementById("name_prod").value;
+    // let price_prod = document.getElementById("price_prod").value;
+    let description_prod = document.getElementById("description_prod").value;
+    let image = document.getElementById("image").files[0]?.name;
+    let stock = document.getElementById("stock").value;
+    let typeProduct = document.getElementById("type-product").value;
+    let materials = document.getElementById("materials").value.split('-')[0];
+    let materials_price = document.getElementById("materials").value.split('-')[1];
+    let color = document.getElementById("color").value;
+    let stones = document.getElementById("stones").value.split('-')[0];
+    let stones_price = document.getElementById("stones").value.split('-')[1];
+    let pendants = document.getElementById("pendants").value.split('-')[0];
+    let pendants_price = document.getElementById("pendants").value.split('-')[1];
+
+    let name = document.getElementById("name").value;
+    let price = document.getElementById("price").value;
+    let description = document.getElementById("description").value;
+
+    let formData = {};
+    let show_price = 0;
+    console.log(pendants_price)
+
+    if (category === 'products') {
+        if (!name_prod || !description_prod || !image || !stock) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'กรุณากรอกข้อมูลให้ครบ'
+            });
+            return;
+        }
+
+        let base_price = 0;
+        base_price += parseInt(materials_price)+parseInt(stones_price);
+        show_price = base_price;
+        formData = {
+            category,
+            name_prod,
+            base_price,
+            description_prod,
+            image,
+            stock,
+            typeProduct,
+            materials,
+            color,
+            stones
+        }
+        if (typeProduct === 'สร้อยคอ' || typeProduct === 'สร้อยข้อมือ') {
+            base_price += parseInt(pendants_price);
+            formData.pendants = pendants;
+        }
+
+
+    } else {
+        if (!name || !price || !description) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'กรุณากรอกข้อมูลให้ครบ'
+            });
+            return;
+        }
+
+        formData = {
+            category, name, price, description
+        };
+        show_price = price;
+    }
+
+    console.log("formData: ", formData);
+    
+
+    try {
+        Swal.fire({
+            title: "คุณต้องการเพิ่มสินค้าใช่หรือไม่?",
+            text: `ราคารวมของสินค้านี้ คือ ${show_price} บาท`,
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#BF8579",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "ใช่!",
+            cancelButtonText: "ยกเลิก"
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const response = await fetch("/api/create_product", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(formData),
+                });
+          
+            if (response.ok) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'สำเร็จ',
+                    text: 'สินค้าของคุณถูกเพิ่มเรียบร้อยแล้ว'
+                }).then(() => {
+                    window.location.href = `/emp/?name=${category}`;
+                });
+            } else {
+                Swal.fire("ล้มเหลว!", "ไม่สามารถบันทึกการเปลี่ยนแปลงนี้ได้", "error");
+            }
+        }});
+    } catch (error) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Server Error',
+            text: 'เกิดข้อผิดพลาดในการเชื่อมต่อ',
+        });
+    }
+}
+
+
+
+
+
+    // แสดงค่าที่ดึงมาใน console
+    // console.log("ประเภทสินค้า:", category);
+    // console.log("ชื่อสินค้า:", name);
+    // console.log("ราคา:", price);
+    // console.log("รายละเอียด:", description);
+    // console.log("รูปภาพ:", image);
+    // console.log("จำนวนสินค้า:", stock);
+    // console.log("ประเภทสินค้า:", typeProduct);
+    // console.log("วัสดุ:", materials);
+    // console.log("สีวัสดุ:", color);
+    // console.log("อัญมณี:", stones);
+    // console.log("จี้:", pendants);
+

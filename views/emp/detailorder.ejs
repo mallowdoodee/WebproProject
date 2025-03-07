@@ -460,7 +460,6 @@
             <a href="/emp/orders" class="cancel">Cancel</a>
         </div>
             <!-- decline => description -->
-
         <div class="modal" id="modal-decline">
             <div class="modal-container" id="modal-decline-container">
                 <form>
@@ -499,7 +498,7 @@
                     </div>
                 </div>
                 <div class="butt">
-                    <button style="display: none;" onclick="payment_check()">ยืนยันรับออเดอร์</button>
+                    <button id="acceptButton" style="display: none;" onclick="payment_check()">ยืนยันรับออเดอร์</button>
                     <a href="/emp/myorders">ยกเลิก</a>
                 </div>
                 <%}%>
@@ -526,5 +525,22 @@
     // });
     });
 </script> -->
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const checkboxes = document.querySelectorAll(".check");
+    const acceptButton = document.getElementById("acceptButton");
+    function checkAllChecked() {
+        const allChecked = [...checkboxes].every(input => input.checked);
+        acceptButton.style.display = allChecked ? "" : "none";
+    }
+
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener("change", checkAllChecked);
+    });
+
+    checkAllChecked();
+});
+</script>
 
 
