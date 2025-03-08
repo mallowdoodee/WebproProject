@@ -8,12 +8,72 @@
         box-sizing: border-box;
     }
 
+    label {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 3px;
+        color: #7A2E2E;
+        font-family: var(--font-thaiS);
+    }
+
+    .form-group {
+        margin-bottom: 10px;
+        margin-left: 14px;
+    }
+
+    .form-group input,
+    textarea,
+    select {
+        padding: 8px;
+        border: 1px solid #E5CFC5;
+        border-radius: 3px;
+        width: 300px;
+        margin-bottom: 10px;
+        background-color: rgba(255, 255, 255, 0.9);
+        padding-left: 12px;
+        font-family: var(--font-thai);
+        font-weight: 500;
+    }
+
+    textarea {
+        resize: none;
+        height: 100px;
+    }
+
+    #category, #type-product {
+        padding-left: 10px;
+        width: 150px;
+    }
+
+    select {
+        padding-left: 10px;
+        width: 250px;
+    }
+
     #form-container-1, #form-container-2 {
         display: none;
     }
 
     #form-pendant, #form-product-1, #add_product_butt {
         display: none;
+    }
+
+    button {
+        display: inline-block;
+        text-align: center;
+        background-color: #D8A273;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 12px;
+        margin-left: 14px;
+        font-family: var(--font-thai);
+    }
+
+    button:hover {
+        background-color: #C78E61;
     }
 
 </style>
@@ -41,19 +101,19 @@
                 <input type="number" min="1" name="price_prod" id="price_prod">
             </div> -->
             <div class="form-group">
-                <label>รายละเอียดของสินค้า</label><br>
+                <label>รายละเอียดของสินค้า: </label><br>
                 <textarea name="description_prod" id="description_prod"></textarea>
             </div>
             <div class="form-group">
-                <label>รูปภาพสินค้า</label><br>
+                <label>รูปภาพสินค้า: </label><br>
                 <input type="file" name="image" id="image">
             </div>
             <div class="form-group">
-                <label>จำนวนสินค้าในคลัง</label><br>
+                <label>จำนวนสินค้าในคลัง: </label><br>
                 <input type="number" name="stock" id="stock">
             </div>
             <div class="form-group" id="type">
-                <label>ประเภทสินค้า</label><br>
+                <label>ประเภทสินค้า: </label><br>
                 <select name="type-product" id="type-product">
                     <option value="">-- กรุณาเลือก --</option>
                     <option value="สร้อยข้อมือ">สร้อยข้อมือ</option>
@@ -65,7 +125,7 @@
 
             <div class="form-product-1" id="form-product-1">
                 <div class="form-group">
-                    <label>วัสดุ</label><br>
+                    <label>วัสดุ: </label><br>
                     <select name="materials" id="materials">
                         <%data[0].forEach((item) => {%>
                             <option value="<%= item.id%>-<%= item.price%>">
@@ -75,11 +135,11 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>สีของวัสดุ</label><br>
-                    <input type="color" name="color" id="color" value="#E5E4E2">
+                    <label>สีของวัสดุ: </label><br>
+                    <input style="height: 75px; width: 90px;" type="color" name="color" id="color" value="#E5E4E2">
                 </div>
                 <div class="form-group">
-                    <label>อัญมณี</label><br>
+                    <label>อัญมณี: </label><br>
                     <select name="stones" id="stones">
                         <%data[1].forEach((item) => {%>
                             <option value="<%= item.id%>-<%= item.price%>">
@@ -108,11 +168,11 @@
                 <input type="text" name="name" id="name">
             </div>
             <div class="form-group">
-                <label>ราคาสินค้า</label><br>
+                <label>ราคาสินค้า: </label><br>
                 <input type="number" min="1" name="price" id="price">
             </div>
             <div class="form-group">
-                <label>รายละเอียดของสินค้า</label><br>
+                <label>รายละเอียดของสินค้า: </label><br>
                 <textarea name="description" id="description"></textarea>
             </div>
         </div>

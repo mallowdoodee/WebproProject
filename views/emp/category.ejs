@@ -27,12 +27,30 @@
 
     .card:hover {
         background-color: #D29F8E;
-        padding: 30px;
-        cursor: pointer;
-        box-shadow: 5px 8px 10px gainsboro;
-        border-radius: 2px;
         transition: background-color 0.3s ease, color 0.3s ease;
-        color: #A56037;
+    }
+
+    .addproduct {
+        background-color: #B76E4A;
+        padding: 15px 30px;
+        cursor: pointer;
+        border-radius: 2px;
+        color: white;
+        display: inline-block;
+        font-family: var(--font-thai);
+    }
+
+    .addproduct:hover {
+        background-color: #A56037;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .create-product {
+        display: flex;
+        justify-content: center;
+        align-items: center; 
+        margin-top: 20px;
+        width: 100%;
     }
 
     hr {
@@ -67,6 +85,6 @@
     </div>
 
     <div class="create-product">
-        <a href="/createProduct">Add Product</a>
+        <a href="/createProduct" class="addproduct">เพิ่มสินค้า</a>
     </div>
 </div>

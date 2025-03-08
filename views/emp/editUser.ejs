@@ -62,16 +62,14 @@
     .btn {
         display: inline-block;
         text-align: center;
-        width: 130px;
         background-color: #D8A273;
         color: white;
         border: none;
-        padding: 10px;
+        padding: 10px 12px;
         border-radius: 5px;
         cursor: pointer;
-        font-size: 20px;
         margin-top: 12px;
-        font-family: var(--font-secondary);
+        font-family: var(--font-thai);
     }
 
     .btn:hover {
@@ -82,8 +80,8 @@
         background-color: #D15F5F;
         color: white;
         /*border: 1px solid #0056b3;*/
-        margin-left: 11px;
-        width: 90px;
+        margin-left: 8px;
+        padding: 10px 14px;
     }
 
     .cancel:hover {
@@ -128,8 +126,8 @@
                     <% }); %>
 
                         <% if(isEditing) { %>
-                            <input type="submit" value="Update User" class="btn submit">
-                            <a class="btn cancel" href="/emp/manages">Cancel</a>
+                            <input type="submit" value="อัพเดทผู้ใช้" class="btn submit">
+                            <a class="btn cancel" href="/emp/manages">ยกเลิก</a>
                         <% } else { %>
                                 <div class="form-group">
                                     <div class="form-group">
@@ -148,8 +146,8 @@
                                     <p id="error_msg" class="error-message" style="color: red;"></p>
                                 </div>
                                 
-                                <input type="submit" value="Create User" class="btn submit">
-                                <a class="btn cancel" href="/emp/manages">Cancel</a>
+                                <input type="submit" value="อัพเดทผู้ใช้" class="btn submit">
+                                <a class="btn cancel" href="/emp/manages">ยกเลิก</a>
                         <% } %>
                 </div>
         </form>

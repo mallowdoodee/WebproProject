@@ -19,7 +19,7 @@
         cursor: pointer;
         border-radius: 5px;
         transition: opacity 0.3s ease;
-        font-family: var(--font-secondary);
+        font-family: var(--font-thai);
     }
 
     #accept {
@@ -122,7 +122,7 @@
     .list-order {
         background: #fff;
         padding: 40px;
-        border-radius: 5px;
+        border-radius: 4px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
 
@@ -248,7 +248,7 @@
         margin-top: 30px;
         padding: 20px;
         background: #fff;
-        border-radius: 3px;
+        border-radius: 4px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
 
@@ -267,18 +267,35 @@
     }
 
     button {
-        margin-top: 15px;
+        margin-top: 20px;
         padding: 10px;
         background: #EDD1CC;
-        color: #580201;
+        color: 580201;
         border: none;
         border-radius: 5px;
         cursor: pointer;
         font-size: 16px;
+        margin-right: 10px;
     }
 
     button:hover {
         background: #F6E5E2;
+    }
+
+    .delivery {
+        margin-top: 20px;
+        padding: 10px;
+        background: #3398ff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-right: 10px;
+    }
+
+    .delivery:hover {
+        background: #66aaff;
     }
 
     /* form {
@@ -348,7 +365,7 @@
     .info-order {
         background: #fff;
         padding: 20px;
-        border-radius: 10px;
+        border-radius: 4px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         margin-top: 40px;
     }
@@ -360,8 +377,8 @@
     }
 
     .img-payment {
-        max-width: 30%;
-        border-radius: 8px;
+        max-width: 25%;
+        border-radius: 5px;
         margin-right: 15px;
     }
 
@@ -371,16 +388,17 @@
 
     .check-item label {
         display: block;
-        background: #f9f9f9;
+        background: #FAF0EE;
         padding: 10px;
         margin: 5px 0;
         border-radius: 5px;
         transition: 0.3s;
         cursor: pointer;
+        font-family: var(--font-thai);
     }
 
     .check-item label:hover {
-        background: #e3f2fd;
+        background: #EDD1CC;
     }
 
     .pending {
@@ -395,6 +413,10 @@
         color: #D15F5F;
     }
 
+    .recived {
+        color: #3398ff;
+    }
+
     #total {
         margin-top: 30px;
         font-size: 30px;
@@ -404,10 +426,20 @@
         padding-left: 4px;
     }
 
-    .status {
+    #acceptButton {
+        color: white;
+        background-color: #67C14B;
+        margin-right: 10px;
+    }
+
+    #acceptButton:hover {
+        background-color: #88C974;
+    }
+
+    /*.status {
         color: #007bff;
         font-weight: bold;
-    }
+    }*/
 
 </style>
 
@@ -417,7 +449,13 @@
         <%if(data[0].order_status === 'กำลังจัดส่ง' || data[0].order_status === 'จัดส่งสำเร็จ'){%>
             <h3 class="order-title">#ORDER<%= data[0].id %> - <%= data[0].order_status %><span class="status"> #<%=data[0].parcel_number%></span></h3>
         <%}else{%>
-            <h3 class="order-title">#ORDER<%= data[0].id %> - <span><%= data[0].order_status %></span></h3>
+            <h3 class="order-title">#ORDER<%= data[0].id %> - <span class="status 
+                <%= data[0].order_status === 'รอดำเนินการ' ? 'pending' 
+                : data[0].order_status === 'ยอมรับออเดอร์แล้ว' ? 'accepted' 
+                : data[0].order_status === 'รอตรวจสอบการชำระเงิน' ? 'pending' 
+                : data[0].order_status === 'รับออเดอร์' ? 'recived' 
+                : 'declined' %>">
+                <%= data[0].order_status %></span></h3>
         <%}%>
 
         <div class="list-content" id="list">
@@ -549,7 +587,7 @@
         <div class="butt">
             <button onclick="accept()" id="accept">ยอมรับออเดอร์</button>
             <button id="decline" onclick="open_decline_Modal()">ปฏิเสธรับออเดอร์</button>
-            <a href="/emp/orders" class="cancel">กลับไป</a>
+            <a href="/emp/orders" class="cancel">กลับไปหน้าหลัก</a>
         </div>
             <!-- decline => description -->
         <div class="modal" id="modal-decline">
@@ -591,7 +629,7 @@
                 </div>
                 <div class="butt">
                     <button id="acceptButton" style="display: none;" onclick="payment_check()">ยืนยันรับออเดอร์</button>
-                    <a href="/emp/myorders">กลับไป</a>
+                    <a href="/emp/myorders" class="cancel">กลับไปหน้าหลัก</a>
                 </div>
             <%}%>
         </div>
@@ -600,18 +638,19 @@
 <div>
     <%if(data[0].order_status === 'ยอมรับออเดอร์แล้ว') {%>
     <div class="butt">
-        <a href="/emp/myorders">กลับไป</a>
+        <a href="/emp/myorders" class="cancel">กลับไปหน้าหลัก</a>
     </div>
     <%}%>
 </div>
 <%if (data[0].order_status === 'รับออเดอร์') {%>
     <div class="info-order" style="justify-content: center;">
+        <h2>Delivery</h2>
         <div class="post">
-            กรอกหมายเลขพัสดุ: <input type="text" id="delivery">
+            <label class="font-thaiS">กรอกหมายเลขพัสดุ: <input type="text" id="delivery"></label>
         </div>
         <div class="butt">
-            <button onclick="delivery(event)">จัดส่งสินค้า</button>
-            <a href="/emp/myorders">กลับไป</a>
+            <button onclick="delivery(event)" class="delivery">จัดส่งสินค้า</button>
+            <a href="/emp/myorders" class="cancel">กลับไปหน้าหลัก</a>
         </div>
     </div>
 <%}%>
@@ -619,14 +658,14 @@
     <%if(data[0].order_status === 'กำลังจัดส่ง') {%>
     <div class="butt">
         <button onclick="success_order(event)">ส่งสินค้าสำเร็จ</button>
-        <a href="/emp/myorders">กลับไป</a>
+        <a href="/emp/myorders" class="cancel">กลับไปหน้าหลัก</a>
     </div>
     <%}%>
 </div>
 <div>
     <%if(data[0].order_status === 'จัดส่งสำเร็จ' || data[0].order_status === 'ปฏิเสธการรับออเดอร์') {%>
     <div class="butt">
-        <a href="/emp/myorders">กลับไป</a>
+        <a href="/emp/myorders" class="cancel">กลับไปหน้าหลัก</a>
     </div>
     <%}%>
 </div>
