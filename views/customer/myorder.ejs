@@ -8,14 +8,9 @@
         box-sizing: border-box;
     }
     .bar a:hover {
-        text-decoration: underline;
-        color: var(--color-softbs);
+    text-decoration: underline;
+    color: var(--color-softbs);
     }
-
-    a:hover {
-        text-decoration: underline;
-    }
-
 
 </style>
 
@@ -23,7 +18,7 @@
     <h1 class="font-logo text-6xl text-center text-[var(--color-red)]">My Account</h1>
     <h3 class="text-center pt-5 text-lg text-gray-500">หากไม่ได้รับสินค้า สามารถแจ้งได้ที่ Line: @celestar</h3>
     
-    <div class="bar flex pt-5 justify-center gap-10  text-lg font-bold text-[var(--color-bs)]">
+    <div class="bar flex pt-5 justify-center gap-12 font-bold text-[var(--color-bs)] text-lg">
         <a href="/myorders">ข้อมูลผู้ใช้</a>
         <a href="/myorders?page=pending">รอดำเนินการ</a>
         <a href="/myorders?page=check">รอตรวจสอบ</a>
@@ -32,9 +27,8 @@
         <a href="/myorders?page=paid">รับออเดอร์แล้ว</a>
         <a href="/myorders?page=success">จัดส่งสำเร็จ</a>
     </div>
-    
-    <div class="content mt-5 font-basetext px-50">
-        <p class="text-center text-gray-700">Shine like a diamond, <strong><%= user.email.split('@')[0]%></strong> (Mistaken identity? <a class="text-[var(--color-pink)] font-bold" href="/logout">Log out</a>)</p>
+
+    <div class="content">
         <% if (page === '') {%>
             <%- include('editAccount') %>
         <% } else { %>
