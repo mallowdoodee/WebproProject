@@ -57,18 +57,17 @@
         }
 
         .btn {
-            background-color: #007bff;
+            background-color: var(--color-pink);
             color: white;
             border: none;
-            padding: 10px;
+            padding: 10px 10px;
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
-            margin-top: 10px;
         }
 
         .btn:hover {
-            background-color: #0056b3;
+            background-color: var(--color-bs);
         }
 
         .cancel {
@@ -85,31 +84,38 @@
 
 <!-- <body> -->
     <!-- <div class="container mt-15"> -->
-        <% data.forEach((item)=>{ %>
+            <% data.forEach((item)=>{ %>
             <form onsubmit="return checkInfo()">
                 <!-- <input type="hidden" name="id" value="<%= item.id %>"> -->
-                <div class="form-container">
-                    <div class="form-group">
-                        <label>First Name:</label>
-                        <input type="text" value="<%= item.fname %>" id="fname" name="fname">
+                <div class="grid grid-cols-2 gap-4 items-center font-thai pt-10">
+                    <div class="flex flex-col">
+                        <label class="text-gray-700 font-semibold">ชื่อ</label>
+                        <input class="border rounded-md p-2 w-full" type="text" value="<%= item.fname %>" id="fname" name="fname">
                     </div>
-                    <div class="form-group">
-                        <label>Last Name:</label>
-                        <input type="text" value="<%= item.lname %>" id="lname" name="lname">
+                    <div class="flex flex-col font-thai">
+                        <label class="text-gray-700 font-semibold">นามสกุล</label>
+                        <input class="border rounded-md p-2 w-full" type="text" value="<%= item.lname %>" id="lname" name="lname">
                     </div>
-                    <div class="form-group">
-                        <label>Phone:</label>
-                        <input type="tel" value="<%= item.phone %>" id="phone" name="phone">
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4 items-center font-thai">
+                    <div class="mt-4 font-thai">
+                        <label class="text-gray-700 font-semibold">เบอร์</label>
+                        <input class="border rounded-md p-2 w-full mt-1" type="tel" value="<%= item.phone %>" id="phone" name="phone">
                     </div>
-                    <div class="form-group">
-                        <label>Address:</label>
-                        <textarea id="address" name="address"><%= item.address %></textarea>
+                    <div class="mt-4 font-thai">
+                        <label class="text-gray-700 font-semibold">EMAIL ADDRESS</label>
+                        <input class="border rounded-md p-2 w-full mt-1" id="address" name="address"value=<%= item.address %>>
                     </div>
-                    <div class="form-group">
-                        <label>Email:</label>
-                        <input type="email" value="<%= item.email %>" id="email" name="email">
-                    </div>
-                    <input type="submit" value="บันทึกการเปลี่ยนแปลง" class="btn submit">
+                </div>
+
+                <!-- ที่อนู่ -->
+                <div class="mt-4 font-thai">
+                    <label class="text-gray-700 font-semibold">ที่อยู่</label>
+                    <textarea class="border rounded-md p-3 w-full mt-1 h-20 resize-none" type="textarea" value="<%= item.displayName %>" id="displayName" name="displayName"></textarea>
+                </div>
+                
+                    <input type="submit" value="บันทึกการเปลี่ยนแปลง" class="btn submit font-thai mt-2">
                 </div>
             </form>
         <% }); %>
