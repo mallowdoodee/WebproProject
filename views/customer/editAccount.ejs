@@ -1,107 +1,89 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
+<style>
+    .form-container {
+        padding: 20px;
+        border-radius: 8px;
+        width: 350px;
+    }
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit My Account</title>
-    <link href="css/Home-Customer.css" rel="stylesheet">
-    <script src="https://unpkg.com/@tailwindcss/browser@4"></script> -->
-    <style>
-        /* .container {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 20px;
-            box-sizing: border-box;
-        } */
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 10px;
+    }
 
-        .form-container {
-            padding: 20px;
-            border-radius: 8px;
-            width: 350px;
-        }
+    label {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
 
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 10px;
-        }
+    input,
+    textarea,
+    select {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
 
-        label {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
+    textarea {
+        resize: none;
+        height: 60px;
+    }
 
-        input,
-        textarea,
-        select {
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
+    .error-message {
+        font-size: 12px;
+        margin-top: 5px;
+    }
 
-        textarea {
-            resize: none;
-            height: 60px;
-        }
+    a {
+        text-decoration: none;
+    }
 
-        .error-message {
-            font-size: 12px;
-            margin-top: 5px;
-        }
+    .btn {
+        background-color: var(--color-pink);
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 10px;
+    }
 
-        a {
-            text-decoration: none;
-        }
+    .btn:hover {
+        background-color: var(--color-bs);
+    }
 
-        .btn {
-            background-color: var(--color-pink);
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 10px;
-        }
+    .cancel {
+        background-color: white;
+        color: #0056b3;
+        border: 1px solid #0056b3;
+    }
 
-        .btn:hover {
-            background-color: var(--color-bs);
-        }
+    .cancel:hover {
+        color: white;
+    }
 
-        .cancel {
-            background-color: white;
-            color: #0056b3;
-            border: 1px solid #0056b3;
-        }
+    input:focus, textarea:focus {
+        outline: 2px solid var(--color-pink) !important;
+        box-shadow: 0 0 8px var(--color-softpink) !important;
+        transition: all 0.1s ease-in-out;
+        outline: none;
+    }
+</style>
 
-        .cancel:hover {
-            color: white;
-        }
 
-        input:focus, textarea:focus {
-            outline: 2px solid var(--color-pink) !important;
-            box-shadow: 0 0 8px var(--color-softpink) !important;
-            transition: all 0.1s ease-in-out;
-            outline: none;
-        }
-    </style>
-</head>
-
-<!-- <body> -->
-    <!-- <div class="container mt-15"> -->
-        <p class="text-center text-gray-700 pt-5 font-basetext">
+        <p class="text-center text-gray-700 pt-5 font-basetext" style="display: inline-block;">
             Welcome to a world of elegance, 
             <strong><%= user.email.split('@')[0] %>✨</strong>
-            (Not you? 
-            <a class="font-bold transition-all duration-200 group" href="/logout">
-                <span class="text-[var(--color-pink)] group-hover:text-[var(--color-softbs)] group-hover:underline">Log out</span>
-            </a> <span class="text-yellow-400 text-lg">ᯓ★</span> )
+            (Not you?
+            <form action="/logout" method="POST" style="display: inline;"> 
+                <button type="submit" class="font-bold transition-all duration-200 group" href="/logout">
+                    <span class="text-[var(--color-pink)] group-hover:text-[var(--color-softbs)] group-hover:underline">Log out</span>
+                </button> <span class="text-yellow-400 text-lg">ᯓ★</span> )
+            </form>
         </p>
         <% data.forEach((item)=>{ %>
-            <form onsubmit="return checkInfo()" class="mx-50">
+            <form class="mx-50">
                 <div class="grid grid-cols-2 gap-4 font-thai pt-5">
                     <!-- ชื่อ และ นามสกุล -->
                     <div class="flex flex-col">
@@ -124,49 +106,18 @@
                     <!-- EMAIL ADDRESS -->
                     <div class="mt-4 font-thai">
                         <label class="text-gray-700 font-semibold">EMAIL ADDRESS</label>
-                        <input class="border rounded-md p-2 w-full mt-1" type="email" value="<%= item.address %>" id="address" name="address">
+                        <input class="border rounded-md p-2 w-full mt-1" type="email" value="<%= item.email %>" id="email" name="email" readonly>
                     </div>
                 </div>
             
                 <!-- ที่อยู่ -->
                 <div class="mt-4 font-thai">
                     <label class="text-gray-700 font-semibold">ที่อยู่</label>
-                    <textarea class="border rounded-md p-3 w-full mt-1 h-20 resize-none" id="addressDetail" name="addressDetail"><%= item.addressDetail %></textarea>
+                    <textarea class="border rounded-md p-3 w-full mt-1 h-20 resize-none" id="address" name="address"><%= item.address %></textarea>
                 </div>
             
                 <!-- ปุ่มบันทึก -->
-                <input type="submit" value="บันทึกการเปลี่ยนแปลง" class="btn submit font-thai mt-4">
+                <button type="button" class="btn submit font-thai mt-4" onclick="change_info(event)">บันทึกการเปลี่ยนแปลง</button>
             </form>
             
         <% }); %>
-    <!-- </div> -->
-
-    <script>
-        function checkInfo() {
-            const fname = document.getElementById('fname').value;
-            const lname = document.getElementById('lname').value;
-            const phone = document.getElementById('phone').value;
-            const address = document.getElementById('address').value;
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const confirmPass = document.getElementById('confirmPass').value;
-
-            if (!fname || !lname || !phone || !address || !email || !password) {
-                alert('กรุณากรอกข้อมูลให้ครบ');
-                return false;
-            }
-
-            if (password !== confirmPass) {
-                document.getElementById('error_msg').innerText = "Passwords do not match!";
-                alert('Passwords do not match!');
-                return false;
-            }
-
-            return true;
-        }
-    </script>
-
-
-<!-- </body>
-
-</html> -->

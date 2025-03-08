@@ -405,7 +405,11 @@
     <%- include('topbar') %>
     <div class="mt-20 font-thai">
         <div class="heading-div">
-            <a class="back" href="/product">ย้อนกลับ</a>
+            <%if (user.isMember){%>
+                <button class="back" onclick="back_and_save()">ย้อนกลับ</button>
+            <%}else{%>
+                <a class="back" href="/product">ย้อนกลับ</a>
+            <%}%>
             <h1 style="color: #580201;font-size: 30px;padding-right: 30px;">ปรับแต่ง<%= product.category %>ของคุณ</h1>
     </div>
     
@@ -439,6 +443,12 @@
 
                 <strong><label for="material">วัสดุของ<%= product.category %> : </label></strong> <br>
                 <select name="material" id="material" onchange="toggleEngraveOption()">
+                <% 
+                    let selectedMaterial = materialsData.find(material => material.id === product.material);
+                    let selectedMaterialName = selectedMaterial ? selectedMaterial.name : "ไม่พบข้อมูล"; // กรณีไม่พบ
+                    let selectedMaterialPrice = selectedMaterial ? selectedMaterial.price : 0;
+                %>
+                <option value="<%= selectedMaterialName %>-<%= selectedMaterialPrice %>"><%= selectedMaterialName %>: <%= selectedMaterialPrice %> บาท</option>
                     <% materialsData.forEach((item)=> { %>
                         <option value="<%= item.name %>-<%= item.price %>">
                             <%= item.name %>: <%= item.price %> บาท
@@ -476,64 +486,80 @@
 
                 <strong><label for="stone">อัญมณี : </label></strong>
                 <select name="stone" id="stone">
-                    <% let stoneCount=0; %>
-                        <% stonesData.forEach((item)=> { %>
-                            <option value="<%= item.name %>-<%= item.price %>">
-                                <%= item.name %>: <%= item.price %> บาท/ชิ้น
-                            </option>
-                        <% stoneCount++; %>
-                    <% }); %>
-                </select><br>
+                <% 
+                    let selectedStone = stonesData.find(stone => stone.id === product.gemstone);
+                    let selectedStoneName = selectedStone ? selectedStone.name : "ไม่พบข้อมูล"; // กรณีไม่พบ
+                    let selectedStonePrice = selectedStone ? selectedStone.price : 0;
+                %>
+                <option value="<%= selectedStoneName %>-<%= selectedStonePrice %>"><%= selectedStoneName %>: <%= selectedStonePrice %> บาท/ชิ้น</option>
+                <% let stoneCount=0; %>
+                    <% stonesData.forEach((item)=> { %>
+                        <option value="<%= item.name %>-<%= item.price %>">
+                            <%= item.name %>: <%= item.price %> บาท/ชิ้น
+                        </option>
+                    <% stoneCount++; %>
+                <% }); %>
+            </select><br>
 
                 <% if (product.category==='สร้อยข้อมือ' || product.category==='สร้อยคอ' ) { %>
                     <% if (pendantsData.length> 0) { %>
                         <strong><label>จี้ : </label></strong><br>
-                            <% pendantsData.forEach((pendant, index)=> { %>
-                                <div class="pendant-selection">
-                                    <label class="tooltip-container">
-                                        <label style="display: inline-flex; align-items: center;">
-                                            <input type="checkbox" id="pendant-<%= index %>" name="pendent"
-                                                value="<%= pendant.name %>-<%= pendant.price %>" onclick="toggleInput('pendant-<%= index %>-num')"
-                                                style="margin: 0;">
-                                            <strong><%= pendant.name %></strong>
-                                        </label>
-
-                                        <span class="tooltip">
-                                            <strong>ราคา:</strong>
-                                            <%= pendant.price %> บาท<br>
-                                            <strong>รายละเอียด:</strong>
-                                            <%= pendant.description %>
-                                        </span>
+                        <% 
+                            let selectedPendant = pendantsData.find(pendant => pendant.id === product.pendant);
+                            let selectedPendantName = selectedPendant ? selectedPendant.name : "ไม่พบข้อมูล"; // กรณีไม่พบ
+                            let selectedPendantePrice = selectedPendant ? selectedPendant.price : 0;
+                        %>  
+                        <% pendantsData.forEach((pendant, index)=> { %>
+                            <% let isChecked = pendant.id === product.pendant; %>
+                            <div class="pendant-selection">
+                                <label class="tooltip-container">
+                                    <label style="display: inline-flex; align-items: center;">
+                                        <input type="checkbox" id="pendant-<%= index %>" name="pendent"
+                                            value="<%= pendant.name %>-<%= pendant.price %>"
+                                            onchange="toggleInput('pendant-<%= index %>-num', this.checked)"
+                                            style="margin: 0;" <%= isChecked ? 'checked' : '' %>>
+                                        <strong><%= pendant.name %></strong>
                                     </label>
+
+                                    <span class="tooltip">
+                                        <strong>ราคา:</strong>
+                                        <%= pendant.price %> บาท<br>
+                                        <strong>รายละเอียด:</strong>
+                                        <%= pendant.description %>
+                                    </span>
+                                </label>
+                                <% if (isChecked) { %>
+                                    <div id="pendant-<%= index %>-num" style="display: block;">
+                                <% } else { %>
                                     <div id="pendant-<%= index %>-num" style="display: none;">
-                                        <strong><label for="<%= pendant.name %>-num">จำนวน:</label></strong>
-                                        <input type="number" name="<%= pendant.name %>-num" value="1" min="1" max="10"><br>
-                                        <strong><label for="<%= pendant.name %>-color">Color of pendant:</label></strong>
-                                        <input type="color" value="#E5E4E2" name="<%= pendant.name %>-color"id="<%= pendant.name %>-color">
-                                        <br>
-                                        <strong><label>เพิ่มข้อความสลักบนจี้ของคุณ</label></strong><br>
-                                        <label>
-                                            <input class="engraveChoice" class="engraveChoice" type="radio" name="<%= pendant.name %>-engrave" value="yes"
-                                                onclick="toggleEngravePendantText('<%= pendant.name %>', true)">
-                                                สลัก
-                                        </label>
-                                        <label>
-                                            <input class="engraveChoice" class="engraveChoice" type="radio" name="<%= pendant.name %>-engrave" value="none"
-                                                onclick="toggleEngravePendantText('<%= pendant.name %>', false)" checked> ไม่สลัก
-                                        </label>
-                                        <!-- ช่องกรอกข้อความสำหรับการสลัก -->
-                                        <div id="engravePendantTextContainer-<%= pendant.name %>" style="display: none;">
-                                            <strong><label for="engravePendantText-<%= pendant.name %>">เพิ่มข้อความสลักบนจี้ของคุณ</label></strong>
-                                            <input type="text" maxlength="6" name="engravePendantText-<%= pendant.name %>" id="engravePendantText-<%= pendant.name %>"
-                                            placeholder="ข้อความสลักของคุณ">
-                                        </div>
+                                <% } %>                                        <strong><label for="<%= pendant.name %>-num">จำนวน:</label></strong>
+                                    <input type="number" name="<%= pendant.name %>-num" value="1" min="1" max="10"><br>
+                                    <strong><label for="<%= pendant.name %>-color">Color of pendant:</label></strong>
+                                    <input type="color" value="#E5E4E2" name="<%= pendant.name %>-color"id="<%= pendant.name %>-color">
+                                    <br>
+                                    <strong><label>เพิ่มข้อความสลักบนจี้ของคุณ</label></strong><br>
+                                    <label>
+                                        <input class="engraveChoice" class="engraveChoice" type="radio" name="<%= pendant.name %>-engrave" value="yes"
+                                            onclick="toggleEngravePendantText('<%= pendant.name %>', true)">
+                                            สลัก
+                                    </label>
+                                    <label>
+                                        <input class="engraveChoice" class="engraveChoice" type="radio" name="<%= pendant.name %>-engrave" value="none"
+                                            onclick="toggleEngravePendantText('<%= pendant.name %>', false)" checked> ไม่สลัก
+                                    </label>
+                                    <!-- ช่องกรอกข้อความสำหรับการสลัก -->
+                                    <div id="engravePendantTextContainer-<%= pendant.name %>" style="display: none;">
+                                        <strong><label for="engravePendantText-<%= pendant.name %>">เพิ่มข้อความสลักบนจี้ของคุณ</label></strong>
+                                        <input type="text" maxlength="6" name="engravePendantText-<%= pendant.name %>" id="engravePendantText-<%= pendant.name %>"
+                                        placeholder="ข้อความสลักของคุณ">
                                     </div>
                                 </div>
-                            <% }); %>
-                    <% } else { %>
-                        <p>No pendants available for this bracelet.</p>
-                <% } %>
-                <% } %>
+                            </div>
+                        <% }); %>
+                <% } else { %>
+                    <p>No pendants available for this bracelet.</p>
+            <% } %>
+            <% } %>
 
 
                 <div class="add-image">
@@ -579,18 +605,16 @@
         <div>
             <%if (user.isMember) {%>
                 <div class="butt flex justify-center items-center w-full">
-                    <button class="px-8 py-2 rounded-full bg-softpink " onclick="confirm()">
-                        CONFIRM
+                    <button class="px-8 py-2 rounded-full bg-softpink " onclick="confirm(event)">
+                        สั่งเลย!
                     </button>                    
-                    
-                    <button class="px-8 py-2 rounded-full bg-softpink ml-5" onclick="closePopup()">
-                        CANCEL
-                    </button>
-                </div>
+                    <button class="px-8 py-2 rounded-full bg-softpink ml-5" onclick="saveOrder()">บันทึก</button>
                 
             <%}%>
-                           
-                <!-- <button class="but-pop" onclick="confirm()">CONFIRM</button> -->
+            <button class="px-8 py-2 rounded-full bg-softpink ml-5" onclick="closePopup()">
+                ยกเลิก
+            </button>
+        </div>
         </div>
         
     </div>

@@ -12,11 +12,11 @@ const multer = require("multer");
 
 const db = require('./config/dbconn.js');
 
-const { cus_register, cus_login, cus_forgot, emp_login, emp_forgot } = require('./controllers/auth.js');
+const { cus_register, cus_login, cus_forgot, cus_changeinfo, emp_login, emp_forgot } = require('./controllers/auth.js');
 const { cus_auth, emp_auth, optional_cus_auth }  = require('./middleware/auth');
 const { emp_edit, emp_create, emp_delete, emp_editProfile }  = require('./controllers/emp.js');
 const { prod_edit, prod_delete, prod_create } = require('./controllers/product.js');
-const { order_from_cus, accept_order, payment_check, decline_order } = require('./controllers/order.js');
+const { order_from_cus, save_order, save_editOrder, cancel_order, update_order_from_cus, accept_order, payment_check, decline_order, delivery, success_order } = require('./controllers/order.js');
 // const { readdirSync } = require('fs');
 
 // use, set
@@ -44,9 +44,21 @@ app.set('view engine', 'ejs');
 app.post('/api/process_register', cus_register);
 app.post('/api/process_login', cus_login);
 app.post('/api/cus_forgot', cus_forgot);
+app.post('/api/cus_change_info', cus_changeinfo);
+
 
 //order
 app.post('/api/add_order_from_cus', cus_auth, order_from_cus);
+app.post('/api/saveOrder', cus_auth, save_order);
+app.post('/api/update_order_from_cus', cus_auth, update_order_from_cus);
+app.post('/api/save_editOrder', cus_auth, save_editOrder);
+app.post('/api/cancel_order', cus_auth, cancel_order);
+app.post('/api/delivery', cus_auth, delivery);
+app.post('/api/success_order', cus_auth, success_order);
+
+
+
+
 
 app.post('/api/accept_order', emp_auth(['admin', 'jeweler']), accept_order);
 app.post('/api/payment_check', emp_auth(['admin', 'jeweler']), payment_check);
@@ -146,6 +158,7 @@ app.get('/make-yours/:id', optional_cus_auth, function (req, res) {
         db.all(stonesQuery, (_, stones) => {
           db.all(colorQuery, (_, colors) => {
             db.all(pendantsQuery, (_, pendants) => { // Fetch pendants
+                // console.log("product.pendant: ", product.pendant)
               res.render('customer/customize', {
                 product: product,
                 user: userData,
@@ -161,12 +174,53 @@ app.get('/make-yours/:id', optional_cus_auth, function (req, res) {
     });
   });
 
+app.get('/editOrder/', cus_auth, (req, res) => {
+    const userData = req.isUser;
+    const orderId = req.query.id;
+
+    const orderQuery = 'SELECT * FROM orders WHERE id = ?;';
+    const materialsQuery = 'SELECT * FROM materials;';
+    const stonesQuery = 'SELECT * FROM stones;';
+    const pendantsQuery = 'SELECT * FROM pendants;';
+  
+    db.get(orderQuery, [orderId], (err, order) => {
+      if (!order) return res.status(404).send("Product not found")
+  
+      db.all(materialsQuery, (_, materials) => {
+        db.all(stonesQuery, (_, stones) => {
+            db.all(pendantsQuery, (_, pendants) => {
+                parsedOrder = JSON.parse(order.order_detail || '{}');
+                // console.log("order: ", parsedOrder)
+                // console.log("materials: ", materials)
+                // console.log("stones: ", stones)
+                // console.log("pendants: ", pendants)
+                req.session.orderId = order.id;
+                // console.log(order.id)
+              res.render('customer/editOrder', {
+                // body: 'editOrder',
+                user: userData,
+                order: order,
+                order_detail: parsedOrder,
+                materialsData: materials || [],
+                stonesData: stones || [],
+                pendantsData: pendants || []
+              });
+            });
+          });
+      });
+    });
+
+});
+
 app.get('/myorders', cus_auth, (req, res) => {
     const userData = req.isUser;
     const page = req.query.page || "";
     let sql = ``;
     if (page === "") {
         sql = `SELECT * FROM customers WHERE id = ${userData.id}`;
+    }
+    else if (page === 'wait') {
+        sql = `SELECT * FROM orders WHERE customer_id = ${userData.id} and order_status = 'แก้ไขต่อ'`;
     }
     else if (page === 'pending') {
         sql = `SELECT * FROM orders WHERE customer_id = ${userData.id} and order_status = 'รอดำเนินการ'`;
@@ -181,13 +235,13 @@ app.get('/myorders', cus_auth, (req, res) => {
         sql = `SELECT * FROM orders WHERE customer_id = ${userData.id} and order_status = 'ปฏิเสธการรับออเดอร์'`;
     }
     else if (page === 'paid') {
-        sql = `SELECT * FROM orders WHERE customer_id = ${userData.id} and payment_status = 'paid'`;
+        sql = `SELECT * FROM orders WHERE customer_id = ${userData.id} and order_status = 'รับออเดอร์' or order_status = 'กำลังจัดส่ง'`;
     }
     else if (page === 'success') {
         sql = `SELECT * FROM orders WHERE customer_id = ${userData.id} and order_status = 'จัดส่งสำเร็จ'`;
     }
     db.all(sql, function (err, rows) {
-        console.log("hello")
+        // console.log("hello")
         if(err) {
             console.error(err.message);
             return res.status(500).send("Failed to retrieve data.");
@@ -228,7 +282,8 @@ app.get('/ordering', cus_auth, (req, res) => {
         } catch (parseError) {
             console.log("JSON Parsing Error:", parseError.message);
         }
-
+        req.session.orderId = orderId;
+        // console.log("order: ", rows.id)
         res.render('customer/layout-home', { body: 'ordering', data: rows, add: parsedOrder_add, order: parsedOrder, user: userData });
 
 
@@ -237,35 +292,30 @@ app.get('/ordering', cus_auth, (req, res) => {
 
 app.post('/upload', upload.single('image'), (req, res) => {
     let id = req.body.id;
-    if (!req.file) return res.send('กรุณาอัปโหลดไฟล์');
+    console.log('yess')
+    
+    if (!req.file) {
+        return res.status(400).json({ success: false, message: 'กรุณาอัปโหลดไฟล์' });
+    }
 
     const filePath = req.file.filename;
-    db.run(`UPDATE orders SET payment_image = (?) WHERE id = ${id}`, [filePath], (err) => {
+
+    db.run(`UPDATE orders SET payment_image = ?, order_status = 'รอตรวจสอบการชำระเงิน', updated_at = CURRENT_TIMESTAMP WHERE id = ?`, [filePath, id], (err) => {
         if (err) {
             console.error(err.message);
+            return res.status(500).json({ success: false, message: 'เกิดข้อผิดพลาดในการบันทึกข้อมูล' });
         }
-        res.redirect('ordering');
+        res.json({ success: true, message: 'อัปโหลดสำเร็จ!' });
     });
 });
 
 
 //employee
-// app.get('/emp/home', emp_auth(['admin', 'jeweler']), (req, res) => {
-//     const userData = req.emp;
-//         const sql = 'SELECT * FROM employees';
-//         db.all(sql, (err, rows) => {
-//             if (err) {
-//                 console.log(err.message);
-//                 return res.status(500).send("Failed to retrieve data.");
-//             }
-//             res.render('emp/layout', { body: 'home', data: rows, user: userData });
-//         });
-// });
 
 app.get('/emp/orders', emp_auth(['admin', 'jeweler']), (req, res) => {
     const userData = req.emp;
-        // const sql = 'SELECT * FROM orders WHERE jeweler_id IS NULL';
-        db.all('SELECT * FROM orders WHERE jeweler_id IS NULL', (err, rows) => {
+        const sql = `SELECT * FROM orders WHERE jeweler_id IS NULL AND order_status = 'รอดำเนินการ'`;
+        db.all(sql, (err, rows) => {
             if (err) {
                 console.log(err.message);
                 return res.status(500).send("Failed to retrieve data.");
@@ -275,13 +325,14 @@ app.get('/emp/orders', emp_auth(['admin', 'jeweler']), (req, res) => {
                 
 
             // })
+            console.log(rows)
             res.render('emp/layout', { body: 'orders', data: rows, user: userData });
         });
 });
 
 app.get('/emp/myorders', emp_auth(['admin', 'jeweler']), (req, res) => {
     const userData = req.emp;
-        const sql = `SELECT * FROM orders WHERE jeweler_id = ${userData.id}`;
+        const sql = `SELECT * FROM orders WHERE jeweler_id = ${userData.id} AND order_status != 'จัดส่งสำเร็จ'`;
         db.all(sql, (err, rows) => {
             if (err) {
                 console.log(err.message);
@@ -323,7 +374,6 @@ app.get('/emp/myorders_detail', emp_auth(['admin', 'jeweler']), (req, res) => {
         });
 })
 
-
 app.get('/emp/detail_order', emp_auth(['admin', 'jeweler']), function (req, res) {
     const userData = req.emp;
         const sql = `SELECT * FROM orders WHERE id=${req.query.id};`;
@@ -339,27 +389,6 @@ app.get('/emp/detail_order', emp_auth(['admin', 'jeweler']), function (req, res)
         });
 })
 
-// app.get('/emp/products', emp_auth, (req, res) => {
-//     const userData = req.emp;
-//     // console.log("user: ", userData && userData.role);
-
-//     if (userData && userData.role) {
-//         let allProducts = [];
-//         const sql_materials = 'SELECT * FROM materials';
-//         db.all(sql_materials, (err, rows) => {
-//             if (err) {
-//                 console.log(err.message);
-//                 return res.status(500).send("Failed to retrieve data.");
-//             }
-//             allProducts.push(rows);
-//             // console.log("all: ", allProducts[0][0])
-//             res.render('emp/layout', { body: 'products', allData: allProducts, user: userData });
-//         });
-//     } else {
-//         return res.sendFile(path.join(__dirname, '/public/error404.html'));
-//     }
-// });
-
 app.get('/emp/category', emp_auth(['admin', 'jeweler']), (req, res) => {
     const userData = req.emp;
     res.render('emp/layout', { body: 'category', user: userData });
@@ -367,23 +396,17 @@ app.get('/emp/category', emp_auth(['admin', 'jeweler']), (req, res) => {
 })
 
 app.get('/emp/', emp_auth(['admin', 'jeweler']), (req, res) => {
-    // console.log(req.query.name)
     const category = req.query.name
     const userData = req.emp;
 
         let allProducts = {};
-    //     // const category = ['products', 'materials', 'pendants', 'stones', 'color'];
-    //     // const category = ['materials']
         const sql = `SELECT * FROM ${category}`;
         db.all(sql, (err, rows) => {
             if (err) {
                 console.log(err.message);
                 return res.status(500).send("Failed to retrieve data.");
             }
-            // console.log(rows)
             allProducts[category] = rows;
-            // console.log(allProducts.pendants[0]);
-            // console.log("all: ", allProducts[0][0])
             res.render('emp/layout', { body: 'products', allData: allProducts, user: userData });
         });
 });
@@ -494,23 +517,6 @@ app.get('/emp/detail_order', emp_auth(['admin', 'jeweler']), function (req, res)
 
 })
 
-
-// app.get('/show', emp_auth, (req, res) => {
-//     const userData = req.emp;
-//     if (userData.role == 'admin') {
-//         const sql = 'SELECT * FROM employees';
-//         db.all(sql, (err, rows) => {
-//             if (err) {
-//                 console.log(err.message);
-//                 return res.status(500).send("Failed to retrieve data.");
-//             }
-//             res.render('emp/showUser', { data: rows, user: req.emp.email });
-//         });
-//     }else {
-//         res.send("This is a protected area.");
-//     }
-    
-// });
 
 // routing 
 //customer

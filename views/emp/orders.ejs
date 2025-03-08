@@ -121,26 +121,11 @@
 
     <div class="option">
         <div class="sort">
-            <form>
-                <div class="form-group">
-                    <input type="checkbox" id="ring" name="ring" value="ring">
-                    <label class="font-secondary">Ring</label>
-                </div>
-                <div class="form-group">
-                    <input type="checkbox" id="necklace" name="necklace" value="necklace">
-                    <label class="font-secondary">Necklace</label>
-                </div>
-                <div class="form-group">
-                    <input type="checkbox" id="earring" name="earring" value="earring">
-                    <label class="font-secondary">Earrings</label>
-                </div>
-                <div class="form-group">
-                    <input type="checkbox" id="bracelet" name="bracelet" value="bracelet">
-                    <label class="font-secondary">Bracelet</label>
-                </div>
-            </form>
+            <label><input type="checkbox" class="filter" value="สร้อยคอ"> สร้อยคอ</label>
+            <label><input type="checkbox" class="filter" value="แหวน"> แหวน</label>
+            <label><input type="checkbox" class="filter" value="สร้อยข้อมือ"> สร้อยข้อมือ</label>
+            <label><input type="checkbox" class="filter" value="ต่างหู"> ต่างหู</label>
         </div>
-
     </div>
 
     <div class="table-container">
@@ -156,14 +141,12 @@
 
             <tbody>
                 <%data.forEach((item) => {%>
-                    <tr>
+                    <tr data-category="<%= item.category %>">
                         <td class="font-secondary"><%=item.customer_id%></td>
                         <td class="font-thai"><%=item.category%></td>
                         <td class="font-secondary"><%=item.created_at%></td>
                         
                         <td>
-                            <!-- <a href="#" id="accept">Accept</a>
-                            <a href="#" id="decline">Decline</a> -->
                             <a href="/emp/detail_order?id=<%=item.id%>" id="details">Details</a>
                         </td>
                     </tr>
@@ -171,6 +154,34 @@
             </tbody>
         </table>
     </div>
-    <!-- <a href="/emp/myorders" class="back"> back to my orders</a> -->
 
 </div>
+
+<script>
+    document.querySelectorAll('.filter').forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            updateFilterDisplay();
+        });
+    });
+    
+    function updateFilterDisplay() {
+        const checkboxes = document.querySelectorAll('.filter');
+        const rows = document.querySelectorAll('tbody tr[data-category]');
+        console.log(rows)
+        const selectedCategories = Array.from(checkboxes).filter(cb => cb.checked).map(cb => cb.value);
+        console.log(selectedCategories)
+        
+        rows.forEach(row => {
+            console.log(row)
+            const category = row.getAttribute('data-category');
+            console.log(category)
+            if (selectedCategories.length === 0) {
+                row.style.display = ''; 
+            } else {
+                row.style.display = selectedCategories.includes(category) ? '' : 'none';
+            }
+        });
+    }
+    
+    
+</script>

@@ -201,6 +201,26 @@
             <hr width="100%" size="1">
         </div>
         <div class="card-container">
+            <%if (category === "products") {%>
+                <% allData[category].forEach(item => { %>
+                    <div class="card" onclick="openModal(this)"
+                    data-category="<%= category %>"
+                    data-id="<%= item.id %>"
+                    data-name="<%= item.name %>"
+                    data-price="<%= item.base_price %>"
+                    data-type="<%= item.category %>"
+                    data-description="<%= item.description %>"
+                    data-image_path="<%= item.image_path %>"
+                    data-stock_quantity="<%= item.stock_quantity %>"
+                    data-material="<%= item.material %>"
+                    data-gemstone="<%= item.gemstone %>"
+                    data-color="<%= item.color %>"
+                    data-pendant="<%= item.pendant %>">
+                        <img src="/<%= item.image_path%>" alt="<%= item.name %>">
+                        <%= item.name %>
+                    </div>
+                <% }) %>
+            <%}else{%>
                 <% allData[category].forEach(item => { %>
                     <div class="card" onclick="openModal(this)"
                     data-category="<%= category %>"
@@ -211,13 +231,9 @@
                         <%= item.name %>
                     </div>
                 <% }) %>
+            <%}%>
         </div>
     <%});%>
-
-    <div class="create-product">
-        <a href="/createProduct">Add Product</a>
-    </div>
-
 </div>
 
 <div class="modal" id="modal">

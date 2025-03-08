@@ -210,29 +210,165 @@ function openModal(data) {
     const name = data.dataset.name;
     const price = data.dataset.price;
     const description = data.dataset.description;
+    const image_path = data.dataset.image_path;
+    const stock_quantity = data.dataset.stock_quantity;
+    const material = data.dataset.material;
+    const gemstone = data.dataset.gemstone;
+    const color = data.dataset.color;
+    const pendant = data.dataset.pendant;
+    const type = data.dataset.type;
 
+    // console.log("pendat: ", allData['pendants'])
     document.getElementById("modal").style.display = "flex";
 
-    previousModalContent = `
-        <button class="close-btn" onclick="closeModal()">✖</button>
-        <div class="modal-left" id="modal-left">
-            <h2>${name}</h2>
-        </div>
-        <div class="modal-right" id="modal-right">
-            <h2>${name}</h2>
-            <h3>Price: ${price} Baht</h3>
-            <p class="font-thai mb-6">${description}</p>
-            <div class="category font-secondary inline-block bg-[#EDD1CC] text-[#A56037] p-2 mb-8">${category}</div><br>
-            <button class="editpro bg-[#D8A273] w-26" onclick="editProduct('${id}', '${name}', '${price}', '${description}', '${category}')">Edit Product</button>
-            <button class="delpro bg-[#D15F5F] ml-2 w-18" onclick="delProduct('${id}', '${category}')">Delete</button>
+    // if (pendantId && allData.pendants) {
+    //     const pendant = allData.pendants.find(pendant => pendant.id == pendantId);
+    //     const pendantName = pendant ? pendant.name : 'Unknown';
+        
+    //     console.log(`Pendant Name: ${pendantName}`);
+    // }
+    console.log("id: ", id)
+
+    if (category === 'products') {
+        previousModalContent = `
+            <button class="close-btn" onclick="closeModal()">✖</button>
+            <div class="modal-left" id="modal-left">
+                <img src="/${image_path}">
+                <h2>${name}</h2>
             </div>
-    `;
+            <div class="modal-right" id="modal-right">
+                <h2>${name}</h2>
+                <h3>ราคา: ${price} บาท</h3>
+                <p class="font-thai mb-6">${description}</p>
+                <p class="font-thai mb-6">วัสดุ: ${material} สี: <input type="color" value="${color}"></p>
+                <p class="font-thai mb-6">จำนวนสินค้าในคลัง: ${stock_quantity}</p>
+                <div class="category font-secondary inline-block bg-[#EDD1CC] text-[#A56037] p-2 mb-8">${type}</div><br>
+                <button class="editpro bg-[#D8A273] w-26" onclick="edit_template_product('${id}', '${name}', '${type}', 
+                '${price}', '${description}', '${stock_quantity}', '${material}', '${gemstone}', '${color}', '${pendant}', '${category}')">
+                    Edit Product
+                </button>
+                <button class="delpro bg-[#D15F5F] ml-2 w-18" onclick="delProduct('${id}', '${category}')">Delete</button>
+            </div>
+        `;
+    }else {
+        previousModalContent = `
+            <button class="close-btn" onclick="closeModal()">✖</button>
+            <div class="modal-right" id="modal-right">
+                <h2>${name}</h2>
+                <h3>Price: ${price} Baht</h3>
+                <p class="font-thai mb-6">${description}</p>
+                <div class="category font-secondary inline-block bg-[#EDD1CC] text-[#A56037] p-2 mb-8">${category}</div><br>
+                <button class="editpro bg-[#D8A273] w-26" onclick="editProduct('${id}', '${name}', '${price}', '${description}', '${category}')">Edit Product</button>
+                <button class="delpro bg-[#D15F5F] ml-2 w-18" onclick="delProduct('${id}', '${category}')">Delete</button>
+            </div>
+        `;
+    }
+
 
     document.getElementById("modal-container").innerHTML = previousModalContent;
 }
 
+function edit_template_product(id, name, type, price, description, stock_quantity, material, gemstone, color, pendant, category) {
+    console.log(category)
+    document.getElementById("modal-right").innerHTML = `
+    < <button class="back-btn" onclick="goBack()">Go Back</button>
+    <h1 class="font-logo text-4xl text-[var(--color-red)] mb-4 mt-1">Edit Product</h1>
+    <form id="edit-product">
+        <input type="hidden" name="category" value=${category}>
+        <input type="hidden" name="id" value=${id}>
+        <div class="form-group">
+            <label>ชื่อสินค้า:</label><br>
+            <input type="text" name="name" value="${name}">
+            <hr width="30%" size="1">
+        </div>
+
+        <div class="form-group">
+            <label>จำนวนคลังสินค้า:</label><br>
+            <input type="number" name="stock_quantity" value="${stock_quantity}">
+            <hr width="30%" size="1">
+        </div>
+        
+        <div class="form-group">
+            <label>คำอธิบายสินค้า:</label><br>
+            <textarea class="w-80" name="description">${description}</textarea>
+            <hr width="70%" size="1">
+        </div>
+        
+        <div class="form-group">
+            <label>ประเภทสินค้า:</label><br>
+            <div class="category font-secondary inline-block bg-[#EDD1CC] text-[#A56037] p-1 mb-1">${category}</div>
+            <div class="category font-secondary inline-block bg-[#EDD1CC] text-[#A56037] p-1 mb-1">${type}</div>
+            <input class="done font-secondary" type="submit" value="Done">
+        </div>
+    </form>`;
+    document.getElementById('edit-product').onsubmit = async function (event) {
+        console.log("yessss")
+        event.preventDefault();
+
+        let updateProduct = {
+            category: category,
+            id: id,
+            name: document.querySelector('[name="name"]').value,
+            stock_quantity: document.querySelector('[name="stock_quantity"]').value,
+            description: document.querySelector('[name="description"]').value
+        }
+
+        console.log("updateProduct: ", updateProduct)
+        try {
+            Swal.fire({
+                title: "คุณแน่ใจหรือไม่?",
+                text: "คุณต้องการแก้ไขสินค้านี้ใช่หรือไม่?",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonColor: "#BF8579",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "ใช่!",
+                cancelButtonText: "ยกเลิก"
+              }).then(async (result) => {
+                if (result.isConfirmed) {
+                    const response = await fetch("/api/prod_edit", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(updateProduct),
+                  });
+              
+                  if (response.ok) {
+                    const result = await response.json();
+                    Swal.fire("สำเร็จ!", "สินค้าของคุณถูกแก้ไขเรียบร้อยแล้ว", "success")
+                    .then(() => {
+                        openModal({
+                            dataset: {
+                                id: result.product.id,
+                                name: result.product.name,
+                                price: price,
+                                stock_quantity: result.product.stock_quantity,
+                                description: result.product.description,
+                                category: result.product.category,
+                                image_path: image_path,
+                                material: material,
+                                color: color,
+                                gemstone: gemstone,
+                                pendant: pendant
+                            }
+                        });
+                        update_prod_card(result.product)
+                    });
+                  } else {
+                    Swal.fire("ล้มเหลว!", "ไม่สามารถบันทึกการเปลี่ยนแปลงนี้ได้", "error");
+                  }
+                }});
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Server Error',
+                text: 'เกิดข้อผิดพลาดในการเชื่อมต่อ',
+            });
+        }
+    }
+
+}
+
 function editProduct(id, name, price, description, category) {
-    console.log("yess")
     document.getElementById("modal-right").innerHTML = `
         < <button class="back-btn" onclick="goBack()">Go Back</button>
         <h1 class="font-logo text-4xl text-[var(--color-red)] mb-4 mt-1">Edit Product</h1>
@@ -240,25 +376,25 @@ function editProduct(id, name, price, description, category) {
             <input type="hidden" name="category" value=${category}>
             <input type="hidden" name="id" value=${id}>
             <div class="form-group">
-                <label>Name:</label><br>
+                <label>ชื่อสินค้า:</label><br>
                 <input type="text" name="name" value="${name}">
                 <hr width="30%" size="1">
             </div>
 
             <div class="form-group">
-                <label>Price:</label><br>
+                <label>ราคา:</label><br>
                 <input type="number" name="price" value="${price}">
                 <hr width="30%" size="1">
             </div>
             
             <div class="form-group">
-                <label>Description:</label><br>
+                <label>คำอธิบายสินค้า:</label><br>
                 <textarea class="w-80" name="description">${description}</textarea>
                 <hr width="70%" size="1">
             </div>
             
             <div class="form-group">
-                <label>Category:</label><br>
+                <label>ประเภทสินค้า:</label><br>
                 <div class="category font-secondary inline-block bg-[#EDD1CC] text-[#A56037] p-1 mb-1">${category}</div>
                 <input class="done font-secondary" type="submit" value="Done">
             </div>
@@ -266,7 +402,6 @@ function editProduct(id, name, price, description, category) {
     `;
 
     document.getElementById('edit-product-form').onsubmit = async function (event) {
-        // console.log("yessss")
         event.preventDefault();
 
         const updateProduct = {
@@ -323,31 +458,6 @@ function editProduct(id, name, price, description, category) {
                 text: 'เกิดข้อผิดพลาดในการเชื่อมต่อ',
             });
         }
-
-        // const response = await fetch('/api/prod_edit', {
-        //     method: 'POST',
-        //     headers: { 'Content-Type': 'application/json' },
-        //     body: JSON.stringify(updateProduct)
-        // });
-
-//         const result = await response.json();
-//         console.log("result", result.product)
-        
-//         if (result.success) {
-//             openModal({
-//                 dataset: {
-//                     id: result.product.id,
-//                     name: result.product.name,
-//                     price: result.product.price,
-//                     description: result.product.description,
-//                     category: result.product.category
-//                 }
-//             });
-
-//             updateCard(result.product)
-//         }else {
-//             alert('error updating product')
-//         }
     }
 }
 
@@ -364,10 +474,30 @@ function updateCard(updatedData) {
     });
 }
 
+function update_prod_card(updatedData) {
+    console.log(updateCard)
+    const cards = document.querySelectorAll(".card");
+    cards.forEach(card => {
+        if (card.dataset.id === updatedData.id) {
+            card.dataset.name = updatedData.name;
+            card.dataset.stock_quantity = updatedData.stock_quantity;
+            card.dataset.description = updatedData.description;
+            card.dataset.category = updatedData.category;
+            card.dataset.image_path = updatedData.image_path;
+            card.dataset.material = updatedData.material;
+            card.dataset.color = updatedData.color;
+            card.dataset.gemstone = updatedData.gemstone;
+            card.dataset.pendant = updatedData.pendant;
+
+            card.innerHTML = updatedData.name;
+        }
+    });
+}
+
 //delete
 async function delProduct(id, category) {
-    // console.log(id)
-    // console.log(category)
+    console.log(id)
+    console.log(category)
     try {
         Swal.fire({
             title: "คุณแน่ใจหรือไม่?",
@@ -537,20 +667,86 @@ function add_product() {
     }
 }
 
+function delivery(event) {
+    event.preventDefault()
+    console.log('yess')
+    const delivery = document.getElementById('delivery').value;
+    console.log(delivery)
+    try {
+        Swal.fire({
+            title: "คุณต้องการจัดส่งสินค้าใช่หรือไม่?",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#BF8579",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "ใช่!",
+            cancelButtonText: "ยกเลิก"
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const response = await fetch("/api/delivery", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ delivery }),
+                    credentials: "include"
+                });
+          
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log("order: ", data.order_id);
+                    Swal.fire("สำเร็จ!", "สินค้าของคุณถูกจัดส่งเรียบร้อยแล้ว", "success")
+                        .then(() => {
+                            window.location.replace(`/emp/myorders_detail?id=${data.order_id}`);
+                        });
+                } else {
+                    Swal.fire("ล้มเหลว!", "ไม่สามารถบันทึกออเดอร์ได้", "error");
+                }
+        }});
+    } catch (error) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Server Error',
+            text: 'เกิดข้อผิดพลาดในการเชื่อมต่อ',
+        });
+    }
+}
 
-
-
-
-    // แสดงค่าที่ดึงมาใน console
-    // console.log("ประเภทสินค้า:", category);
-    // console.log("ชื่อสินค้า:", name);
-    // console.log("ราคา:", price);
-    // console.log("รายละเอียด:", description);
-    // console.log("รูปภาพ:", image);
-    // console.log("จำนวนสินค้า:", stock);
-    // console.log("ประเภทสินค้า:", typeProduct);
-    // console.log("วัสดุ:", materials);
-    // console.log("สีวัสดุ:", color);
-    // console.log("อัญมณี:", stones);
-    // console.log("จี้:", pendants);
-
+function success_order(event) {
+    event.preventDefault();
+    console.log('yesss')
+    try {
+        Swal.fire({
+            title: "จัดส่งสินค้าสำเร็จแล้วใช่หรือไม่?",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#BF8579",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "ใช่!",
+            cancelButtonText: "ยกเลิก"
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const response = await fetch("/api/success_order", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    credentials: "include"
+                });
+          
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log("order: ", data.order_id);
+                    Swal.fire("สำเร็จ!", "สินค้าของคุณได้จัดส่งสำเร็จแล้ว", "success")
+                        .then(() => {
+                            window.location.replace(`/emp/myorders_detail?id=${data.order_id}`);
+                        });
+                } else {
+                    Swal.fire("ล้มเหลว!", "ไม่สามารถบันทึกออเดอร์ได้", "error");
+                }
+            
+        }});
+    } catch (error) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Server Error',
+            text: 'เกิดข้อผิดพลาดในการเชื่อมต่อ',
+        });
+    }
+}

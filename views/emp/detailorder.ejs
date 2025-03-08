@@ -404,14 +404,21 @@
         padding-left: 4px;
     }
 
+    .status {
+        color: #007bff;
+        font-weight: bold;
+    }
+
 </style>
 
 <div class="container">
     <div class="list-order" id="list-order">
         <h2>Order Details</h2>
-        <h3 class="order-title">#ORDER<%= data[0].id %> - <span class="status <%= data[0].order_status === 'รอดำเนินการ' ? 'pending' : (data[0].order_status === 'ยอมรับออเดอร์แล้ว' ? 'accepted' : 'declined') %>">
-            <%= data[0].order_status %>
-        </span></h3>
+        <%if(data[0].order_status === 'กำลังจัดส่ง' || data[0].order_status === 'จัดส่งสำเร็จ'){%>
+            <h3 class="order-title">#ORDER<%= data[0].id %> - <%= data[0].order_status %><span class="status"> #<%=data[0].parcel_number%></span></h3>
+        <%}else{%>
+            <h3 class="order-title">#ORDER<%= data[0].id %> - <span><%= data[0].order_status %></span></h3>
+        <%}%>
 
         <div class="list-content" id="list">
             <!-- Material Section -->
@@ -462,7 +469,7 @@
                                 <li><strong>จำนวน:</strong> <%= item.amount %> ชิ้น</li>
                                 <li>
                                     <strong>สี:</strong>
-                                    <input type="color" value="<%= item.colorOfPendant %>" disabled>
+                                    <input type="color" value="<%= item.color_pendant %>" disabled>
                                 </li>
                                 <% if (item.engravePendantText) { %>
                                     <li><strong>สลักชื่อ:</strong> <%= item.engravePendantText %></li>
@@ -540,9 +547,9 @@
 
         <!-- ปุ่ม access/decline -->
         <div class="butt">
-            <button onclick="accept()" id="accept">Accept</button>
-            <button id="decline" onclick="open_decline_Modal()">Decline</button>
-            <a href="/emp/orders" class="cancel">Cancel</a>
+            <button onclick="accept()" id="accept">ยอมรับออเดอร์</button>
+            <button id="decline" onclick="open_decline_Modal()">ปฏิเสธรับออเดอร์</button>
+            <a href="/emp/orders" class="cancel">กลับไป</a>
         </div>
             <!-- decline => description -->
         <div class="modal" id="modal-decline">
@@ -584,48 +591,60 @@
                 </div>
                 <div class="butt">
                     <button id="acceptButton" style="display: none;" onclick="payment_check()">ยืนยันรับออเดอร์</button>
-                    <a href="/emp/myorders">ยกเลิก</a>
+                    <a href="/emp/myorders">กลับไป</a>
                 </div>
-                <%}%>
-        
-    </div>
-
-
+            <%}%>
+        </div>
     <%};%>
-
-
 </div>
-
-<!-- <script>
+<div>
+    <%if(data[0].order_status === 'ยอมรับออเดอร์แล้ว') {%>
+    <div class="butt">
+        <a href="/emp/myorders">กลับไป</a>
+    </div>
+    <%}%>
+</div>
+<%if (data[0].order_status === 'รับออเดอร์') {%>
+    <div class="info-order" style="justify-content: center;">
+        <div class="post">
+            กรอกหมายเลขพัสดุ: <input type="text" id="delivery">
+        </div>
+        <div class="butt">
+            <button onclick="delivery(event)">จัดส่งสินค้า</button>
+            <a href="/emp/myorders">กลับไป</a>
+        </div>
+    </div>
+<%}%>
+<div>
+    <%if(data[0].order_status === 'กำลังจัดส่ง') {%>
+    <div class="butt">
+        <button onclick="success_order(event)">ส่งสินค้าสำเร็จ</button>
+        <a href="/emp/myorders">กลับไป</a>
+    </div>
+    <%}%>
+</div>
+<div>
+    <%if(data[0].order_status === 'จัดส่งสำเร็จ' || data[0].order_status === 'ปฏิเสธการรับออเดอร์') {%>
+    <div class="butt">
+        <a href="/emp/myorders">กลับไป</a>
+    </div>
+    <%}%>
+</div>
+<script>
     document.addEventListener("DOMContentLoaded", function () {
-        const checkboxes = document.querySelectorAll(".check").value;
-        const acceptButton = document.getElementById("accept");
-
+        const checkboxes = document.querySelectorAll(".check");
+        const acceptButton = document.getElementById("acceptButton");
         function checkAllChecked() {
             const allChecked = [...checkboxes].every(input => input.checked);
-            acceptButton.disabled = !allChecked;
+            acceptButton.style.display = allChecked ? "" : "none";
         }
-    //     checkboxes.forEach(checkbox => {
-    //     checkbox.addEventListener("change", checkAllChecked);
-    // });
+    
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener("change", checkAllChecked);
+        });
+    
+        checkAllChecked();
     });
-</script> -->
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    const checkboxes = document.querySelectorAll(".check");
-    const acceptButton = document.getElementById("acceptButton");
-    function checkAllChecked() {
-        const allChecked = [...checkboxes].every(input => input.checked);
-        acceptButton.style.display = allChecked ? "" : "none";
-    }
-
-    checkboxes.forEach(checkbox => {
-        checkbox.addEventListener("change", checkAllChecked);
-    });
-
-    checkAllChecked();
-});
 </script>
 
 

@@ -1,11 +1,19 @@
 const db = require('../config/dbconn');
 
 const prod_edit = (req, res) => {
-    const { category, id, name, price, description } = req.body;
-    console.log("category: ", category)
-    const sql = `UPDATE ${category} SET name = ?, price = ?, 
+    const { category, id, name, price, stock_quantity, description } = req.body;
+    let sql = ``;
+    let product = [];
+    // console.log("category: ", category)
+    if (category === 'products') {
+        sql = `UPDATE ${category} SET name = ?, description = ?, stock_quantity = ? WHERE id = ?`;
+        product = [name, description, stock_quantity, id]
+    }else {
+        sql = `UPDATE ${category} SET name = ?, price = ?, 
                     description = ? WHERE id = ?;`;
-    const product = [name, price, description, id];
+        product = [name, price, description, id];
+    }
+
         db.run(sql, product, function(err) {
             if (err) {
                 console.log("errorrrrrrr")

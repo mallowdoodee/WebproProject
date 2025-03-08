@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customized by You!</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <link href="css/Home-Customer.css" rel="stylesheet">
+    <script src="/js_cus_ejs/customer.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Noto+Sans+Thai:wght@100..900&display=swap');
+        body {
+            background-color: #F0E9E9;
+            /* margin: 0 auto; */
+            font-family: "Noto Sans Thai", sans-serif;
+        }
+
+        .div1 {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            padding: 10px;
+            font-family: "Noto Sans Thai", sans-serif;
+        }
+
+        .item.prod {
+            width: 80vh;
+            height: 75vh;
+            overflow: hidden;
+        }
+
+        .custom {
+            width: 80vh;
+            padding: 30px;
+            background-color: #BF8579;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            border-radius: 10px;
+        }
+
+        .item img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            background-color: var(--color-bg);
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 15px 20px;
+        }
+
+        .custom.form,
+        .custom.name {
+            margin: 0;
+        }
+
+        label,
+        input,
+        select,
+        button {
+            margin-bottom: 7px;
+            padding-bottom: 8px;
+            padding-right: 10px;
+        }
+
+        textarea,
+        input,
+        select,
+        button {
+            background-color: #F2E9E4;
+            border-radius: 10px;
+            color: #A56037;
+            padding: 8px;
+            border: 1px solid #ffffff;
+            height: 50px;
+            /* text-align: center; */
+        }
+
+        input[type="radio"] {
+            height: 20px;
+        }
+
+        h1,
+        h2,
+        p,
+        label {
+            color: #fff;
+        }
+
+        p {
+            padding: 10px;
+        }
+
+        select,
+        input[type="text"] {
+            margin-bottom: 20px;
+        }
+
+        .engraveChoice{
+            width: 30px;
+        }
+        .heading-div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: "Noto Sans Thai", sans-serif;
+            /* padding: 20px; */
+            margin: 0 50px;
+        }
+
+        button {
+            background-color: black;
+            color: aliceblue;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .submit {
+            background-color: #450100;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            width: 100%;
+            text-transform: uppercase;
+        }
+
+        .submit:hover {
+            background-color: #F0E9E9;
+            color: #A56037;
+            transform: scale(1.05);
+        }
+
+        .submit:active {
+            background-color: #555;
+            transform: scale(0.98);
+        }
+
+
+        .submit {
+            width: 100%;
+        }
+
+        @media screen and (max-width: 768px) {
+            .div1 {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .item.custom {
+                max-width: 90vw;
+            }
+
+            .heading-div {
+                flex-direction: column;
+                align-items: center;
+                /* padding: 10px; */
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .heading-div h1 {
+                font-size: 18px;
+            }
+
+            select,
+            input,
+            button {
+                font-size: 14px;
+                padding: 8px;
+                border-radius: 8px;
+            }
+        }
+
+        .back {
+            text-decoration: none;
+            color: #A56037;
+            font-weight: bold;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: color 0.3s, background-color 0.3s;
+            background-color: #F2E9E4;
+            border: none;
+        }
+
+        .back:hover {
+            color: white;
+            /* Change text color on hover */
+            background-color: #BF8579;
+            /* Add background */
+            text-decoration: none;
+            /* Ensure no underline appears */
+        }
+
+        textarea {
+            margin: 10px 0;
+            width: 100%;
+            height: 100px;
+        }
+
+        .tooltip-container {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .tooltip {
+            visibility: hidden;
+            background-color: rgba(0, 0, 0, 0.75);
+            color: #fff;
+            text-align: left;
+            padding: 10px;
+            border-radius: 5px;
+            position: absolute;
+            z-index: 100;
+            width: 200px;
+            bottom: 125%;
+            left: 50%;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .tooltip-container:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        @font-face {
+            font-family: IBMPlexSansThai;
+            src: url(./IBMPlexSansThai-Regular.ttf);
+        }
+
+        body {
+            font-family: IBMPlexSansThai;
+            overflow-x: hidden;
+            width: 100vw;
+            user-select: none;
+            /* display: flex; */
+            justify-content: center;
+        }
+
+        :root {
+            --color-red: #580201;
+            --color-veryred: #450100;
+            --color-bs: #A56037;
+            --color-bg: #F0E9E9;
+            --color-bar: #F2E9E4;
+            --color-white: #FFFFFF;
+            --color-pink: #BF8579;
+            --color-softpink: #EDD1CC;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .pop-up {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            max-width: 50%;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            
+        }
+
+        .pop-up-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 999;
+            
+        }
+
+        .pop-head {
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .order {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 10px 0;
+            background: #f9f9f9;
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        .order-detail {
+            margin: 12px;
+        }
+
+        .but-pop {
+            display: flex;
+            justify-content: center;
+            bottom: 0;
+        }
+        .but-pop button {
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: #450100;
+            border: 1px solid #450100;
+            border-radius: 30px;
+            color: white;   
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 700;
+            
+        }
+
+        .but-pop button:hover {
+            background-color: white;
+            border: 1px solid #450100;
+            color: #450100;
+        }
+
+        .order p {
+            color: #450100;
+        }
+
+        .checkout {
+            margin-top: 30px;
+            text-align: right;
+        }
+
+        .checkout p {
+            font-size: 25px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+    <%- include('topbar') %>
+    <div class="div1">
+        <div class="mt-20 font-thai">
+            <div class="heading-div">
+                <button class="back" onclick="back_and_save()">ย้อนกลับ</button>
+                <h1 style="color: #580201;font-size: 30px;padding-right: 30px;">แก้ไข<%= order.category %>ของคุณ</h1>
+        </div>
+        <div class="custom form">
+            <h2 style="margin-bottom: 0;" id="category"><%= order.category %></h2>
+            <form id="customizationForm">
+                <%if (order.category==='แหวน') {%>
+                    <strong><label for="size">ขนาด :</label></strong>
+                    <input type="number" name="size" id="size" min="16" style="width: 50px;text-align: center;">
+                    <br>
+                <%};%>
+
+                <strong><label for="material">วัสดุของ<%= order.category %> : </label></strong> <br>
+                <select name="material" id="material" onchange="toggleEngraveOption()">
+                    <% 
+                    let selectedMaterial = materialsData.find(material => material.name === order_detail.material.name);
+                    let selectedMaterialName = selectedMaterial ? selectedMaterial.name : "ไม่พบข้อมูล"; // กรณีไม่พบ
+                    let selectedMaterialPrice = selectedMaterial ? selectedMaterial.price : 0;
+                %>
+                <option value="<%= selectedMaterialName %>-<%= selectedMaterialPrice %>"><%= selectedMaterialName %>: <%= selectedMaterialPrice %> บาท</option>
+                    <% materialsData.forEach((item)=> { %>
+                        <option value="<%= item.name %>-<%= item.price %>">
+                            <%= item.name %>: <%= item.price %> บาท
+                        </option>
+                    <% }); %>
+                </select>
+                <br>
+                <div>
+                    <strong><label for="color">สีของ<%= order.category%> : </label></strong> <br>
+                    <input type="color" id="pickedcolor" name="pickedcolor" value="<%= order_detail.material.color_material %>"
+                        style="height: 50px; padding: 0;">
+                    <br>
+
+                    <strong><label>เพิ่มข้อความบน<%= order.category%>ของคุณ : </label></strong><br>
+                    <% let hasEngraveText = order_detail.material.engraveMaterialText !== ''; %>
+                    
+                    <label style="display: inline-flex; align-items: center; gap: 5px;">
+                        <input class="engraveChoice" type="radio" name="engraveChoice" value="none"
+                            onclick="toggleEngraveMaterialText(false)" style="margin: 0;" <%= hasEngraveText ? '' : 'checked' %>> ไม่สลัก
+                    </label>
+                    
+                    <label style="display: inline-flex; align-items: center; gap: 5px;">
+                        <input class="engraveChoice" type="radio" name="engraveChoice" value="engrave"
+                            onclick="toggleEngraveMaterialText(true)" style="margin: 0;" <%= hasEngraveText ? 'checked' : '' %>> สลัก
+                    </label>
+                    
+                    <!-- ใช้ display: <%= hasEngraveText ? 'block' : 'none' %> เพื่อกำหนดค่าเริ่มต้น -->
+                    <<div id="engraveMaterialTextContainer" style="display: <%= hasEngraveText ? 'block' : 'none' %>">
+                        <strong><label for="engraveMaterialText">สลักลงบน<%= order.category %>ของคุณ</label></strong>
+                        <input type="text" name="engraveMaterialText" id="engraveMaterialText"
+                            placeholder="ข้อความสลักของคุณ" maxlength="6" value="<%= hasEngraveText ? order_detail.material.engraveMaterialText : '' %>">
+                    </div>
+                </div>
+
+                <strong><label for="stone">อัญมณี : </label></strong>
+                <select name="stone" id="stone">
+                    <% 
+                        let selectedStone = stonesData.find(stone => stone.name === order_detail.stone);
+                        let selectedStoneName = selectedStone ? selectedStone.name : "ไม่พบข้อมูล"; // กรณีไม่พบ
+                        let selectedStonePrice = selectedStone ? selectedStone.price : 0;
+                    %>
+                    <option value="<%= selectedStoneName %>-<%= selectedStonePrice %>"><%= selectedStoneName %>: <%= selectedStonePrice %> บาท/ชิ้น</option>
+                    <% let stoneCount=0; %>
+                        <% stonesData.forEach((item)=> { %>
+                            <option value="<%= item.name %>-<%= item.price %>">
+                                <%= item.name %>: <%= item.price %> บาท/ชิ้น
+                            </option>
+                        <% stoneCount++; %>
+                    <% }); %>
+                </select><br>
+
+                <% if (order.category === 'สร้อยข้อมือ' || order.category === 'สร้อยคอ') { %>
+                    <% if (pendantsData.length > 0) { %>
+                        <strong><label>จี้ : </label></strong><br>
+                
+                        <% pendantsData.forEach((pendant, index) => { %>
+                            <% 
+                                let selectedPendant = Array.isArray(order_detail.pendant) 
+                                    ? order_detail.pendant.find(p => p.name === pendant.name) 
+                                    : null;
+                                let isChecked = !!selectedPendant; // ถ้าเจอจะเป็น true, ถ้าไม่เจอจะเป็น false
+                            %>
+                            <div class="pendant-selection">
+                                <label class="tooltip-container">
+                                    <label style="display: inline-flex; align-items: center;">
+                                        <input type="checkbox" id="pendant-<%= index %>" name="pendent"
+                                            value="<%= pendant.name %>-<%= pendant.price %>"
+                                            onchange="toggleInput('pendant-<%= index %>-num', this.checked)"
+                                            style="margin: 0;" <%= isChecked ? 'checked' : '' %>>
+                                        <strong><%= pendant.name %></strong>
+                                    </label>
+
+                                        <span class="tooltip">
+                                            <strong>ราคา:</strong>
+                                            <%= pendant.price %> บาท<br>
+                                            <strong>รายละเอียด:</strong>
+                                            <%= pendant.description %>
+                                        </span>
+                                    </label>
+                                    <% if (isChecked) { %>
+                                        <div id="pendant-<%= index %>-num" style="display: block;">
+                                            <strong><label for="<%= pendant.name %>-num">จำนวน:</label></strong>
+                                            <input type="number" name="<%= pendant.name %>-num" value="<%= isChecked ? selectedPendant.amount : 1 %>" min="1" max="10"><br>
+                                            <strong><label for="<%= pendant.name %>-color">Color of pendant:</label></strong>
+                                            <input type="color" value="<%= isChecked ? selectedPendant.color_pendant : '#E5E4E2' %>" name="<%= pendant.name %>-color"id="<%= pendant.name %>-color">
+                                    <% } else { %>
+                                        <div id="pendant-<%= index %>-num" style="display: none;">
+                                            <strong><label for="<%= pendant.name %>-num">จำนวน:</label></strong>
+                                            <input type="number" name="<%= pendant.name %>-num" value="1" min="1" max="10"><br>
+                                            <strong><label for="<%= pendant.name %>-color">Color of pendant:</label></strong>
+                                            <input type="color" value="#E5E4E2" name="<%= pendant.name %>-color"id="<%= pendant.name %>-color">
+                                    <% } %>                                        
+
+                                        <br>
+                                        <% let hasEngraving = selectedPendant && selectedPendant.engravePendantText !== ''; %>
+                                        <strong><label>เพิ่มข้อความสลักบนจี้ของคุณ</label></strong><br>
+                                        <label>
+                                            <input class="engraveChoice" class="engraveChoice" type="radio" name="<%= pendant.name %>-engrave" value="yes"
+                                                onclick="toggleEngravePendantText('<%= pendant.name %>', true)" style="margin: 0;" <%= hasEngraving ? 'checked' : '' %>>
+                                                สลัก
+                                        </label>
+                                        <label>
+                                            <input class="engraveChoice" class="engraveChoice" type="radio" name="<%= pendant.name %>-engrave" value="none"
+                                                onclick="toggleEngravePendantText('<%= pendant.name %>', false)" style="margin: 0;" <%= hasEngraving ? '' : 'checked' %>> ไม่สลัก
+                                        </label>
+                                        <<div id="engravePendantTextContainer-<%= pendant.name %>" style="display: <%= hasEngraving ? 'block' : 'none' %>">
+                                            <strong><label for="engravePendantText-<%= pendant.name %>">เพิ่มข้อความสลักบนจี้ของคุณ</label></strong>
+                                            <input type="text" maxlength="6" name="engravePendantText-<%= pendant.name %>" id="engravePendantText-<%= pendant.name %>"
+                                            placeholder="ข้อความสลักของคุณ" value="<%= hasEngraving ? selectedPendant.engravePendantText : '' %>">
+                                        </div>
+                                    </div>
+                                </div>
+                            <% }); %>
+                        <% } %>
+                    <% } %>
+                    <div class="add-image">
+                        <strong><label>รูปภาพอ้างอิง : </label></strong> <br>
+                        <input type="file" name="refImage">
+                    </div>
+                    <div class="add-description">
+                        <strong><label>รายละเอียดเพิ่มเติม : </label></strong>
+                        <textarea name="description" id="description" placeholder="ระบุข้อความถึงร้านค้าได้เลย!"><%=order_detail.description%></textarea>
+                    </div>
+                    <div class="checkout">
+                        <!-- <p id="total">ราคารวม: 0 บาท</p> -->
+                        <button type="button" class="submit" type="submit" onclick="check_customize(event)">สั่งเลย!</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="pop-up-overlay" id="pop-up-overlay">
+
+    </div>
+    <div class="pop-up" id="pop-up">
+        <div class="pop-content">
+            <div class="pop-head">
+                <%if (user.isMember) {%>
+                    <h2 style="color: rgba(60, 42, 30, 1);">ออเดอร์ของคุณ <%=user.email.split('@')[0]%></h2>
+                <%}else{%>
+                    <h2 style="color: rgba(60, 42, 30, 1);">ออเดอร์ของคุณ</h2>
+                <%}%>
+                <h3 id="total-pop">TOTAL: 0 BAHT</h3>
+            </div>
+            
+            <div class="order" id="order">
+
+            </div>
+            <div class="but-pop">
+                <%if (user.isMember) {%>
+                    <button onclick="confirm_edit()">สั่งเลย!</button>
+                    <button onclick="saveOrder_edit()">บันทึก</button>
+                <%}%>
+                <button onclick="closePopup()">ยกเลิก</button>
+            </div>
+    </div>
+
+</body>
+</html>

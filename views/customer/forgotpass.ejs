@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/js_cus_ejs/customer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>Reset Password</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Noto+Sans+Thai&display=swap');
@@ -89,7 +91,7 @@
 <body>
     <div class="container">
         <h2>Reset Password</h2>
-        <form action="/api/cus_forgot" method="POST" onsubmit="return check()" class="form-con">
+        <form class="form-con">
             <div class="form-group">
                 <label>Email: </label>
                 <input type="email" name="email" id="email">
@@ -103,7 +105,7 @@
                 <input type="password" id="confirmPass" onkeyup="checkPass()">
                 <p id="error_msg" class="error-message" style="color: red;"></p>
             </div>
-            <button class="submit-btn">Confirm Reset</button>
+            <button class="submit-btn" onclick="change_pass(event)">Confirm Reset</button>
             <a href="/login" class="login-btn">< Back to Login</a></p>
         </form>
     </div>
@@ -123,31 +125,6 @@
                 err_msg.textContent = "Password match";
                 err_msg.style.color = "green";
             }
-        }
-        function check() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const confirmPass = document.getElementById('confirmPass').value;
-
-            if (!email && !password) {
-                alert('Please enter both email and password.');
-                return false;
-            }
-            if (!email) {
-                alert('Please enter email.');
-                return false;
-            }
-            if (!password) {
-                alert('Please enter password.');
-                return false;
-            }
-
-            if (password !== confirmPass) {
-                document.getElementById('error_msg').innerText = "Passwords do not match!";
-                alert('Passwords do not match!');
-                return false;
-            }
-            return true;
         }
     </script>
 </body>

@@ -77,10 +77,8 @@ const cus_login = async (req, res) => {
 const cus_forgot = async (req, res) => {
     try {
         const { email, password } = req.body;
-        // console.log(email);
         const sql = 'SELECT * FROM customers WHERE email = ?';
         db.all(sql, email, async function (err, results) {
-            // console.log(results);
             if (err) {
                 console.error("Error processing request", err);
                 return res.status(500).send({ message: "Error processing request" });
@@ -95,7 +93,7 @@ const cus_forgot = async (req, res) => {
                 if (err) {
                     return res.status(500).json({ error: err.message });
                 }
-                res.redirect('/login');
+                res.json({message: "เปลี่ยนรหัสผ่านเรียบร้อย"});
             })
 
         })
@@ -105,7 +103,20 @@ const cus_forgot = async (req, res) => {
     }
 }
 
-const emp_login = async (req, res) => {
+const cus_changeinfo = (req, res) => {
+    const { fname, lname, phone, address, email } = req.body;
+    let sql = `UPDATE customers SET fname = ?, lname = ?, phone = ?, 
+            address = ? WHERE email = ?`;
+    let data = [fname, lname, phone, address, email];
+    db.run(sql, data, function (err) {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        res.json({message: "เปลี่ยนข้อมูลเรียบร้อย"});
+    })
+}
+
+const emp_login = (req, res) => {
     try {
         const { email, password } = req.body;
         const sql = 'SELECT * FROM employees WHERE email = ?';
@@ -155,7 +166,7 @@ const emp_login = async (req, res) => {
 
 }
 
-const emp_forgot = async (req, res) => {
+const emp_forgot = (req, res) => {
     try {
         const { email, password } = req.body;
         // console.log(email);
@@ -186,4 +197,4 @@ const emp_forgot = async (req, res) => {
     }
 }
 
-module.exports = { cus_register, cus_login, cus_forgot, emp_login, emp_forgot };
+module.exports = { cus_register, cus_login, cus_forgot, cus_changeinfo, emp_login, emp_forgot };
