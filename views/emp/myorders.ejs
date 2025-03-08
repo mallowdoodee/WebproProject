@@ -76,6 +76,14 @@
         display: flex;
     }
 
+    .accepted {
+        color: #88C974;
+    }
+
+    .declined {
+        color: #D15F5F;
+    }
+
 
 </style>
 
@@ -128,7 +136,7 @@
                         <td class="font-secondary"><%=item.id%></td>
                         <td class="font-thai"><%=item.category%></td>
                         <td class="font-secondary"><%=item.updated_at%></td>
-                        <td class="font-thai" style="color: #88C974;"><%=item.order_status%></td>
+                        <td><span class="font-thai <%= item.order_status === 'ยอมรับออเดอร์แล้ว' ? 'accepted' : 'declined' %>"><%=item.order_status%></span></td>
                         <td>
                             <a href="/emp/myorders_detail?id=<%=item.id%>" id="details">Details</a> 
                         </td>
