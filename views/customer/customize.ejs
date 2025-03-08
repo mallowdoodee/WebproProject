@@ -117,12 +117,12 @@
             margin: 0 50px;
         }
 
-        button {
+        /* button {
             background-color: black;
             color: aliceblue;
             padding: 10px;
             cursor: pointer;
-        }
+        } */
 
         .submit {
             background-color: #450100;
@@ -242,22 +242,68 @@
         }
 
         body {
-            font-family: IBMPlexSansThai;
+            /* font-family: IBMPlexSansThai; */
             overflow-x: hidden;
             width: 100vw;
             user-select: none;
         }
 
         :root {
+            --font-basetext: "Poppins", serif;
+            --font-weight-basetext: 400;
+            --font-style-basetext: normal;
+            --font-secondary: 'Jomolhari', serif;
+            --font-weight-secondary: 400;
+            --font-style-secondary: normal;
+            --font-logo: "Fraunces", serif;
+            --font-weight-logo: 600;
+            --font-style-logo: normal;
+            --font-thai: "Noto Sans Thai", sans-serif;
+            --font-weight-thai: 400;
+            --font-style-thai: normal;
+            --font-thaiS: "Noto Sans Thai", sans-serif;
+            --font-weight-thaiS: 700;
+            --font-style-thaiS: normal;
             --color-red: #580201;
             --color-veryred: #450100;
             --color-bs: #A56037;
+            --color-softbs: #D8A273;
             --color-bg: #F0E9E9;
             --color-bar: #F2E9E4;
             --color-white: #FFFFFF;
             --color-pink: #BF8579;
             --color-softpink: #EDD1CC;
         }
+
+        .font-basetext {
+            font-family: var(--font-basetext);
+            font-weight: var(--font-weight-basetext);
+            font-style: var(--font-style-basetext);
+            }
+
+            .font-secondary {
+            font-family: var(--font-secondary);
+            font-weight: var(--font-weight-secondary);
+            font-style: var(--font-style-secondary);
+            }
+
+            .font-logo {
+            font-family: var(--font-logo);
+            font-weight: var(--font-weight-logo);
+            font-style: var(--font-style-logo);
+            }
+
+            .font-thai {
+            font-family: var(--font-thai);
+            font-weight: var(--font-weight-thai);
+            font-style: var(--font-style-thai);
+            }
+
+            .font-thaiS {
+            font-family: var(--font-thaiS);
+            font-weight: var(--font-weight-thaiS);
+            font-style: var(--font-style-thaiS);
+            }
 
         html {
             scroll-behavior: smooth;
@@ -270,6 +316,7 @@
             transform: translate(-50%, -50%);
             width: 100%;
             max-width: 50%;
+            height: 80%;
             background: white;
             border-radius: 10px;
             padding: 20px;
@@ -293,9 +340,15 @@
         }
 
         .pop-head {
+            display: flex;
+            margin-top: 10%;
+            flex-direction: column;
+            align-items: center; /* จัดให้อยู่ตรงกลางแนวนอน */
+            justify-content: center; /* จัดให้อยู่ตรงกลางแนวตั้ง */
             text-align: center;
-            font-weight: bold;
+            width: 100%;
         }
+
 
         .order {
             max-height: 300px;
@@ -312,30 +365,25 @@
             margin: 12px;
         }
 
-        .but-pop {
-            display: flex;
-            justify-content: center;
-            bottom: 0;
-        }
-        .but-pop button {
-            margin: 10px;
-            padding: 10px 20px;
-            background-color: #450100;
-            border: 1px solid #450100;
-            border: 2px solid transparent;
-            border-radius: 30px;
-            color: white;   
+        .bg-softpink {
+            background-color: var(--color-softpink) !important;
+            color: var(--color-pink) !important;
+            font-family: var(--font-secondary) !important;
+            transition: all 0.3s ease-in-out;
             cursor: pointer;
-            font-size: 14px;
-            font-weight: 700;
-            
+            display: inline-block; /* ป้องกัน hover ไม่ทำงาน */
+            border: 2px solid var(--color-pink); /* เพิ่มขอบให้ปุ่มชัดขึ้น */
         }
 
-        .but-pop button:hover {
-            background-color: white;
-            border: 1px solid #450100;
-            color: #450100;
+        .bg-softpink:hover {
+            background-color: var(--color-pink) !important;
+            color: white !important;
+            font-family: var(--font-secondary) !important;
+            transform: scale(1.05); /* เพิ่มเอฟเฟกต์ขยายเล็กน้อย */
         }
+
+
+
 
         .order p {
             color: #450100;
@@ -504,26 +552,45 @@
         </div>
     </div>
 </div>
+<!-- RTha -->
 <div class="pop-up-overlay" id="pop-up-overlay"></div>
 <div class="pop-up" id="pop-up">
     <div class="pop-content">
         <div class="pop-head">
-            <%if (user.isMember) {%>
-                <h2 style="color: rgba(60, 42, 30, 1);">ออเดอร์ของคุณ <%=user.email.split('@')[0]%></h2>
-            <%}else{%>
-                <h2 style="color: rgba(60, 42, 30, 1);">ออเดอร์ของคุณ</h2>
-            <%}%>
-            <h3 id="total-pop">TOTAL: 0 BAHT</h3>
+            <% if (user.isMember) { %>
+                <h2 style="font-family: var(--font-thai); font-size: 24px; font-weight: bold; color: var(--color-red); text-transform: uppercase;">
+                    ออเดอร์ของคุณ <%= user.email.split('@')[0] %>
+                </h2>
+                
+            <% } else { %>
+                <h2 style="font-family: var(--font-thai); font-size: 24px; font-weight: bold; color: var(--color-red); text-transform: uppercase;">
+                    ออเดอร์ของคุณ
+                </h2>
+            <% } %>
+            
+            <h3 class="mt-2 font-semibold text-lg tracking-wide text-center text-[var(--color-bs)]" id="total-pop">
+                TOTAL: 0 BAHT
+            </h3>            
         </div>
         
-        <div class="order" id="order">
+        <div class="order mb-3" id="order">
 
         </div>
-        <div class="but-pop">
+        <div>
             <%if (user.isMember) {%>
-                <button onclick="confirm()">CONFIRM</button>
+                <div class="butt flex justify-center items-center w-full">
+                    <button class="px-8 py-2 rounded-full bg-softpink " onclick="confirm()">
+                        CONFIRM
+                    </button>                    
+                    
+                    <button class="px-8 py-2 rounded-full bg-softpink ml-5" onclick="closePopup()">
+                        CANCEL
+                    </button>
+                </div>
+                
             <%}%>
-            <button onclick="closePopup()">CANCEL</button>
+                           
+                <!-- <button class="but-pop" onclick="confirm()">CONFIRM</button> -->
         </div>
         
     </div>
