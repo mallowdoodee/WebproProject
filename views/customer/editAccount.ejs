@@ -60,10 +60,11 @@
             background-color: var(--color-pink);
             color: white;
             border: none;
-            padding: 10px 10px;
+            padding: 10px;
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
+            margin-top: 10px;
         }
 
         .btn:hover {
@@ -84,42 +85,44 @@
 
 <!-- <body> -->
     <!-- <div class="container mt-15"> -->
-            <% data.forEach((item)=>{ %>
-                <form onsubmit="return checkInfo()">
-                    <div class="grid grid-cols-2 gap-4 font-thai pt-10">
-                        <!-- ชื่อ และ นามสกุล -->
-                        <div class="flex flex-col">
-                            <label class="text-gray-700 font-semibold">ชื่อ *</label>
-                            <input class="border rounded-md p-2 w-full" type="text" value="<%= item.fname %>" id="fname" name="fname">
-                        </div>
-                        <div class="flex flex-col">
-                            <label class="text-gray-700 font-semibold">นามสกุล *</label>
-                            <input class="border rounded-md p-2 w-full" type="text" value="<%= item.lname %>" id="lname" name="lname">
-                        </div>
+        <% data.forEach((item)=>{ %>
+            <form onsubmit="return checkInfo()" class="mx-50">
+                <div class="grid grid-cols-2 gap-4 font-thai pt-10">
+                    <!-- ชื่อ และ นามสกุล -->
+                    <div class="flex flex-col">
+                        <label class="text-gray-700 font-semibold">ชื่อ</label>
+                        <input class="border rounded-md p-2 w-full" type="text" value="<%= item.fname %>" id="fname" name="fname">
                     </div>
+                    <div class="flex flex-col">
+                        <label class="text-gray-700 font-semibold">นามสกุล</label>
+                        <input class="border rounded-md p-2 w-full" type="text" value="<%= item.lname %>" id="lname" name="lname">
+                    </div>
+                </div>
                 
+                <div class="grid grid-cols-2 gap-4 font-thai">
                     <!-- เบอร์โทรศัพท์ (Phone) -->
                     <div class="mt-4 font-thai">
-                        <label class="text-gray-700 font-semibold">เบอร์โทรศัพท์ *</label>
+                        <label class="text-gray-700 font-semibold">เบอร์โทรศัพท์</label>
                         <input class="border rounded-md p-2 w-full mt-1" type="tel" value="<%= item.phone %>" id="phone" name="phone">
                     </div>
-                
+                    
                     <!-- EMAIL ADDRESS -->
                     <div class="mt-4 font-thai">
-                        <label class="text-gray-700 font-semibold">EMAIL ADDRESS *</label>
+                        <label class="text-gray-700 font-semibold">EMAIL ADDRESS</label>
                         <input class="border rounded-md p-2 w-full mt-1" type="email" value="<%= item.address %>" id="address" name="address">
                     </div>
-                
-                    <!-- ที่อยู่ -->
-                    <div class="mt-4 font-thai">
-                        <label class="text-gray-700 font-semibold">ที่อยู่</label>
-                        <textarea class="border rounded-md p-3 w-full mt-1 h-20 resize-none" id="addressDetail" name="addressDetail"><%= item.addressDetail %></textarea>
-                    </div>
-                
-                    <!-- ปุ่มบันทึก -->
-                    <input type="submit" value="บันทึกการเปลี่ยนแปลง" class="btn submit font-thai mt-4">
-                </form>
-                
+                </div>
+            
+                <!-- ที่อยู่ -->
+                <div class="mt-4 font-thai">
+                    <label class="text-gray-700 font-semibold">ที่อยู่</label>
+                    <textarea class="border rounded-md p-3 w-full mt-1 h-20 resize-none" id="addressDetail" name="addressDetail"><%= item.addressDetail %></textarea>
+                </div>
+            
+                <!-- ปุ่มบันทึก -->
+                <input type="submit" value="บันทึกการเปลี่ยนแปลง" class="btn submit font-thai mt-4">
+            </form>
+            
         <% }); %>
     <!-- </div> -->
 
