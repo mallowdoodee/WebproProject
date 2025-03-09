@@ -64,8 +64,8 @@
 
     .modal-container {
         display: flex;
-        width: 80%;
-        height: 70%;
+        width: 70%;
+        height: 75%;
         gap: 20px;
         padding: 30px;
         border-radius: 10px;
@@ -133,7 +133,7 @@
         display: inline-block;
         color: white;
         padding: 8px;
-        font-family: var(--font-secondary);
+        font-family: var(--font-thai);
         border-radius: 4px;
         margin-top: 10px;
     }
@@ -196,14 +196,14 @@
 <div class="container">
     <%Object.keys(allData).forEach(category => {%>
         <div class="head">
-            < <a href="/emp/category" style="color: #580201;">Go Back</a>
+            < <a href="/emp/category" class="font-thai" style="color: #580201;">กลับไปหน้าหลัก</a>
             <h1 class="font-logo text-4xl text-[var(--color-red)] mb-8 mt-4"><%= category %></h1>
             <hr width="100%" size="1">
         </div>
         <div class="card-container">
             <%if (category === "products") {%>
                 <% allData[category].forEach(item => { %>
-                    <div class="card" onclick="openModal(this)"
+                    <div class="card font-secondary text-center" onclick="openModal(this)"
                     data-category="<%= category %>"
                     data-id="<%= item.id %>"
                     data-name="<%= item.name %>"
@@ -216,7 +216,7 @@
                     data-gemstone="<%= item.gemstone %>"
                     data-color="<%= item.color %>"
                     data-pendant="<%= item.pendant %>">
-                        <img src="/<%= item.image_path%>" alt="<%= item.name %>">
+                        <img src="/<%= item.image_path%>" alt="<%= item.name %>"><br>
                         <%= item.name %>
                     </div>
                 <% }) %>

@@ -175,13 +175,20 @@
     }
 
     .pendant-item {
-        border-bottom: 1px solid #ddd;
+        /*border-bottom: 1px solid #B8625C;*/
+        color: #B8625C;
         padding: 10px;
         font-family: var(--font-thai);
     }
 
     .pendant-item:last-child {
         border-bottom: none;
+    }
+
+    .pendant-item li::marker {
+        font-size: 12px;
+        font-family: var(--font-thai);
+        color: #B8625C;
     }
 
 
@@ -315,7 +322,7 @@
         cursor: pointer;
     }
 
-    #add-list li {
+    .add-item {
         background: #FAF0EE;
         border-radius: 0;
         grid-column: span 2;
@@ -325,18 +332,28 @@
         color: #B8625C;
         margin-top: -20px;
         margin-bottom: 10px;
+        display: flex;
+    }
+
+    .add-item li {
+        margin-right: 10px;
+    }
+
+    .add-item li::marker {
+        font-size: 12px;
+        font-family: var(--font-thai);
+        color: #B8625C;
+    }
+
+    #add-list li {
+        color: #B8625C;
+        font-family: var(--font-thai);
     }
 
     #add-list li::marker {
         font-size: 12px;
         font-family: var(--font-thai);
         color: #B8625C;
-    }
-
-    .add-item {
-        display: flex;
-        align-items: center;
-        background-color: #ffe4e1;
     }
 
     .form-container, .butt {
@@ -447,13 +464,15 @@
     <div class="list-order" id="list-order">
         <h2>Order Details</h2>
         <%if(data[0].order_status === 'กำลังจัดส่ง' || data[0].order_status === 'จัดส่งสำเร็จ'){%>
-            <h3 class="order-title">#ORDER<%= data[0].id %> - <%= data[0].order_status %><span class="status"> #<%=data[0].parcel_number%></span></h3>
+            <h3 class="order-title">#ORDER<%= data[0].id %> - <span class="status 
+                <%= data[0].order_status === 'กำลังจัดส่ง' ? 'pending' : 'accepted' %>">
+                <%= data[0].order_status %> #<%=data[0].parcel_number%></span></h3>
         <%}else{%>
             <h3 class="order-title">#ORDER<%= data[0].id %> - <span class="status 
                 <%= data[0].order_status === 'รอดำเนินการ' ? 'pending' 
                 : data[0].order_status === 'ยอมรับออเดอร์แล้ว' ? 'accepted' 
                 : data[0].order_status === 'รอตรวจสอบการชำระเงิน' ? 'pending' 
-                : data[0].order_status === 'รับออเดอร์' ? 'recived' 
+                : data[0].order_status === 'รับออเดอร์' ? 'recived'  
                 : 'declined' %>">
                 <%= data[0].order_status %></span></h3>
         <%}%>
@@ -516,6 +535,7 @@
                         <% }); %>
                     </div>
                 </div>
+                <hr>
             <% } %>
 
             <div class="section">
@@ -657,7 +677,7 @@
 <div>
     <%if(data[0].order_status === 'กำลังจัดส่ง') {%>
     <div class="butt">
-        <button onclick="success_order(event)">ส่งสินค้าสำเร็จ</button>
+        <button onclick="success_order(event)" id="acceptButton">ส่งสินค้าสำเร็จ</button>
         <a href="/emp/myorders" class="cancel">กลับไปหน้าหลัก</a>
     </div>
     <%}%>

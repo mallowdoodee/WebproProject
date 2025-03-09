@@ -237,17 +237,17 @@ function openModal(data) {
                 <h2>${name}</h2>
             </div>
             <div class="modal-right" id="modal-right">
-                <h2>${name}</h2>
-                <h3>ราคา: ${price} บาท</h3>
-                <p class="font-thai mb-6">${description}</p>
-                <p class="font-thai mb-6">วัสดุ: ${material} สี: <input type="color" value="${color}"></p>
-                <p class="font-thai mb-6">จำนวนสินค้าในคลัง: ${stock_quantity}</p>
-                <div class="category font-secondary inline-block bg-[#EDD1CC] text-[#A56037] p-2 mb-8">${type}</div><br>
-                <button class="editpro bg-[#D8A273] w-26" onclick="edit_template_product('${id}', '${name}', '${type}', 
+                <h2 style="font-size:24px;">${name}</h2>
+                <h3>Price: ${price} Baht</h3>
+                <p class="font-thai mb-4">${description}</p>
+                <p class="font-thai mb-4">วัสดุ: ${material} สี: <input type="color" value="${color}"></p>
+                <p class="font-thai mb-4">จำนวนสินค้าในคลัง: ${stock_quantity}</p>
+                <div class="category font-thai inline-block bg-[#EDD1CC] text-[#A56037] p-2 mb-4">${type}</div><br>
+                <button class="editpro bg-[#D8A273] w-16" onclick="edit_template_product('${id}', '${name}', '${type}', 
                 '${price}', '${description}', '${stock_quantity}', '${material}', '${gemstone}', '${color}', '${pendant}', '${category}')">
-                    Edit Product
+                    แก้ไข
                 </button>
-                <button class="delpro bg-[#D15F5F] ml-2 w-18" onclick="delProduct('${id}', '${category}')">Delete</button>
+                <button class="delpro bg-[#D15F5F] ml-2 w-14" onclick="delProduct('${id}', '${category}')">ลบ</button>
             </div>
         `;
     }else {
@@ -258,8 +258,8 @@ function openModal(data) {
                 <h3>Price: ${price} Baht</h3>
                 <p class="font-thai mb-6">${description}</p>
                 <div class="category font-secondary inline-block bg-[#EDD1CC] text-[#A56037] p-2 mb-8">${category}</div><br>
-                <button class="editpro bg-[#D8A273] w-26" onclick="editProduct('${id}', '${name}', '${price}', '${description}', '${category}')">Edit Product</button>
-                <button class="delpro bg-[#D15F5F] ml-2 w-18" onclick="delProduct('${id}', '${category}')">Delete</button>
+                <button class="editpro bg-[#D8A273] w-16" onclick="editProduct('${id}', '${name}', '${price}', '${description}', '${category}')">แก้ไข</button>
+                <button class="delpro bg-[#D15F5F] ml-2 w-14" onclick="delProduct('${id}', '${category}')">ลบ</button>
             </div>
         `;
     }
@@ -271,34 +271,34 @@ function openModal(data) {
 function edit_template_product(id, name, type, price, description, stock_quantity, material, gemstone, color, pendant, category) {
     console.log(category)
     document.getElementById("modal-right").innerHTML = `
-    < <button class="back-btn" onclick="goBack()">Go Back</button>
-    <h1 class="font-logo text-4xl text-[var(--color-red)] mb-4 mt-1">Edit Product</h1>
+    < <button class="back-btn font-thai" onclick="goBack()">กลับ</button>
+    <h1 class="font-logo text-4xl text-[var(--color-red)] mb-2 mt-1">Edit Product</h1>
     <form id="edit-product">
         <input type="hidden" name="category" value=${category}>
         <input type="hidden" name="id" value=${id}>
         <div class="form-group">
-            <label>ชื่อสินค้า:</label><br>
+            <label class="font-thaiS">ชื่อสินค้า:</label><br>
             <input type="text" name="name" value="${name}">
-            <hr width="30%" size="1">
+            <hr width="50%" size="1">
         </div>
 
         <div class="form-group">
-            <label>จำนวนคลังสินค้า:</label><br>
+            <label class="font-thaiS">จำนวนคลังสินค้า:</label><br>
             <input type="number" name="stock_quantity" value="${stock_quantity}">
-            <hr width="30%" size="1">
+            <hr width="50%" size="1">
         </div>
         
         <div class="form-group">
-            <label>คำอธิบายสินค้า:</label><br>
+            <label class="font-thaiS">คำอธิบายสินค้า:</label><br>
             <textarea class="w-80" name="description">${description}</textarea>
-            <hr width="70%" size="1">
+            <hr width="80%" size="1">
         </div>
         
         <div class="form-group">
-            <label>ประเภทสินค้า:</label><br>
-            <div class="category font-secondary inline-block bg-[#EDD1CC] text-[#A56037] p-1 mb-1">${category}</div>
-            <div class="category font-secondary inline-block bg-[#EDD1CC] text-[#A56037] p-1 mb-1">${type}</div>
-            <input class="done font-secondary" type="submit" value="Done">
+            <label class="font-thaiS">ประเภทสินค้า:</label><br>
+            <div class="category font-secondary inline-block bg-[#EDD1CC] text-[#A56037] p-1 mr-2 mt-1">${category}</div>
+            <div class="category font-thai inline-block bg-[#EDD1CC] text-[#A56037] p-1">${type}</div>
+            <input class="done font-thai" type="submit" value="บันทึก">
         </div>
     </form>`;
     document.getElementById('edit-product').onsubmit = async function (event) {
@@ -370,33 +370,33 @@ function edit_template_product(id, name, type, price, description, stock_quantit
 
 function editProduct(id, name, price, description, category) {
     document.getElementById("modal-right").innerHTML = `
-        < <button class="back-btn" onclick="goBack()">Go Back</button>
+        < <button class="back-btn font-thai" onclick="goBack()">กลับ</button>
         <h1 class="font-logo text-4xl text-[var(--color-red)] mb-4 mt-1">Edit Product</h1>
         <form id="edit-product-form">
             <input type="hidden" name="category" value=${category}>
             <input type="hidden" name="id" value=${id}>
             <div class="form-group">
-                <label>ชื่อสินค้า:</label><br>
+                <label class=font-thaiS>ชื่อสินค้า:</label><br>
                 <input type="text" name="name" value="${name}">
-                <hr width="30%" size="1">
+                <hr width="25%" size="1">
             </div>
 
             <div class="form-group">
-                <label>ราคา:</label><br>
+                <label class=font-thaiS>ราคา:</label><br>
                 <input type="number" name="price" value="${price}">
-                <hr width="30%" size="1">
+                <hr width="25%" size="1">
             </div>
             
             <div class="form-group">
-                <label>คำอธิบายสินค้า:</label><br>
+                <label class=font-thaiS>คำอธิบายสินค้า:</label><br>
                 <textarea class="w-80" name="description">${description}</textarea>
-                <hr width="70%" size="1">
+                <hr width="40%" size="1">
             </div>
             
             <div class="form-group">
-                <label>ประเภทสินค้า:</label><br>
+                <label class=font-thaiS>ประเภทสินค้า:</label><br>
                 <div class="category font-secondary inline-block bg-[#EDD1CC] text-[#A56037] p-1 mb-1">${category}</div>
-                <input class="done font-secondary" type="submit" value="Done">
+                <input class="done font-thai" type="submit" value="บันทึก">
             </div>
         </form>
     `;

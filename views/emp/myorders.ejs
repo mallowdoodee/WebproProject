@@ -130,7 +130,8 @@
                         <td><span class="font-thai
                             <%= item.order_status === 'ยอมรับออเดอร์แล้ว' ? 'accepted' 
                             : item.order_status === 'รอตรวจสอบการชำระเงิน' ? 'pending' 
-                            : item.order_status === 'รับออเดอร์' ? 'recived'
+                            : item.order_status === 'รับออเดอร์' ? 'recived' 
+                            : item.order_status === 'กำลังจัดส่ง' ? 'pending'
                             : 'declined' %>">
                             <%=item.order_status%></span></td>
                         <td>
