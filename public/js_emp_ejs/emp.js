@@ -68,8 +68,11 @@ function close_decline_Modal() {
 }
 
 //decline order
-function send_decline_Modal() {
+function send_decline_Modal(event) {
+    event.preventDefault();
     const description = document.getElementById("description").value;
+    const id = document.getElementById("id").value;
+    // console.log(id);
     if (description == "") {
         Swal.fire({
             icon: 'error',
@@ -93,8 +96,7 @@ function send_decline_Modal() {
                 const response = await fetch("/api/decline_order", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ description }),
-                    credentials: "include"
+                    body: JSON.stringify({ id, description }),
               });
           
               if (response.ok) {
@@ -117,11 +119,15 @@ function send_decline_Modal() {
 }
 
 //accept order
-async function accept() {
+async function accept(event) {
+    event.preventDefault()
+    const id = document.getElementById("id").value;
     let formData = {
         add_order: add_order,
         add_total: totalPrice,
+        id
     }
+    console.log(formData)
 
     // console.log(formData)
     try {
@@ -139,8 +145,7 @@ async function accept() {
                 const response = await fetch("/api/accept_order", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(formData),
-                    credentials: "include"
+                    body: JSON.stringify(formData)
               });
           
               if (response.ok) {
@@ -165,6 +170,7 @@ async function accept() {
 
 
 async function payment_check() {
+    const id = document.getElementById("id").value;
     try {
         const result = await Swal.fire({
             title: "คุณแน่ใจหรือไม่?",
@@ -181,7 +187,7 @@ async function payment_check() {
             const response = await fetch("/api/payment_check", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                credentials: "include"
+                body: JSON.stringify({ id })
             });
 
             if (response.ok) {
@@ -671,6 +677,7 @@ function delivery(event) {
     event.preventDefault()
     console.log('yess')
     const delivery = document.getElementById('delivery').value;
+    const id = document.getElementById("id").value;
     console.log(delivery)
     try {
         Swal.fire({
@@ -686,8 +693,7 @@ function delivery(event) {
                 const response = await fetch("/api/delivery", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ delivery }),
-                    credentials: "include"
+                    body: JSON.stringify({ id, delivery })
                 });
           
                 if (response.ok) {
@@ -712,7 +718,8 @@ function delivery(event) {
 
 function success_order(event) {
     event.preventDefault();
-    console.log('yesss')
+    // console.log('yesss')
+    const id = document.getElementById("id").value;
     try {
         Swal.fire({
             title: "จัดส่งสินค้าสำเร็จแล้วใช่หรือไม่?",
@@ -727,7 +734,7 @@ function success_order(event) {
                 const response = await fetch("/api/success_order", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    credentials: "include"
+                    body: JSON.stringify({ id })
                 });
           
                 if (response.ok) {

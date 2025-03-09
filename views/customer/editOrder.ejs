@@ -359,10 +359,14 @@
 
 <body>
     <%- include('topbar') %>
+    <form>
+        <input type="hidden" value="<%=order.id%>" id="id">
+        <input type="hidden" value="<%=order.jeweler_id%>" id="jeweler_id">
+    </form>
     <div class="div1">
         <div class="mt-20 font-thai">
             <div class="heading-div">
-                <button class="back" onclick="back_and_save()">ย้อนกลับ</button>
+                <a class="back" href="/ordering?id=<%=order.id%>">ย้อนกลับ</a>
                 <h1 style="color: #580201;font-size: 30px;padding-right: 30px;">แก้ไข<%= order.category %>ของคุณ</h1>
         </div>
         <div class="custom form">
@@ -409,7 +413,11 @@
                     </label>
                     
                     <!-- ใช้ display: <%= hasEngraveText ? 'block' : 'none' %> เพื่อกำหนดค่าเริ่มต้น -->
-                    <<div id="engraveMaterialTextContainer" style="display: <%= hasEngraveText ? 'block' : 'none' %>">
+                     <%if (hasEngraveText){%>
+                        <div id="engraveMaterialTextContainer" style="display: block;">
+                     <%}else{%>
+                        <div id="engraveMaterialTextContainer" style="display: none;">
+                    <%};%>
                         <strong><label for="engraveMaterialText">สลักลงบน<%= order.category %>ของคุณ</label></strong>
                         <input type="text" name="engraveMaterialText" id="engraveMaterialText"
                             placeholder="ข้อความสลักของคุณ" maxlength="6" value="<%= hasEngraveText ? order_detail.material.engraveMaterialText : '' %>">
@@ -487,7 +495,11 @@
                                             <input class="engraveChoice" class="engraveChoice" type="radio" name="<%= pendant.name %>-engrave" value="none"
                                                 onclick="toggleEngravePendantText('<%= pendant.name %>', false)" style="margin: 0;" <%= hasEngraving ? '' : 'checked' %>> ไม่สลัก
                                         </label>
-                                        <<div id="engravePendantTextContainer-<%= pendant.name %>" style="display: <%= hasEngraving ? 'block' : 'none' %>">
+                                        <%if (hasEngraving){%>
+                                            <div id="engravePendantTextContainer-<%= pendant.name %>" style="display: block;">
+                                         <%}else{%>
+                                            <div id="engravePendantTextContainer-<%= pendant.name %>" style="display: none;">
+                                        <%};%>
                                             <strong><label for="engravePendantText-<%= pendant.name %>">เพิ่มข้อความสลักบนจี้ของคุณ</label></strong>
                                             <input type="text" maxlength="6" name="engravePendantText-<%= pendant.name %>" id="engravePendantText-<%= pendant.name %>"
                                             placeholder="ข้อความสลักของคุณ" value="<%= hasEngraving ? selectedPendant.engravePendantText : '' %>">
@@ -532,8 +544,8 @@
             </div>
             <div class="but-pop">
                 <%if (user.isMember) {%>
-                    <button onclick="confirm_edit()">สั่งเลย!</button>
-                    <button onclick="saveOrder_edit()">บันทึก</button>
+                    <button onclick="confirm_edit(event)">สั่งเลย!</button>
+                    <button onclick="saveOrder_edit(event)">บันทึก</button>
                 <%}%>
                 <button onclick="closePopup()">ยกเลิก</button>
             </div>

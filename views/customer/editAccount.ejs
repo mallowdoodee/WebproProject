@@ -70,18 +70,25 @@
         outline: none;
     }
 </style>
+<div class="flex justify-center items-center w-full text-center pt-5 gap-1">
+    <p class="text-gray-700 font-basetext flex items-center gap-2">
+        Welcome to a world of elegance, 
+        <strong><%= user.email.split('@')[0] %>✨</strong>
+        <span class="text-gray-700">( Not you?</span>
+        <form action="/logout" method="POST" class="inline"> 
+            <button type="submit" class="font-bold transition-all duration-200 group">
+                <span class="text-[var(--color-pink)] group-hover:text-[var(--color-softbs)] group-hover:underline">
+                    Log out
+                </span>
+            </button>
+        </form>
+
+        <span class="text-yellow-400 text-lg">ᯓ★</span>
+        <span class="text-gray-700 font-basetext">)</span>
+    </p>
+</div>
 
 
-        <p class="text-center text-gray-700 pt-5 font-basetext" style="display: inline-block;">
-            Welcome to a world of elegance, 
-            <strong><%= user.email.split('@')[0] %>✨</strong>
-            (Not you?
-            <form action="/logout" method="POST" style="display: inline;"> 
-                <button type="submit" class="font-bold transition-all duration-200 group" href="/logout">
-                    <span class="text-[var(--color-pink)] group-hover:text-[var(--color-softbs)] group-hover:underline">Log out</span>
-                </button> <span class="text-yellow-400 text-lg">ᯓ★</span> )
-            </form>
-        </p>
         <% data.forEach((item)=>{ %>
             <form class="mx-50">
                 <div class="grid grid-cols-2 gap-4 font-thai pt-5">

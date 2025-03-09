@@ -103,10 +103,11 @@
 
     <div class="option">
         <div class="sort">
-            <label><input type="checkbox" class="filter" value="สร้อยคอ"> สร้อยคอ</label>
-            <label><input type="checkbox" class="filter" value="แหวน"> แหวน</label>
-            <label><input type="checkbox" class="filter" value="สร้อยข้อมือ"> สร้อยข้อมือ</label>
-            <label><input type="checkbox" class="filter" value="ต่างหู"> ต่างหู</label>
+            <label><input type="checkbox" class="filter" value="ยอมรับออเดอร์แล้ว"> ยอมรับออเดอร์แล้ว</label>
+            <label><input type="checkbox" class="filter" value="รอตรวจสอบการชำระเงิน"> รอตรวจสอบการชำระเงิน</label>
+            <label><input type="checkbox" class="filter" value="รับออเดอร์"> รับออเดอร์</label>
+            <label><input type="checkbox" class="filter" value="กำลังจัดส่ง"> กำลังจัดส่ง</label>
+            <label><input type="checkbox" class="filter" value="แก้ไขออเดอร์แล้วรอตรวจสอบ"> แก้ไขออเดอร์แล้วรอตรวจสอบ</label>
         </div>
     </div>
 
@@ -123,7 +124,7 @@
             </thead>
             <tbody>
                 <%data.forEach((item) => {%>
-                    <tr data-category="<%= item.category %>">
+                    <tr data-order_status="<%= item.order_status %>">
                         <td class="font-secondary"><%=item.id%></td>
                         <td class="font-thai"><%=item.category%></td>
                         <td class="font-secondary"><%=item.updated_at%></td>
@@ -153,19 +154,19 @@
     
     function updateFilterDisplay() {
         const checkboxes = document.querySelectorAll('.filter');
-        const rows = document.querySelectorAll('tbody tr[data-category]');
-        console.log(rows)
+        const rows = document.querySelectorAll('tbody tr[data-order_status]');
+        // console.log(rows)
         const selectedCategories = Array.from(checkboxes).filter(cb => cb.checked).map(cb => cb.value);
         console.log(selectedCategories)
         
         rows.forEach(row => {
             console.log(row)
-            const category = row.getAttribute('data-category');
-            console.log(category)
+            const order_status = row.getAttribute('data-order_status');
+            // console.log(order_status)
             if (selectedCategories.length === 0) {
                 row.style.display = ''; 
             } else {
-                row.style.display = selectedCategories.includes(category) ? '' : 'none';
+                row.style.display = selectedCategories.includes(order_status) ? '' : 'none';
             }
         });
     }

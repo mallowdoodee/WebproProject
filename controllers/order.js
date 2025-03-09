@@ -32,6 +32,7 @@ const order_from_cus = async (req, res) => {
 
 const save_order = (req, res) => {
     const user = req.isUser;
+    // console.log('yess')
     const { category, size, material, stone, refImage, description, pendant, total } = req.body;
     let order_detail_json = {
         material,
@@ -46,7 +47,7 @@ const save_order = (req, res) => {
     }else if (category === 'แหวน') {
         order_detail_json.size = size;
     }
-    console.log(order_detail_json)
+    // console.log(order_detail_json)
     // console.log("order_detail: ", order_detail)
     const order_detail = JSON.stringify(order_detail_json);
     const data = [user.id, "แก้ไขต่อ", order_detail, category]
@@ -62,9 +63,10 @@ const save_order = (req, res) => {
 };
 
 const save_editOrder = (req, res) => {
-    const orderId = req.session.orderId;
+    // const orderId = req.session.orderId;
     const user = req.isUser;    
-    const { category, size, material, stone, refImage, description, pendant, total } = req.body;
+    const { id, category, size, material, stone, refImage, description, pendant, total } = req.body;
+    // console.log(id)
     let order_detail_json = {
         material,
         stone,
@@ -80,7 +82,7 @@ const save_editOrder = (req, res) => {
     
 
     const order_detail = JSON.stringify(order_detail_json);
-    const data = [order_detail, 'แก้ไขต่อ', orderId, user.id]    
+    const data = [order_detail, 'แก้ไขต่อ', id, user.id]    
     const sql = `UPDATE orders SET order_detail = ?, order_status = ?, 
         updated_at = CURRENT_TIMESTAMP WHERE id = ? AND customer_id = ?;`;
 
@@ -90,15 +92,13 @@ const save_editOrder = (req, res) => {
             return res.status(500).json({ error: err.message });
         }
         console.log('บันทึกออเดอร์สำเร็จ');
-        res.status(200).json({ message: 'บันทึกออเดอร์สำเร็จ' });
+        res.status(200).json({ message: 'บันทึกออเดอร์สำเร็จ', id });
     });
 }
 
 const update_order_from_cus = (req, res) => {
-    const orderId = req.session.orderId;
     const user = req.isUser;
-    // console.log('id', orderId)
-    const { category, size, material, stone, refImage, description, pendant, total } = req.body;
+    const { id, jeweler_id, category, size, material, stone, refImage, description, pendant, total } = req.body;
     let order_detail_json = {
         material,
         stone,
@@ -111,13 +111,21 @@ const update_order_from_cus = (req, res) => {
     }else if (category === 'แหวน') {
         order_detail_json.size = size;
     }
-    
-
-    // console.log("order_detail: ", order_detail_json)
+    console.log("jeweler_id: ", jeweler_id)
     const order_detail = JSON.stringify(order_detail_json);
-    const data = [order_detail, 'รอดำเนินการ', orderId, user.id]
-    const sql = `UPDATE orders SET order_detail = ?, order_status = ?, 
+    // const data = [order_detail, 'รอดำเนินการ', id, user.id]
+    let sql = ``;
+    let data = [];
+    if (!jeweler_id) {
+        sql = `UPDATE orders SET order_detail = ?, order_status = ?, 
         updated_at = CURRENT_TIMESTAMP WHERE id = ? AND customer_id = ?;`
+        data = [order_detail, 'รอดำเนินการ', id, user.id]
+    }else {
+        sql = `UPDATE orders SET order_detail = ?, order_status = ?, 
+        updated_at = CURRENT_TIMESTAMP WHERE id = ? AND customer_id = ?;`
+        data = [order_detail, 'แก้ไขออเดอร์แล้วรอตรวจสอบ', id, user.id]
+    }
+
     db.run(sql, data, function(err) {
         if (err) {
             console.log(err)
@@ -131,9 +139,10 @@ const update_order_from_cus = (req, res) => {
 
 const cancel_order = (req, res) => {
     console.log('yess')
-    const orderId = req.session.orderId;
     const user = req.isUser;
-    const sql = `DELETE FROM orders WHERE id = ${orderId} AND customer_id = ${user.id};`;
+    const { id } = req.body;
+    console.log(id);
+    const sql = `DELETE FROM orders WHERE id = ${id} AND customer_id = ${user.id};`;
     db.run(sql, function (err) {
         if (err) {
             console.log(err)
@@ -145,9 +154,8 @@ const cancel_order = (req, res) => {
 }
 
 const accept_order = async (req, res) => {
-    const orderId = req.session.orderId;
     const userData = req.emp;
-    const { add_order, add_total } = req.body;
+    const { id, add_order, add_total } = req.body;
     const order = {
         add_order,
         add_total
@@ -159,15 +167,11 @@ const accept_order = async (req, res) => {
 
     if (add_order.length === 0 && add_total === 0) {
         sql = `UPDATE orders SET jeweler_id = ?, order_status = "ยอมรับออเดอร์แล้ว", updated_at = CURRENT_TIMESTAMP WHERE id = ?`;
-        data = [userData.id, orderId];
+        data = [userData.id, id];
     } else {
         sql = `UPDATE orders SET jeweler_id = ?, add_order = ?, order_status = "ยอมรับออเดอร์แล้ว", updated_at = CURRENT_TIMESTAMP WHERE id = ?`;
-        data = [userData.id, add_order_json, orderId];
+        data = [userData.id, add_order_json, id];
     }
-    // console.log(sql);
-    // console.log(order);
-    // console.log(data);
-    // console.log(orderId);
 
     db.run(sql, data, function (err) {
         if (err) {
@@ -180,29 +184,27 @@ const accept_order = async (req, res) => {
 };
 
 const payment_check = (req, res) => {
-    const orderId = req.session.orderId;
-    console.log(orderId);
+    const { id } = req.body;
     const sql = `UPDATE orders SET order_status = "รับออเดอร์", payment_status = "paid",
-                updated_at = CURRENT_TIMESTAMP WHERE id=${orderId}`;
+                updated_at = CURRENT_TIMESTAMP WHERE id=${id}`;
     db.run(sql, function (err) {
         if (err) {
             console.log(err)
             return res.status(500).json({ error: err.message });
         }
-        res.status(200).json({ message: 'อัปเดตออเดอร์สำเร็จ', order_id: orderId });
+        res.status(200).json({ message: 'อัปเดตออเดอร์สำเร็จ', order_id: id });
     })
     
 };
 
 const decline_order = (req, res) => {
-    const orderId = req.session.orderId;
     const userData = req.emp;
-    const { description } = req.body;
-    console.log(description)
-    console.log(orderId)
+    const { id, description } = req.body;
+    // console.log(description)
+    // console.log(id)
 
     const sql = `UPDATE orders SET order_status = "ปฏิเสธการรับออเดอร์", decline_reason = "${description}", 
-        jeweler_id = ${userData.id}, updated_at = CURRENT_TIMESTAMP WHERE id = ${orderId}`;
+        jeweler_id = ${userData.id}, updated_at = CURRENT_TIMESTAMP WHERE id = ${id}`;
     db.run(sql, function (err) {
         if (err) {
             console.log(err);
@@ -213,31 +215,32 @@ const decline_order = (req, res) => {
 }
 
 const delivery = (req, res) => {
-    const orderId = req.session.orderId;
-    const { delivery } = req.body;
+    // const orderId = req.session.orderId;
+    const { id, delivery } = req.body;
     // console.log(delivery)
     // console.log(orderId)
     const sql = `UPDATE orders SET order_status = 'กำลังจัดส่ง', updated_at = CURRENT_TIMESTAMP, 
-    parcel_number = ${delivery} WHERE id = ${orderId}`;
+    parcel_number = ${delivery} WHERE id = ${id}`;
     db.run(sql, function (err) {
         if (err) {
             console.log(err);
             return res.status(500).json({ error: err.message })
         }
-        res.status(200).json({ message: 'กำลังจัดส่งออเดอร์', order_id: orderId })
+        res.status(200).json({ message: 'กำลังจัดส่งออเดอร์', order_id: id })
     })
 }
 
 const success_order = (req, res) => {
-    const orderId = req.session.orderId;
+    const { id } = req.body;
+    // const orderId = req.session.orderId;
     // console.log(orderId);
-    const sql = `UPDATE orders SET order_status = 'จัดส่งสำเร็จ', updated_at = CURRENT_TIMESTAMP WHERE id = ${orderId}`;
+    const sql = `UPDATE orders SET order_status = 'จัดส่งสำเร็จ', updated_at = CURRENT_TIMESTAMP WHERE id = ${id}`;
     db.run(sql, function (err) {
         if (err) {
             console.log(err);
             return res.status(500).json({ error: err.message })
         }
-        res.status(200).json({ message: 'จัดส่งออเดอร์สำเร็จแล้ว', order_id: orderId })
+        res.status(200).json({ message: 'จัดส่งออเดอร์สำเร็จแล้ว', order_id: id })
     })
 }
 module.exports = { order_from_cus, save_order, save_editOrder, update_order_from_cus, cancel_order, accept_order, payment_check, decline_order, delivery, success_order }

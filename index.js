@@ -48,9 +48,9 @@ app.post('/api/cus_change_info', cus_changeinfo);
 
 
 //order
-app.post('/api/add_order_from_cus', cus_auth, order_from_cus);
-app.post('/api/saveOrder', cus_auth, save_order);
-app.post('/api/update_order_from_cus', cus_auth, update_order_from_cus);
+app.post('/api/add_order_from_cus', cus_auth, order_from_cus);//สั่ง
+app.post('/api/saveOrder', cus_auth, save_order);//save insert
+app.post('/api/update_order_from_cus', cus_auth, update_order_from_cus);//สั่ง
 app.post('/api/save_editOrder', cus_auth, save_editOrder);
 app.post('/api/cancel_order', cus_auth, cancel_order);
 app.post('/api/delivery', cus_auth, delivery);
@@ -89,23 +89,31 @@ app.get('/protected-route', cus_auth, (req, res) => {
 //customer
 app.get('/', optional_cus_auth, function (req, res) {
     const userData = req.isUser;
-    res.render('customer/layout-home', { body: 'home', user: userData })
-});
-
-app.get('/profile', cus_auth, function (req, res) {
-    const userData = req.isUser;
-    const sql = `SELECT * FROM customers WHERE email = ?`;
-    db.all(sql, userData.email, (err, results) => {
+    const sql = `SELECT * FROM products LIMIT 8`;
+    db.all(sql, function(err, rows) {
         if (err) {
             console.log(err.message);
             return res.status(500).send("Failed to retrieve data.");
         }
-        // console.log(results)
-        res.render('customer/editAccount', { data: results, user: userData });
-        // res.render('customer/layout-home', { body: 'editAccount', data: results, user: userData });
+        console.log(rows);
+        res.render('customer/layout-home', { body: 'home', data: rows, user: userData })
     })
-    // res.render('customer/editAccount');
 });
+
+// app.get('/profile', cus_auth, function (req, res) {
+//     const userData = req.isUser;
+//     const sql = `SELECT * FROM customers WHERE email = ?`;
+//     db.all(sql, userData.email, (err, results) => {
+//         if (err) {
+//             console.log(err.message);
+//             return res.status(500).send("Failed to retrieve data.");
+//         }
+//         // console.log(results)
+//         res.render('customer/editAccount', { data: results, user: userData });
+//         // res.render('customer/layout-home', { body: 'editAccount', data: results, user: userData });
+//     })
+//     // res.render('customer/editAccount');
+// });
 
 // app.get('/profile', cus_auth, (req, res) => {
 //     const userDa
@@ -194,7 +202,7 @@ app.get('/editOrder/', cus_auth, (req, res) => {
                 // console.log("materials: ", materials)
                 // console.log("stones: ", stones)
                 // console.log("pendants: ", pendants)
-                req.session.orderId = order.id;
+                // req.session.orderId = order.id;
                 // console.log(order.id)
               res.render('customer/editOrder', {
                 // body: 'editOrder',
@@ -265,7 +273,6 @@ const upload = multer({ storage: storage });
 app.get('/ordering', cus_auth, (req, res) => {
     const userData = req.isUser;
     const orderId = req.query.id;
-    // console.log(userData)
     const sql = `SELECT * FROM orders WHERE id = ${orderId}`;
     db.all(sql, (err, rows) => {
         if (err) {
@@ -282,17 +289,15 @@ app.get('/ordering', cus_auth, (req, res) => {
         } catch (parseError) {
             console.log("JSON Parsing Error:", parseError.message);
         }
-        req.session.orderId = orderId;
-        // console.log("order: ", rows.id)
+        // req.session.orderId = orderId;
+        console.log(parsedOrder)
         res.render('customer/layout-home', { body: 'ordering', data: rows, add: parsedOrder_add, order: parsedOrder, user: userData });
-
-
     });
 });
 
 app.post('/upload', upload.single('image'), (req, res) => {
     let id = req.body.id;
-    console.log('yess')
+    // console.log('yess: ', id)
     
     if (!req.file) {
         return res.status(400).json({ success: false, message: 'กรุณาอัปโหลดไฟล์' });
@@ -305,7 +310,7 @@ app.post('/upload', upload.single('image'), (req, res) => {
             console.error(err.message);
             return res.status(500).json({ success: false, message: 'เกิดข้อผิดพลาดในการบันทึกข้อมูล' });
         }
-        res.json({ success: true, message: 'อัปโหลดสำเร็จ!' });
+        res.json({ success: true, message: 'อัปโหลดสำเร็จ!', id });
     });
 });
 
@@ -332,7 +337,8 @@ app.get('/emp/orders', emp_auth(['admin', 'jeweler']), (req, res) => {
 
 app.get('/emp/myorders', emp_auth(['admin', 'jeweler']), (req, res) => {
     const userData = req.emp;
-        const sql = `SELECT * FROM orders WHERE jeweler_id = ${userData.id} AND order_status != 'จัดส่งสำเร็จ'`;
+        const sql = `SELECT * FROM orders WHERE jeweler_id = ${userData.id} AND order_status != 'จัดส่งสำเร็จ'
+            ORDER BY created_at`;
         db.all(sql, (err, rows) => {
             if (err) {
                 console.log(err.message);
@@ -352,7 +358,7 @@ app.get('/emp/myorders_detail', emp_auth(['admin', 'jeweler']), (req, res) => {
                 return res.status(500).send("Failed to retrieve data.");
             }
         
-            req.session.orderId = rows[0].id;
+            // req.session.orderId = rows[0].id;
         
             let parsedOrder = {};
             let parsedOrder_add = { add_order: [], add_total: 0 };

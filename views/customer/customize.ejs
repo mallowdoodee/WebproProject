@@ -405,11 +405,7 @@
     <%- include('topbar') %>
     <div class="mt-20 font-thai">
         <div class="heading-div">
-            <%if (user.isMember){%>
-                <button class="back" onclick="back_and_save()">ย้อนกลับ</button>
-            <%}else{%>
-                <a class="back" href="/product">ย้อนกลับ</a>
-            <%}%>
+            <a class="back" href="/product">ย้อนกลับ</a>
             <h1 style="color: #580201;font-size: 30px;padding-right: 30px;">ปรับแต่ง<%= product.category %>ของคุณ</h1>
     </div>
     
@@ -445,7 +441,7 @@
                 <select name="material" id="material" onchange="toggleEngraveOption()">
                 <% 
                     let selectedMaterial = materialsData.find(material => material.id === product.material);
-                    let selectedMaterialName = selectedMaterial ? selectedMaterial.name : "ไม่พบข้อมูล"; // กรณีไม่พบ
+                    let selectedMaterialName = selectedMaterial ? selectedMaterial.name : "ไม่พบข้อมูล";
                     let selectedMaterialPrice = selectedMaterial ? selectedMaterial.price : 0;
                 %>
                 <option value="<%= selectedMaterialName %>-<%= selectedMaterialPrice %>"><%= selectedMaterialName %>: <%= selectedMaterialPrice %> บาท</option>
@@ -608,7 +604,7 @@
                     <button class="px-8 py-2 rounded-full bg-softpink " onclick="confirm(event)">
                         สั่งเลย!
                     </button>                    
-                    <button class="px-8 py-2 rounded-full bg-softpink ml-5" onclick="saveOrder()">บันทึก</button>
+                    <button class="px-8 py-2 rounded-full bg-softpink ml-5" onclick="saveOrder(event)">บันทึก</button>
                 
             <%}%>
             <button class="px-8 py-2 rounded-full bg-softpink ml-5" onclick="closePopup()">

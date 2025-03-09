@@ -75,69 +75,15 @@
 <section id="section4" class="bg-[var(--color-bg)] py-10">
     <div class="grid grid-cols-4 gap-x-8 gap-y-25 justify-items-center mx-[2%] mb-20">
         <!-- สินค้าอันทวี่ 1 อิอิ -->
-        <button class="bg-white shadow-lg p-5 rounded-lg flex flex-col items-center w-70 hover:cursor-pointer border-t-10 border-transparent transition-all duration-300"
+        <%data.forEach((item) => {%>
+            <button class="bg-white shadow-lg p-5 rounded-lg flex flex-col items-center w-70 hover:cursor-pointer border-t-10 border-transparent transition-all duration-300"
             style="--tw-border-opacity: 1;" onmouseover="this.style.borderTopColor = 'var(--color-bs)';" onmouseout="this.style.borderTopColor = 'transparent';">
-            <img src="NK2.png" class="w-50 h-50 object-cover">
+            <img src="/<%=item.image_path%>" class="w-50 h-50 object-cover">
             <div class="text-center my-7">
-                <span class="block font-logo text-lg">Sinkha</span>
-                <span class="block font-thai text-[var(--color-bs)] mt-5">Rai Ra Ead</span>
-        </div>
-        <!-- สินค้าอันทวี่ 2 อิอิ -->
-        <button class="bg-white shadow-lg p-5 rounded-lg flex flex-col items-center w-70 hover:cursor-pointer border-t-10 border-transparent transition-all duration-300"
-            style="--tw-border-opacity: 1;" onmouseover="this.style.borderTopColor = 'var(--color-bs)';" onmouseout="this.style.borderTopColor = 'transparent';">
-            <img src="NK2.png" class="w-50 h-50 object-cover">
-            <div class="text-center my-7">
-                <span class="block font-logo text-lg">Sinkha</span>
-                <span class="block font-thai text-[var(--color-bs)] mt-5">Rai Ra Ead</span>
-        </div>
-        <!-- สินค้าอันทวี่ 3 อิอิ -->
-        <button class="bg-white shadow-lg p-5 rounded-lg flex flex-col items-center w-70 hover:cursor-pointer border-t-10 border-transparent transition-all duration-300"
-            style="--tw-border-opacity: 1;" onmouseover="this.style.borderTopColor = 'var(--color-bs)';" onmouseout="this.style.borderTopColor = 'transparent';">
-            <img src="NK2.png" class="w-50 h-50 object-cover">
-            <div class="text-center my-7">
-                <span class="block font-logo text-lg">Sinkha</span>
-                <span class="block font-thai text-[var(--color-bs)] mt-5">Rai Ra Ead</span>
-        </div>
-        <!-- สินค้าอันทวี่ 4 อิอิ -->
-        <button class="bg-white shadow-lg p-5 rounded-lg flex flex-col items-center w-70 hover:cursor-pointer border-t-10 border-transparent transition-all duration-300"
-            style="--tw-border-opacity: 1;" onmouseover="this.style.borderTopColor = 'var(--color-bs)';" onmouseout="this.style.borderTopColor = 'transparent';">
-            <img src="NK2.png" class="w-50 h-50 object-cover">
-            <div class="text-center my-7">
-                <span class="block font-logo text-lg">Sinkha</span>
-                <span class="block font-thai text-[var(--color-bs)] mt-5">Rai Ra Ead</span>
-        </div>
-        <!-- สินค้าอันทวี่ 5 อิอิ -->
-        <button class="bg-white shadow-lg p-5 rounded-lg flex flex-col items-center w-70 hover:cursor-pointer border-t-10 border-transparent transition-all duration-300"
-            style="--tw-border-opacity: 1;" onmouseover="this.style.borderTopColor = 'var(--color-bs)';" onmouseout="this.style.borderTopColor = 'transparent';">
-            <img src="NK2.png" class="w-50 h-50 object-cover">
-            <div class="text-center my-7">
-                <span class="block font-logo text-lg">Sinkha</span>
-                <span class="block font-thai text-[var(--color-bs)] mt-5">Rai Ra Ead</span>
-        </div>
-        <!-- สินค้าอันทวี่ 6 อิอิ -->
-        <button class="bg-white shadow-lg p-5 rounded-lg flex flex-col items-center w-70 hover:cursor-pointer border-t-10 border-transparent transition-all duration-300"
-            style="--tw-border-opacity: 1;" onmouseover="this.style.borderTopColor = 'var(--color-bs)';" onmouseout="this.style.borderTopColor = 'transparent';">
-            <img src="NK2.png" class="w-50 h-50 object-cover">
-            <div class="text-center my-7">
-                <span class="block font-logo text-lg">Sinkha</span>
-                <span class="block font-thai text-[var(--color-bs)] mt-5">Rai Ra Ead</span>
-        </div>
-        <!-- สินค้าอันทวี่ 7 อิอิ -->
-        <button class="bg-white shadow-lg p-5 rounded-lg flex flex-col items-center w-70 hover:cursor-pointer border-t-10 border-transparent transition-all duration-300"
-            style="--tw-border-opacity: 1;" onmouseover="this.style.borderTopColor = 'var(--color-bs)';" onmouseout="this.style.borderTopColor = 'transparent';">
-            <img src="NK2.png" class="w-50 h-50 object-cover">
-            <div class="text-center my-7">
-                <span class="block font-logo text-lg">Sinkha</span>
-                <span class="block font-thai text-[var(--color-bs)] mt-5">Rai Ra Ead</span>
-        </div>
-        <!-- สินค้าอันทวี่ 8 อิอิ -->
-        <button class="bg-white shadow-lg p-5 rounded-lg flex flex-col items-center w-70 hover:cursor-pointer border-t-10 border-transparent transition-all duration-300"
-            style="--tw-border-opacity: 1;" onmouseover="this.style.borderTopColor = 'var(--color-bs)';" onmouseout="this.style.borderTopColor = 'transparent';">
-            <img src="NK2.png" class="w-50 h-50 object-cover">
-            <div class="text-center my-7">
-                <span class="block font-logo text-lg">Sinkha</span>
-                <span class="block font-thai text-[var(--color-bs)] mt-5">Rai Ra Ead</span>
-        </div>
+                <span class="block font-logo text-lg"><%=item.name%></span>
+                <span class="block font-thai text-[var(--color-bs)] mt-5">Price: <%=item.base_price%> Baht</span>
+            </div>
+        <%});%>
     </button>
     
     </div>

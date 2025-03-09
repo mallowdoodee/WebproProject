@@ -96,10 +96,8 @@ async function check_login(event) {
 
         const result = await response.json();
         const userData = result.payload.users
-        // console.log(.email)
 
         if (response.ok) {
-            // console.log("yoooooo")
             Swal.fire({
                 icon: 'success',
                 title: 'เข้าสู่ระบบเรียบร้อย',
@@ -129,7 +127,6 @@ async function change_pass(event) {
     const password = document.getElementById('password').value;
     const confirmPass = document.getElementById('confirmPass').value;
 
-    // console.log('yess', email);
     if (!email && !password) {
         Swal.fire({
             icon: 'error',
@@ -173,7 +170,6 @@ async function change_pass(event) {
         });
 
         const result = await response.json();
-        // const userData = result.payload.users
 
         if (response.ok) {
             Swal.fire({
@@ -271,6 +267,7 @@ function toggleEngravePendantText(name, show) {
 
 
 let customData = {};
+let total = 0;
 async function check_customize(event) {
     event.preventDefault();
 
@@ -280,7 +277,6 @@ async function check_customize(event) {
 
     let pendants = [];
     let isValid = true;
-    let total = 0;
 
     document.querySelectorAll('input[name="pendent"]:checked').forEach(pendant => {
         const name = pendant.value.split('-')[0];
@@ -332,10 +328,8 @@ async function check_customize(event) {
         return;
     }
     const category = document.getElementById('category').textContent;
-    console.log(category)
 
     const size = formData.get('size');
-    // console.log(size)
     if (category === 'แหวน') {
         if (!size || size < 16) {
             Swal.fire({
@@ -372,14 +366,12 @@ async function check_customize(event) {
     const description = formData.get('description');
     
     total += (parseInt(material_price)+parseInt(stone_price));
-    // console.log("total: ", total)
 
     const material = {
         name: material_name,
         color_material: color_material,
         engraveMaterialText: engraveMaterialText
     };
-    console.log("material: ", material)
     customData = {
         material: material,
         stone: stone_name,
@@ -388,11 +380,9 @@ async function check_customize(event) {
         total: total,
         category: category
     };
-    console.log("customData: ", customData)
     if (category === 'สร้อยข้อมือ' || category === 'สร้อยคอ') {
         customData.pendant = pendants;
     }
-    console.log("customData: ", customData)
     document.getElementById("pop-up-overlay").style.display = "block";
 
     const pop = document.getElementById('pop-up');
@@ -469,9 +459,9 @@ function confirm(event) {
     }
 }
 
-async function saveOrder() {
-    // console.log('yess');
-    // event.preventDefault();
+async function saveOrder(event) {
+    event.preventDefault();
+    console.log(customData)
     try {
         const response = await fetch("/api/saveOrder", {
             method: "POST",
@@ -504,8 +494,18 @@ async function saveOrder() {
     }
 }
 
-function confirm_edit() {
-    console.log('yess')
+function confirm_edit(event) {
+    event.preventDefault();
+    const orderId = document.getElementById('id').value;
+    const jeweler_id = document.getElementById('jeweler_id').value;
+    customData.id = orderId;
+    customData.jeweler_id = jeweler_id;
+    // console.log("jeweler_id: ", jeweler_id)
+    // if (!jeweler_id) {
+    //     console.log('noo')
+    // }
+    // console.log(orderId)
+    // console.log('yess')
     try {
         Swal.fire({
             title: "คุณแน่ใจหรือไม่?",
@@ -522,13 +522,17 @@ function confirm_edit() {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(customData),
-                credentials: "include"
               });
           
               if (response.ok) {
                 Swal.fire("สำเร็จ!", "ออเดอร์ของคุณถูกบันทึกเรียบร้อยแล้ว", "success")
                 .then(() => {
-                    window.location.href = "/myorders?page=pending";
+                        if (!jeweler_id) {
+                            window.location.href = "/myorders?page=pending";
+                        }else {
+                            window.location.href = "/myorders?page=check";
+                        }
+                    
                 });
               } else {
                 Swal.fire("ล้มเหลว!", "ไม่สามารถบันทึกออเดอร์ได้", "error");
@@ -543,7 +547,11 @@ function confirm_edit() {
     }
 }
 
-function saveOrder_edit() {
+function saveOrder_edit(event) {
+    event.preventDefault();
+    const orderId = document.getElementById('id').value;
+    customData.id = orderId;
+    // console.log(customData)
     try {
         Swal.fire({
             title: "คุณต้องการบันทึกข้อมูลนี้หรือไม่?",
@@ -558,14 +566,15 @@ function saveOrder_edit() {
                 const response = await fetch("/api/save_editOrder", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(customData),
-                    credentials: "include"
+                    body: JSON.stringify(customData)
                 });
-    
+
+                const resultData = await response.json();
+
                 if (response.ok) {
                     Swal.fire("สำเร็จ!", "ออเดอร์ของคุณถูกบันทึกเรียบร้อยแล้ว", "success")
                         .then(() => {
-                            window.location.href = "/myorders?page=wait";
+                            window.location.href = `/ordering?id=${resultData.id}`;
                         });
                 } else {
                     Swal.fire("ล้มเหลว!", "ไม่สามารถบันทึกออเดอร์ได้", "error");
@@ -583,45 +592,92 @@ function saveOrder_edit() {
     }
 }
 
-function back_and_save() {
-    try {
-        Swal.fire({
-            title: "คุณต้องการบันทึกข้อมูลนี้หรือไม่?",
-            icon: "question",
-            showCancelButton: true,
-            confirmButtonColor: "#BF8579",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "บันทึก",
-            cancelButtonText: "ไม่ต้อง"
-        }).then(async (result) => {
-            if (result.isConfirmed) {
-                const response = await fetch("/api/saveOrder", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(customData)
-                });
+// function back_and_save() {
+//     event.preventDefault();
+//     console.log(customData)
+    // try {
+    //     Swal.fire({
+    //         title: "คุณต้องการบันทึกข้อมูลนี้หรือไม่?",
+    //         icon: "question",
+    //         showCancelButton: true,
+    //         confirmButtonColor: "#BF8579",
+    //         cancelButtonColor: "#d33",
+    //         confirmButtonText: "บันทึก",
+    //         cancelButtonText: "ไม่ต้อง"
+    //     }).then(async (result) => {
+    //         if (result.isConfirmed) {
+    //             const response = await fetch("/api/saveOrder", {
+    //                 method: "POST",
+    //                 headers: { "Content-Type": "application/json" },
+    //                 body: JSON.stringify(customData)
+    //             });
     
-                if (response.ok) {
-                    Swal.fire("สำเร็จ!", "ออเดอร์ของคุณถูกบันทึกเรียบร้อยแล้ว", "success")
-                        .then(() => {
-                            window.location.href = "/product";
-                        });
-                } else {
-                    Swal.fire("ล้มเหลว!", "ไม่สามารถบันทึกออเดอร์ได้", "error");
-                }
-            } else {
-                window.location.href = "/product";
-            }
-        });
-    } catch (error) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Server Error',
-            text: 'เกิดข้อผิดพลาดในการเชื่อมต่อ',
-        });
-    }
+    //             if (response.ok) {
+    //                 Swal.fire("สำเร็จ!", "ออเดอร์ของคุณถูกบันทึกเรียบร้อยแล้ว", "success")
+    //                     .then(() => {
+    //                         window.location.href = "/product";
+    //                     });
+    //             } else {
+    //                 Swal.fire("ล้มเหลว!", "ไม่สามารถบันทึกออเดอร์ได้", "error");
+    //             }
+    //         } else {
+    //             window.location.href = "/product";
+    //         }
+    //     });
+    // } catch (error) {
+    //     Swal.fire({
+    //         icon: 'error',
+    //         title: 'Server Error',
+    //         text: 'เกิดข้อผิดพลาดในการเชื่อมต่อ',
+    //     });
+    // }
     
-}
+// }
+
+// function back_and_saveUpdate(event) {
+//     event.preventDefault();
+//     const orderId = document.getElementById('id').value;
+//     customData.id = orderId;
+//     // console.log('ess')
+//     try {
+//         Swal.fire({
+//             title: "คุณต้องการบันทึกข้อมูลนี้หรือไม่?",
+//             icon: "question",
+//             showCancelButton: true,
+//             confirmButtonColor: "#BF8579",
+//             cancelButtonColor: "#d33",
+//             confirmButtonText: "บันทึก",
+//             cancelButtonText: "ไม่ต้อง"
+//         }).then(async (result) => {
+//             if (result.isConfirmed) {
+//                 const response = await fetch("/api/save_editOrder", {
+//                     method: "POST",
+//                     headers: { "Content-Type": "application/json" },
+//                     body: JSON.stringify(customData)
+//                 });
+    
+//                 const resultData = await response.json();
+
+//                 if (resultData.success) {
+//                     Swal.fire("สำเร็จ!", resultData.message, "success")
+//                         .then(() => {
+//                             window.location.href = `/ordering?id=${resultData.id}`;
+//                         });
+//                 } else {
+//                     Swal.fire("ล้มเหลว!", 'ไม่สามารถบันทึกออเดอร์ได้', "error");
+//                 }
+//             }else {
+//                 window.location.href = `/ordering?id=${orderId}`;
+//             }
+//         });
+//     } catch (error) {
+//         Swal.fire({
+//             icon: 'error',
+//             title: 'Server Error',
+//             text: 'เกิดข้อผิดพลาดในการเชื่อมต่อ',
+//         });
+//     }
+// }
 
 
 function closePopup() {
@@ -629,8 +685,8 @@ function closePopup() {
     document.getElementById("pop-up-overlay").style.display = "none";
 }
 
-async function confirm_upload() {
-    // console.log('yess')
+function confirm_upload(event) {
+    event.preventDefault();
     try {
         const form = document.getElementById("uploadForm");
         const fileInput = document.querySelector("input[name='image']");
@@ -645,7 +701,7 @@ async function confirm_upload() {
         }
 
         const formData = new FormData(form);
-        // console.log(fileInput)
+        console.log(formData)
 
         Swal.fire({
             title: "ตรวจสอบสลิปต์ก่อนกดยืนยัน?",
@@ -667,7 +723,7 @@ async function confirm_upload() {
                 if (resultData.success) {
                     Swal.fire("สำเร็จ!", resultData.message, "success")
                         .then(() => {
-                            window.location.href = "/myorders?page=check";
+                            window.location.href = `/ordering?id=${resultData.id}`;
                         });
                 } else {
                     Swal.fire("ล้มเหลว!", resultData.message, "error");
@@ -684,7 +740,10 @@ async function confirm_upload() {
     }
 }
 
-function cancel_order() {
+function cancel_order(event) {
+    event.preventDefault();
+    const id = document.getElementById('id').value;
+    console.log(id);
     try {
         Swal.fire({
             title: "คุณแน่ใจว่าจะยกเลิกออเดอร์นี้?",
@@ -699,7 +758,7 @@ function cancel_order() {
                 const response = await fetch("/api/cancel_order", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    credentials: "include"
+                    body: JSON.stringify({ id })
                 });
     
                 if (response.ok) {

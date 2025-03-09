@@ -23,32 +23,6 @@
         box-sizing: border-box;
         }
 
-        #accept,
-        #decline,
-        .cancel {
-            padding: 8px 16px;
-            color: white;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: opacity 0.3s ease;
-        }
-
-        #accept {
-            border: 1px solid #67C14B;
-            background-color: #67C14B;
-        }
-
-        #decline {
-            background-color: #BF3F3F;
-            border: 1.5px solid #BF3F3F;
-        }
-
-        #accept:hover,
-        #decline:hover,
-        .cancel:hover {
-            opacity: 0.8;
-        }
-
         .order-title {
             color: #333;
             font-size: 20px;
@@ -212,15 +186,68 @@
         .back:hover {
             color: #f22800;
         }
+
+        .butt {
+            gap: 10px;
+        }
+
+        .edit-order,
+        .cancel-order {
+            display: inline-block;
+            text-align: center;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .edit-order {
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+        }
+
+        .edit-order:hover {
+            background-color: #0056b3;
+        }
+
+        .cancel-order {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .cancel-order:hover {
+            background-color: #a71d2a;
+        }
+
+
+
     </style>
 </head>
 
 <body>
     <%- include('topbar') %>
-        <!-- <article class="flex flex-col justify-between text-center h-screen w-screen max-w-full overflow-hidden px-6"> -->
         <div class="order-section">
             <div class="list-order" id="list-order">
-                <a href="/myorders?page=pending" class="back">< ย้อนกลับ</a>
+                <%if (data[0].order_status === 'รอดำเนินการ') {%>
+                    <a href="/myorders?page=pending" class="back">< ย้อนกลับ</a>
+                <%}else if(data[0].order_status === 'แก้ไขต่อ') {%>
+                    <a href="/myorders?page=wait" class="back">< ย้อนกลับ</a>
+                <%}else if(data[0].order_status === 'รอตรวจสอบการชำระเงิน' || data[0].order_status === 'แก้ไขออเดอร์แล้วรอตรวจสอบ') {%>
+                    <a href="/myorders?page=check" class="back">< ย้อนกลับ</a>
+                <%}else if(data[0].order_status === 'ยอมรับออเดอร์แล้ว') {%>
+                    <a href="/myorders?page=accept" class="back">< ย้อนกลับ</a>
+                <%}else if(data[0].order_status === 'ปฏิเสธการรับออเดอร์') {%>
+                    <a href="/myorders?page=decline" class="back">< ย้อนกลับ</a>
+                <%}else if(data[0].order_status === 'รับออเดอร์' || data[0].order_status === 'กำลังจัดส่ง') {%>
+                    <a href="/myorders?page=paid" class="back">< ย้อนกลับ</a>
+                <%}else if(data[0].order_status === 'จัดส่งสำเร็จ') {%>
+                    <a href="/myorders?page=success" class="back">< ย้อนกลับ</a>
+                <%};%>
+
                 <h1 style="font-size: 24px; font-weight: bold;">ออเดอร์ของคุณ</h1>
                 <%if(data[0].order_status === 'กำลังจัดส่ง' || data[0].order_status === 'จัดส่งสำเร็จ'){%>
                     <h3 class="order-title">#ORDER<%= data[0].id %> - <span class="status"><%= data[0].order_status %> #<%=data[0].parcel_number%></span></h3>
@@ -278,7 +305,7 @@
                                         <li><strong>จำนวน:</strong> <%= item.amount %> ชิ้น</li>
                                         <li>
                                             <strong>สี:</strong>
-                                            <input type="color" value="<%= item.colorOfPendant %>" disabled>
+                                            <input type="color" value="<%= item.color_pendant %>" disabled>
                                         </li>
                                         <% if (item.engravePendantText) { %>
                                             <li><strong>สลักชื่อ:</strong> <%= item.engravePendantText %></li>
@@ -298,14 +325,14 @@
                             <h4>เหตุผลที่ยกเลิก:</h4>
                             <p><%=data[0].decline_reason%></p>
                         </div>
-                    <%}else{%>
-                        <div class="section">
-                            <h4>สินค้า/ราคาที่ถูกเพิ่ม (จากช่างเครื่องประดับ):</h4>
-                        </div>
+
                     <%}%>
                     <div id="add-list">
                         <% if (data[0].order_status !== 'รอดำเนินการ') {%>
                             <% if (Array.isArray(add.add_order) && add.add_order.length > 0) { %>
+                                <div class="section">
+                                    <h4>สินค้า/ราคาที่ถูกเพิ่ม (จากช่างเครื่องประดับ):</h4>
+                                </div>
                                 <% add.add_order.forEach((item) => { %>
                                     <div class="pendant-box">
                                         <li><span><strong>ชื่อสินค้า:</strong> <%= item.name %></span></li>
@@ -317,10 +344,31 @@
                         <% } %>
                     </div>
                     <% if (order.refImage) { %>
-                        <img src="/<%= order.refImage %>" alt="Reference Image" class="img-preview">
+                        <div class="section">
+                            <h4>ภาพอ้างอิง:</h4>
+                            <img src="/<%= order.refImage %>" alt="Reference Image" class="img-preview">
+                        </div>
                     <% } %>
                 </div>
-            </div>
+                <%if (data[0].order_status==='รอตรวจสอบการชำระเงิน' || data[0].order_status==='รับออเดอร์' || data[0].order_status==='กำลังจัดส่ง' || data[0].order_status==='จัดส่งสำเร็จ') {%>
+                    <h4>สลิปต์ชำระเงิน</h4>
+                    <img src="/<%= data[0].payment_image %>" alt="สลิปต์" class="img-preview">
+                <%}%>
+                <%if (data[0].order_status==='ปฏิเสธการรับออเดอร์' || data[0].order_status==='แก้ไขต่อ') {%>
+                    <div class="butt">
+                            <a href="/editOrder/?id=<%=data[0].id%>" class="edit-order">แก้ไข</a>
+                            <button onclick="cancel_order(event)" class="cancel-order">ยกเลิกออเดอร์นี้</button>
+                            <form>
+                                <input type="hidden" id="id" value="<%=data[0].id%>">
+                            </form>
+                    </div>
+                <%};%>
+                <% if (Array.isArray(add.add_order) && add.add_order.length > 0) { %>
+                    <h1 style="font-size: 20px; font-weight: bold;">ราคารวม: <%= order.total + add.add_total %> บาท</h1>
+                <%}else{%>
+                    <h1 style="font-size: 20px; font-weight: bold;">ราคารวม: <%=order.total%> บาท</h1>
+                <%};%>
+                </div>
         </div>
 
         <%if (data[0].order_status === 'ยอมรับออเดอร์แล้ว') {%>
@@ -338,13 +386,12 @@
                         <% data.forEach((item)=>{ %>
                             <input type="hidden" name="id" value="<%=item.id%>">
                             <% }); %> <br>
-                            <button type="button" onclick="confirm_upload()" class="confirm">ส่งสลิปต์</button>
-                            <button onclick="cancel_order()" class="cancel">ยกเลิกออเดอร์นี้</button>
+                            <button type="button" onclick="confirm_upload(event)" class="confirm">ส่งสลิปต์</button>
+                            <button onclick="cancel_order(event)" class="cancel-order">ยกเลิกออเดอร์นี้</button>
                     </form>
                 </div>
             </div>
         <%};%>
-        <!-- </article> -->
 </body>
 
 </html>

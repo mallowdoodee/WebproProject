@@ -458,9 +458,16 @@
         font-weight: bold;
     }*/
 
+    h1 {
+        text-align: center;
+    }
+
 </style>
 
 <div class="container">
+    <form>
+        <input type="hidden" id="id" value="<%=data[0].id%>">
+    </form>
     <div class="list-order" id="list-order">
         <h2>Order Details</h2>
         <%if(data[0].order_status === 'กำลังจัดส่ง' || data[0].order_status === 'จัดส่งสำเร็จ'){%>
@@ -476,6 +483,13 @@
                 : 'declined' %>">
                 <%= data[0].order_status %></span></h3>
         <%}%>
+        <% if (data[0].order_status !== 'รอดำเนินการ') {%>
+            <% if (Array.isArray(add.add_order) && add.add_order.length > 0) { %>
+                <h3 class="order-title">ราคารวม: <%= order.total + add.add_total %> บาท</h3>
+            <%}else{%>
+                <h3 class="order-title">ราคารวม: <%=order.total%> บาท</h3>
+            <%};%>
+        <%};%>
 
         <div class="list-content" id="list">
             <!-- Material Section -->
@@ -581,7 +595,7 @@
     <!-- image -->
     <!-- description -->
     <!-- ชื่อสินค้า-ราคา-ok -->
-    <%if (data[0].order_status === 'รอดำเนินการ') {%>
+    <%if (data[0].order_status === 'รอดำเนินการ' || data[0].order_status === 'แก้ไขออเดอร์แล้วรอตรวจสอบ') {%>
     <div class="form-container">
         <h2>Add more</h2>
         <form action="#" id="productForm">
@@ -605,7 +619,7 @@
 
         <!-- ปุ่ม access/decline -->
         <div class="butt">
-            <button onclick="accept()" id="accept">ยอมรับออเดอร์</button>
+            <button onclick="accept(event)" id="accept">ยอมรับออเดอร์</button>
             <button id="decline" onclick="open_decline_Modal()">ปฏิเสธรับออเดอร์</button>
             <a href="/emp/orders" class="cancel">กลับไปหน้าหลัก</a>
         </div>
@@ -616,7 +630,7 @@
                     <label class="font-thaiS">เหตุผลที่ยกเลิก</label>
                     <textarea id="description" placeholder="Enter something..."></textarea>
 
-                    <a class="send" onclick="send_decline_Modal()">ยืนยัน</a>
+                    <a class="send" onclick="send_decline_Modal(event)">ยืนยัน</a>
                     <a class="close" onclick="close_decline_Modal()">ย้อนกลับ</a>
                 </form>
             </div>
@@ -625,7 +639,7 @@
 
 
     <!-- <input type="hidden" id="payment_status" value="<%= data[0].payment_status %>">     -->
-    <%if (data[0].order_status !== 'ยอมรับออเดอร์แล้ว' && data[0].order_status !== 'รอดำเนินการ' && data[0].order_status !== 'ปฏิเสธการรับออเดอร์') {%>
+    <%if (data[0].order_status !== 'ยอมรับออเดอร์แล้ว' && data[0].order_status !== 'รอดำเนินการ' && data[0].order_status !== 'ปฏิเสธการรับออเดอร์' && data[0].order_status !== 'แก้ไขออเดอร์แล้วรอตรวจสอบ') {%>
         <div class="info-order">
             <h2>Payment</h2>
             <div class="list-check">
