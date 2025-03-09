@@ -10,375 +10,158 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Noto+Sans+Thai&display=swap');
 
-        /* body {
+        body {
             font-family: "Noto Sans Thai", sans-serif;
-            font-size: 18px;
-            display: flex;
-            justify-content: center;
-            background-color: #fff6f6;
-        } */
-    
-    .container {
+        }
+
+        .container {
         width: 100%;
         display: flex;
         flex-direction: column;
         justify-content: center;
         padding: 20px;
         box-sizing: border-box;
-    }
+        }
 
-    #accept,
-    #decline, .cancel {
-        padding: 8px 16px;
-        color: white;
-        cursor: pointer;
-        border-radius: 5px;
-        transition: opacity 0.3s ease;
-    }
+        #accept,
+        #decline,
+        .cancel {
+            padding: 8px 16px;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: opacity 0.3s ease;
+        }
 
-    #accept {
-        border: 1px solid #67C14B;
-        background-color: #67C14B;
-    }
+        #accept {
+            border: 1px solid #67C14B;
+            background-color: #67C14B;
+        }
 
-    #decline {
-        background-color: #BF3F3F;
-        border: 1.5px solid #BF3F3F;
-    }
+        #decline {
+            background-color: #BF3F3F;
+            border: 1.5px solid #BF3F3F;
+        }
 
-    .cancel {
-        background-color: rgb(65, 65, 189);
-    }
+        #accept:hover,
+        #decline:hover,
+        .cancel:hover {
+            opacity: 0.8;
+        }
 
-    #accept:hover,
-    #decline:hover, .cancel:hover {
-        opacity: 0.8;
-    }
+        .order-title {
+            color: #333;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
 
-    .modal-container {
-        display: none;
-        width: 100%;
-        max-width: 50%;
-        height: 270px;
-        background-color: #ffffff;
-        padding: 30px;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-        border-radius: 10px;
-        z-index: 10000;
-    }
+        .status {
+            color: #007bff;
+            font-weight: bold;
+        }
 
-    .modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 999;
-    }
+        .section {
+            margin-bottom: 20px;
+        }
 
-    .btn {
-        background-color: #ff4d4d;
-        color: white;
-        border: none;
-        padding: 5px 10px;
-        cursor: pointer;
-        font-size: 16px;
-        border-radius: 5px;
-    }
+        h4 {
+            background: #fbe9df;
+            font-weight: bolder;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 18px;
+        }
 
-    .send {
-        background-color: #67C14B;
-    }
+        p {
+            margin: 7px 10px;
+        }
 
-    /* .modal-container form {
-        margin-top: 30px;
-    } */
+        hr {
+            border: 0;
+            height: 1px;
+            background: #ddd;
+            margin: 20px 0;
+        }
 
-    textarea {
-        width: 100%;
-        height: 200px;
-        border: 1px solid gray;
-        resize: none;
-        margin-bottom: 15px;
-    }
+        .material-box,
+        .pendant-box {
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 5px;
+        }
 
-    .list-order {
-        background: #fff;
-        padding: 40px;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
+        .pendant-item {
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 5px 0;
+        }
 
-    .order-title {
-        color: #333;
-        font-size: 20px;
-        font-weight: bold;
-        margin-bottom: 15px;
-    }
+        .pendant-item:last-child {
+            border-bottom: none;
+        }
 
-    .status {
-        color: #007bff;
-        font-weight: bold;
-    }
-
-    .section {
-        margin-bottom: 20px;
-    }
-
-    h4 {
-        background: #f5f5f5;
-        padding: 10px;
-        border-radius: 5px;
-        font-size: 18px;
-    }
-
-    p {
-        margin: 7px 10px;
-    }
-
-    hr {
-        border: 0;
-        height: 1px;
-        background: #ddd;
-        margin: 20px 0;
-    }
-
-    .material-box,
-    .pendant-box {
-        background: #f9f9f9;
-        padding: 10px;
-        border-radius: 5px;
-    }
-
-    .pendant-item {
-        border-bottom: 1px solid #ddd;
-        padding: 10px;
-    }
-
-    .pendant-item:last-child {
-        border-bottom: none;
-    }
-
-
-    /* .list-order {
-        background: #fff;
-        padding: 30px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px 10px rgba(142, 142, 142, 0.1);
-        margin-bottom: 40px;
-    } */
-
-    h1, h2, h3 {
-        text-align: center;
-    }
-    h3 {
-        color: rgb(120, 120, 120);
-    }
-    h4 {
-        font-weight: bold;
-        color: #450100;
-    }
-
-
-    /* .list-content {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 15px;
-    } */
-
-    /* .list-content li {
-        list-style: none;
-        padding: 10px;
-        background: #f9f9f9;
-        border-radius: 5px;
-    }  */
-
-
-    /* .pendant-list {
-        grid-column: span 2;
-        background: #eef7ff;
-        padding: 10px;
-        border-radius: 5px; 
-    } */
-
-    .info-order {
-        display: grid;
-        align-items: center;
-    }
-
-    .pendant-item {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 5px 0;
-    } 
-
-    .form-container {
-        max-width: 100%;
-        margin-top: 30px;
-        padding: 20px;
-        background: #fff;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    label {
-        margin-top: 10px;
-        font-weight: bold;
-    }
-
-    input[type="text"], input[type="number"] {
-        padding: 8px;
-        margin-top: 5px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-    }
-
-    button {
-        margin-top: 15px;
-        padding: 10px;
-        background: #007bff;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-    }
-
-    button:hover {
-        background: #0056b3;
-    }
-
-    /* form {
-        display: flex;
-        flex-direction: column;
-    } */
-
-    .img-preview {
-        display: block;
-        width: 50%;
-        margin-top: 15px;
-        border-radius: 5px;
-    }
-
-    input[type="color"] {
-        border: none;
-        cursor: pointer;
-    }
-
-    #add-list li {
-        background-color: #ffe4e1;
-        border-radius: 0;
-        grid-column: span 2;
-        padding: 10px;
-        cursor: pointer;
-    }
-
-    .add-item {
-        display: flex;
-        align-items: center;
-        background-color: #ffe4e1;
-    }
-
-    .form-container, .butt {
-        text-align: center;
-    }
-
-    /* .list-check {
-        display: flex;
-        align-items: center;
-        gap: 20px;
-    } */
-
-    /* .check-item {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    } */
-
-    /* .img-payment {
-        max-width: 30%;
-        height: auto;
-        border-radius: 5px;
-    } */
-
-    .info-order {
-        background: #fff;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        margin-top: 40px;
-    }
-
-    h2 {
-        text-align: center;
-        color: #333;
-    }
-
-    .list-check {
-        display: flex;
-        /* flex-direction: column; */
-        align-items: center;
-    }
-
-    .img-payment {
-        max-width: 30%;
-        border-radius: 8px;
-        margin-right: 15px;
-    }
-
-    .check-item {
-        width: 100%;
-    }
-
-    .check-item label {
-        display: block;
-        background: #f9f9f9;
-        padding: 10px;
-        margin: 5px 0;
-        border-radius: 5px;
-        transition: 0.3s;
-        cursor: pointer;
-    }
-
-    .check-item label:hover {
-        background: #e3f2fd;
-    }
-
-        h1 {
-            font-family: "Fraunces", serif;
+        h1,
+        h3 {
+            text-align: center;
         }
 
         h3 {
+            color: rgb(75, 23, 173);
             margin-bottom: 5px;
             margin-top: 8px;
         }
 
-        /* .container {
-            display: inline;
-            background-color: #fff0f0;
-            padding: 30px;
-            padding-top: 10px;
-            border-radius: 35px;
-        } */
+        label {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .img-preview {
+            display: block;
+            max-width: 25%;
+            margin-top: 15px;
+            border-radius: 5px;
+        }
 
         .order-section,
         .payment-section {
+            width: 100%;
             display: flex;
-            align-items: center;
+            justify-content: center;
             gap: 40px;
             margin-bottom: 20px;
         }
 
+        .list-order {
+            background: #fff;
+            width: 80%;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 100px;
+        }
+
         .confirm {
             padding: 10px;
-            /* border-color: #6e2b28; */
+            border-color: #6e2b28;
             border-width: 1px;
             background-color: #1dca42;
             border-radius: 15px;
@@ -394,7 +177,7 @@
 
         .cancel {
             padding: 10px;
-            /* border-color: #6e2b28; */
+            border-color: #6e2b28;
             border-width: 1px;
             background-color: #f41818;
             border-radius: 15px;
@@ -421,35 +204,23 @@
             border-radius: 5px;
         }
 
-        .butt {
-            margin: 20px;
-        }
-
-        #edit {
-            background-color: #BF8579;
-            padding: 10px;
-            border-radius: 5px;
-            color: white;
-        }
-
         .back {
             font-weight: bold;
             margin: 10px;
         }
 
         .back:hover {
-            color: #BF8579;
+            color: #f22800;
         }
     </style>
 </head>
 
 <body>
     <%- include('topbar') %>
-    <!-- <article class="flex flex-col justify-between text-center h-screen w-screen max-w-full overflow-hidden px-6"> -->
-
-        <div class="container mt-15">
-            <a href="/myorders?page=pending" class="back">< ย้อนกลับ</a>
+        <!-- <article class="flex flex-col justify-between text-center h-screen w-screen max-w-full overflow-hidden px-6"> -->
+        <div class="order-section">
             <div class="list-order" id="list-order">
+                <a href="/myorders?page=pending" class="back">< ย้อนกลับ</a>
                 <h1 style="font-size: 24px; font-weight: bold;">ออเดอร์ของคุณ</h1>
                 <%if(data[0].order_status === 'กำลังจัดส่ง' || data[0].order_status === 'จัดส่งสำเร็จ'){%>
                     <h3 class="order-title">#ORDER<%= data[0].id %> - <span class="status"><%= data[0].order_status %> #<%=data[0].parcel_number%></span></h3>
@@ -463,6 +234,7 @@
                         <span style="color: green;">ชำระเงินแล้ว</span>
                     <%};%>
                 </p>
+
                 <div class="list-content" id="list">
                     <!-- Material Section -->
                     <div class="section">
@@ -478,17 +250,15 @@
                             <% } %>
                         </div>
                     </div>
-        
                     <hr>
-        
+
                     <!-- Stone Section -->
                     <div class="section">
                         <h4>รายละเอียดอัญมณี</h4>
                         <p><strong>ชื่ออัญมณี:</strong> <%= order.stone %></p>
                     </div>
-        
                     <hr>
-        
+
                     <!-- Ring Size -->
                     <% if (data[0].category === 'แหวน') { %>
                         <div class="section">
@@ -496,7 +266,7 @@
                             <p><strong>ขนาด:</strong> <%= order.size %></p>
                         </div>
                     <% } %>
-        
+
                     <!-- Bracelet Pendant List -->
                     <% if (data[0].category === 'สร้อยข้อมือ' || data[0].category === 'สร้อยคอ') { %>
                         <div class="section">
@@ -518,7 +288,6 @@
                             </div>
                         </div>
                     <% } %>
-        
                     <div class="section">
                         <h4>ข้อความเพิ่มเติม:</h4>
                         <p> <%= order.description || '-' %></p>
@@ -538,7 +307,7 @@
                         <% if (data[0].order_status !== 'รอดำเนินการ') {%>
                             <% if (Array.isArray(add.add_order) && add.add_order.length > 0) { %>
                                 <% add.add_order.forEach((item) => { %>
-                                    <div class="add-item">
+                                    <div class="pendant-box">
                                         <li><span><strong>ชื่อสินค้า:</strong> <%= item.name %></span></li>
                                         <li><span><strong>จำนวน</strong> <%= item.amount %></span></li>
                                         <li><span><strong>ราคา:</strong> <%= item.price %></span></li>
@@ -551,47 +320,31 @@
                         <img src="/<%= order.refImage %>" alt="Reference Image" class="img-preview">
                     <% } %>
                 </div>
-        
             </div>
+        </div>
+
+        <%if (data[0].order_status === 'ยอมรับออเดอร์แล้ว') {%>
+        <div class="payment-section">
+            <div class="box">
+                <img src="fakeQR.png" alt="" style="width: 250px; height: 250px; border-radius: 20px;">
             </div>
-
-            <%if (data[0].order_status === 'ยอมรับออเดอร์แล้ว') {%>
-                <div class="payment-section">
-                    <div class="box">
-                        <img src="fakeQR.png" alt="" style="width: 250px; height: 250px; border-radius: 20px;">
-                    </div>
-                    <div class="bank-info">
-                        <h3>Bank Info</h3>
-                        <p>Bank : Kasikorn</p>
-                        <p>Account : 0 - 1234 - 56789</p>
-                        <p>
-                            <form id="uploadForm" enctype="multipart/form-data">
-                            <input type="file" name="image" class="upload" required>
-                            <% data.forEach((item)=>{ %>
-                                <input type="hidden" name="id" value="<%=item.id%>">
-                                <% }); %> <br>
-                                <button type="button" onclick="confirm_upload()" class="confirm">ส่งสลิปต์</button>
-                                <button onclick="cancel_order()">ยกเลิกออเดอร์นี้</button>
-                        </form>
-                        </p>
-                    </div>
+            <div class="bank-info">
+                <h3><b>Bank Info</b></h3>
+                <p>Bank : Kasikorn</p>
+                <p>Account : 0 - 1234 - 56789</p>
+                    <p>
+                        <form id="uploadForm" enctype="multipart/form-data">
+                        <input type="file" name="image" class="upload" required>
+                        <% data.forEach((item)=>{ %>
+                            <input type="hidden" name="id" value="<%=item.id%>">
+                            <% }); %> <br>
+                            <button type="button" onclick="confirm_upload()" class="confirm">ส่งสลิปต์</button>
+                            <button onclick="cancel_order()" class="cancel">ยกเลิกออเดอร์นี้</button>
+                    </form>
                 </div>
-            <%};%>
-            <%if (data[0].order_status==='ปฏิเสธการรับออเดอร์' || data[0].order_status==='แก้ไขต่อ') {%>
-                <div class="butt">
-                        <a href="/editOrder/?id=<%=data[0].id%>" class="confirm">แก้ไข</a>
-                        <button onclick="cancel_order()" class="cancel">ยกเลิกออเดอร์นี้</button>
-                </div>
-            <%};%>
-
-            <%if (data[0].order_status==='รอตรวจสอบการชำระเงิน' || data[0].order_status==='รับออเดอร์' || data[0].order_status==='กำลังจัดส่ง' || data[0].order_status==='จัดส่งสำเร็จ') {%>
-                <h4>สลิปต์ชำระเงิน</h4>
-                <img src="/<%= data[0].payment_image %>" alt="สลิปต์">
-            <%}%>
-
-
-            
+            </div>
+        <%};%>
         <!-- </article> -->
-    </body>
+</body>
 
 </html>
